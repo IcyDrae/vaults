@@ -9,8 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: password_manager
     ports:
-      # TODO env variable for host port
-      - '3307:3306'
+      - '${MYSQL_HOST_PORT}:3306'
     volumes:
       - ./config/packages/dev/docker/mysql/db:/var/lib/mysql
     networks:
@@ -20,14 +19,13 @@ services:
     build:
       context: ./config/packages/dev/docker/php
       args:
-        # Pass down environment variables as arguments for the Dockerfile
+        # Pass down environment variables as arguments for the Dockerfile.
         - GITHUB_USERNAME=${GITHUB_USERNAME}
         - GITHUB_EMAIL=${GITHUB_EMAIL}
         - SYSTEM_UID=${SYSTEM_UID}
+        - XDEBUG_HOST_PORT=${XDEBUG_HOST_PORT}
     ports:
-      # FastCGI requests
-      # TODO env variable for host port
-      - '9000:9000'
+      - '${PHP_FASTCGI_HOST_PORT}:9000'
     volumes:
       - ./:/var/www/password-manager
       - ./config/packages/dev/docker/php/php-fpm.d/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
@@ -41,11 +39,8 @@ services:
     container_name: password-manager_nginx
     image: nginx:1.20.0-alpine
     ports:
-      # TODO env variable for host port
-      # HTTP
-      - '80:80'
-      # SSL
-      - '443:443'
+      - '${NGINX_HTTP_HOST_PORT}:80'
+      - '${NGINX_HTTPS_HOST_PORT}:443'
     volumes:
       - ./:/var/www/password-manager
       - ./config/packages/dev/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -58,6 +53,7 @@ services:
     networks:
       - default
 networks:
+  # Single network for all three services.
   default:
     name: password-manager_network
     driver: bridge

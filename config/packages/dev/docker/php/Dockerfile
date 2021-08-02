@@ -11,13 +11,14 @@ RUN apt update \
 
 WORKDIR /var/www/password-manager
 
-# Xdebug port, only valiable container wide.
-EXPOSE 9001
-
 # Catch environment variables from the docker-compose.yml file.
 ARG GITHUB_USERNAME
 ARG GITHUB_EMAIL
 ARG SYSTEM_UID
+ARG XDEBUG_HOST_PORT
+
+# Xdebug port, only avaliable container wide.
+EXPOSE ${XDEBUG_HOST_PORT}
 
 # Change the www-data user's id to the specified system user id.
 RUN usermod -u ${SYSTEM_UID} www-data
