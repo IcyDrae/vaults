@@ -1,4 +1,8 @@
 
+###> docker-compose.env
+docker-compose.env
+###< docker-compose.env
+
 ###> .idea/
 .idea
 ###< .idea/
