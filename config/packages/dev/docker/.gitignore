@@ -1,0 +1,5 @@
+# Used for development files in which the user should first enter some custom values(hostname etc).
+
+nginx/default.conf
+nginx/password-manager.crt
+nginx/password-manager.key

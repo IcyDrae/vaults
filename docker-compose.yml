@@ -44,8 +44,8 @@ services:
     volumes:
       - ./:/var/www/password-manager
       - ./config/packages/dev/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./config/packages/dev/docker/nginx/api.dev.local.crt:/etc/ssl/certs/dev.local.crt
-      - ./config/packages/dev/docker/nginx/api.dev.local.key:/etc/ssl/private/dev.local.key
+      - ./config/packages/dev/docker/nginx/password-manager.crt:/etc/ssl/certs/password-manager.crt
+      - ./config/packages/dev/docker/nginx/password-manager.key:/etc/ssl/private/password-manager.key
       - ./config/packages/dev/docker/nginx/dhparam.pem:/etc/nginx/dhparam.pem
     depends_on:
       - php
