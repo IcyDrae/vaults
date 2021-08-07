@@ -1,6 +1,6 @@
 Getting started with Docker.
 
-This project runs completely on docker, there are three services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM) & nginx(NGINX 1.20 Alpine).
+This project runs completely on Docker, there are three services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM) & nginx(NGINX 1.20 Alpine).
 
 1. Copy the docker-compose.env.example and fill the variables out.
 
