@@ -1,4 +1,6 @@
-Getting started with docker
+Getting started with Docker.
+
+This project runs completely on docker, there are three services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM) & nginx(NGINX 1.20 Alpine).
 
 1. Copy the docker-compose.env.example and fill the variables out.
 
@@ -31,14 +33,24 @@ cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/nginx/passwor
 cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/nginx/password-manager.crt
 ```
 
-5. Create the containers with docker-compose.
+5. Build the images & create the containers with docker-compose.
 
 ```shell
 docker-compose --env-file docker-compose.env up --build --detach
 ```
 
-6. Monitor the NGINX container with the following command.
+6. In your host filesystem start the front end running on Vue.js:
+
+```shell
+yarn watch
+```
+
+This will watch for changes made to the .js|.scss|.vue files and re-compile automatically.
+
+7. In another terminal window you can monitor the NGINX container with the following command:
 
 ```shell
 docker logs --follow password-manager_nginx
 ```
+
+That's it! Now you're ready to start developing!

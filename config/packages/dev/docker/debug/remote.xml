@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="remote" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" filter_connections="FILTER" server_name="wsl2_docker" session_id="PHPSTORM_DOCKER">
-    <method v="2" />
-  </configuration>
-</component>
