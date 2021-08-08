@@ -50,12 +50,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=25)
      */
-    private $userName;
+    private $username;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $registered_at;
+    private $registeredAt;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -104,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->uuid;
+        return (string) $this->username;
     }
 
     /**
@@ -185,21 +185,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setUserName(string $userName): self
+    public function setUserName(string $username): self
     {
-        $this->userName = $userName;
+        $this->username = $username;
 
         return $this;
     }
 
     public function getRegisteredAt(): ?\DateTimeInterface
     {
-        return $this->registered_at;
+        return $this->registeredAt;
     }
 
-    public function setRegisteredAt(\DateTimeInterface $registered_at): self
+    public function setRegisteredAt(\DateTimeInterface $registeredAt): self
     {
-        $this->registered_at = $registered_at;
+        $this->registeredAt = $registeredAt;
 
         return $this;
     }
@@ -228,7 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->logins->contains($login)) {
             $this->logins[] = $login;
-            $login->setUserId($this);
+            $login->setUser($this);
         }
 
         return $this;
@@ -238,8 +238,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->logins->removeElement($login)) {
             // set the owning side to null (unless already changed)
-            if ($login->getUserId() === $this) {
-                $login->setUserId(null);
+            if ($login->getUser() === $this) {
+                $login->setUser(null);
             }
         }
 
