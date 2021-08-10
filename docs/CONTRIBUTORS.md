@@ -8,10 +8,11 @@ This project runs completely on Docker, there are three services being orchestra
 cp docker-compose.env.example docker-compose.env
 ```
 
-2. Copy the NGINX config file and set your local hostname; also don't forget to add the hostname to your host's ```/etc/hosts```.
+2. Copy the NGINX & Xdebug config files and set your local hostname; also don't forget to add the hostname to your host's ```/etc/hosts``` and the Xdebug port.
 
 ```shell
 cp config/packages/dev/docker/nginx/default.conf.example config/packages/dev/docker/nginx/default.conf
+cp config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini.example config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini
 ```
 
 3. Create the SSL certificate and its corresponding key for your hostname.
