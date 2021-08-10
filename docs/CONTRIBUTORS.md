@@ -41,8 +41,12 @@ docker-compose --env-file docker-compose.env up --build --detach
 
 6. In your host filesystem start the front end running on Vue.js:
 
+The frontend files reside under ```shell web```, completely separated and independent of Symfony and Twig etc.
+
 ```shell
-yarn watch
+cd web/
+
+npm run serve
 ```
 
 This will watch for changes made to the .js|.scss|.vue files and re-compile automatically.
