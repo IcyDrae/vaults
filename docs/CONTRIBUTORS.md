@@ -41,7 +41,7 @@ docker-compose --env-file docker-compose.env up --build --detach
 
 6. In your host filesystem start the front end running on Vue.js:
 
-The frontend files reside under ```shell web```, completely separated and independent of Symfony and Twig etc.
+The frontend files reside under ``` web```, completely separated and independent of Symfony and Twig etc.
 
 ```shell
 cd web/
