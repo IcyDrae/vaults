@@ -2,7 +2,13 @@ Getting started with Docker.
 
 This project runs completely on Docker, there are four services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM), api(NGINX 1.20 Alpine) & spa(Vue.js frontend).
 
-1. Copy the docker-compose.env.example and fill the variables out.
+1. Copy .env.example and set the allowed origin. This is important so the API can respond to its frontend.
+
+```shell
+cp .env.example .env.dev.local
+```
+
+3. Copy the docker-compose.env.example and fill the variables out.
 
 ```shell
 cp docker-compose.env.example docker-compose.env
