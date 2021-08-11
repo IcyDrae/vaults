@@ -11,7 +11,7 @@ cp docker-compose.env.example docker-compose.env
 2. Copy the NGINX & Xdebug config files and set your local hostname; also don't forget to add the hostname to your host's ```/etc/hosts``` and the Xdebug port.
 
 ```shell
-cp config/packages/dev/docker/nginx/default.conf.example config/packages/dev/docker/nginx/default.conf
+cp config/packages/dev/docker/api/default.conf.example config/packages/dev/docker/api/default.conf
 cp config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini.example config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini
 ```
 
@@ -38,8 +38,8 @@ sudo openssl req -x509 \
 and then import them in your preferred browser.
 
 ```shell
-cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/nginx/password-manager.key
-cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/nginx/password-manager.crt
+cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/api/password-manager.key
+cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/api/password-manager.crt
 ```
 
 6. Build the images & create the containers with docker-compose.
