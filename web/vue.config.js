@@ -1,8 +1,9 @@
 module.exports = {
     configureWebpack: {
         devServer: {
-            host: 'password-manager.dev.local',
+            host: '0.0.0.0',
             port: '1024',
+            public: process.env.VUE_APP_PUBLIC_HOSTNAME,
             https: true
         }
     }

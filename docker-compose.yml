@@ -39,8 +39,8 @@ services:
     container_name: password-manager_nginx
     image: nginx:1.20.0-alpine
     ports:
-      - '${NGINX_HTTP_HOST_PORT}:80'
-      - '${NGINX_HTTPS_HOST_PORT}:443'
+      - '${API_HTTP_HOST_PORT}:80'
+      - '${API_HTTPS_HOST_PORT}:443'
     volumes:
       - ./:/var/www/password-manager
       - ./config/packages/dev/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -52,6 +52,17 @@ services:
       - db
     networks:
       - default
+  spa:
+    container_name: password-manager_spa
+    build:
+      context: ./
+      dockerfile: ./config/packages/dev/docker/spa/Dockerfile
+    ports:
+      - '${SPA_HTTPS_HOST_PORT}:1024'
+    volumes:
+      - ./web/:/var/www/password-manager/web
+    depends_on:
+      - php
 networks:
   # Single network for all three services.
   default:
