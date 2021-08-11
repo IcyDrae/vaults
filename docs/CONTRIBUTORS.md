@@ -1,6 +1,6 @@
 Getting started with Docker.
 
-This project runs completely on Docker, there are four services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM), nginx(NGINX 1.20 Alpine) & spa(Vue.js frontend).
+This project runs completely on Docker, there are four services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM), api(NGINX 1.20 Alpine) & spa(Vue.js frontend).
 
 1. Copy the docker-compose.env.example and fill the variables out.
 
@@ -48,10 +48,10 @@ cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/nginx/passwor
 docker-compose --env-file docker-compose.env up --build --detach
 ```
 
-8. In other terminal windows you can monitor the NGINX container as well as the frontend container with the following commands:
+8. In other terminal windows you can monitor the api container as well as the frontend container with the following commands:
 
 ```shell
-docker logs --follow password-manager_nginx
+docker logs --follow password-manager_api
 ```
 
 ```shell
