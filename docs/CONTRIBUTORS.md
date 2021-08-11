@@ -1,6 +1,6 @@
 Getting started with Docker.
 
-This project runs completely on Docker, there are three services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM) & nginx(NGINX 1.20 Alpine).
+This project runs completely on Docker, there are four services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM), nginx(NGINX 1.20 Alpine) & spa(Vue.js frontend).
 
 1. Copy the docker-compose.env.example and fill the variables out.
 
@@ -15,7 +15,15 @@ cp config/packages/dev/docker/nginx/default.conf.example config/packages/dev/doc
 cp config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini.example config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini
 ```
 
-3. Create the SSL certificate and its corresponding key for your hostname.
+3. Copy the frontend config file and set the variables:
+
+The frontend files reside under ``` web```, completely separated and independent of Symfony and Twig etc.
+
+```shell
+cp web/.env.development.local.example web/.env.development.local
+```
+
+4. Create the SSL certificate and its corresponding key for your hostname.
 
 ```shell
 sudo openssl req -x509 \
@@ -26,7 +34,7 @@ sudo openssl req -x509 \
                  -out /etc/ssl/certs/selfsigned/site.crt
 ```
 
-4. Copy the certificate + key in the project files for docker compose, 
+5. Copy the certificate + key in the project files for docker compose, 
 and then import them in your preferred browser.
 
 ```shell
@@ -34,28 +42,20 @@ cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/nginx/passwor
 cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/nginx/password-manager.crt
 ```
 
-5. Build the images & create the containers with docker-compose.
+6. Build the images & create the containers with docker-compose.
 
 ```shell
 docker-compose --env-file docker-compose.env up --build --detach
 ```
 
-6. In your host filesystem start the front end running on Vue.js:
-
-The frontend files reside under ``` web```, completely separated and independent of Symfony and Twig etc.
-
-```shell
-cd web/
-
-npm run serve
-```
-
-This will watch for changes made to the .js|.scss|.vue files and re-compile automatically.
-
-7. In another terminal window you can monitor the NGINX container with the following command:
+8. In other terminal windows you can monitor the NGINX container as well as the frontend container with the following commands:
 
 ```shell
 docker logs --follow password-manager_nginx
+```
+
+```shell
+docker logs --follow password-manager_spa
 ```
 
 That's it! Now you're ready to start developing!

@@ -4,6 +4,6 @@ WORKDIR /var/www/password-manager/web
 
 RUN npm install
 
-EXPOSE 443
+EXPOSE 1024
 
 CMD ["npm", "run", "serve"]
