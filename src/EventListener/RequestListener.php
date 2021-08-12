@@ -14,6 +14,12 @@ class RequestListener
         $this->setCorsHeaders($event);
     }
 
+    /**
+     * Sets the needed headers to let the frontend(which is hosted on another hostname) make requests.
+     * The global env variable is set from the .env files.
+     *
+     * @param ResponseEvent $event
+     */
     private function setCorsHeaders(ResponseEvent $event)
     {
         // Don't do anything if it's not the main request
