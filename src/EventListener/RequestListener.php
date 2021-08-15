@@ -31,8 +31,11 @@ class RequestListener
 
         $response->headers->add([
             "Content-Type" => "application/json",
-            "Access-Control-Allow-Origin" => $_ENV["ALLOWED_ORIGIN"]
+            "Access-Control-Allow-Origin" => $_ENV["ALLOWED_ORIGIN"],
+            "Access-Control-Allow-Method" => "OPTIONS, GET, POST, PUT, DELETE",
+            "Access-Control-Allow-Headers" => "content-type"
         ]);
+
     }
 
 }
