@@ -22,7 +22,7 @@ class RequestListener
      */
     private function setCorsHeaders(ResponseEvent $event)
     {
-        // Don't do anything if it's not the main request
+        // Don't do anything if it's not the main request.
         if (!$event->isMainRequest()) {
             return;
         }
