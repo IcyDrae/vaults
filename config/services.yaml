@@ -21,9 +21,9 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    App\EventListener\RequestListener:
+    App\EventListener\CorsListener:
         tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+            - { name: kernel.event_listener, event: kernel.event_subscriber }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
