@@ -2,37 +2,43 @@
   <div>
     <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
       <form @submit="handleSubmit($event, submit)">
-          <label>
-            First Name
-            <VeeValidateField name="first_name" type="text" />
-          </label>
+        <label>
+          First Name
+          <VeeValidateField name="first_name" type="text" />
+        </label>
 
-          <label>
-            Last Name
-            <VeeValidateField name="last_name" type="text" />
-          </label>
+        <label>
+          Last Name
+          <VeeValidateField name="last_name" type="text" />
+        </label>
 
-          <label>
-            E-Mail
-            <VeeValidateField name="email" type="email" />
-          </label>
+        <label>
+          Username
+          <VeeValidateField name="username" type="text" />
+        </label>
 
-          <label>
-            Password
-            <VeeValidateField name="password" type="password" />
-          </label>
+        <label>
+          E-Mail
+          <VeeValidateField name="email" type="email" />
+        </label>
 
-          <label>
-            Password confirmation
-            <VeeValidateField name="password_confirmation" type="password" />
-          </label>
+        <label>
+          Password
+          <VeeValidateField name="password" type="password" />
+        </label>
 
-          <br>
-          <li v-for="(message, field) in errors" :key="field">
-            {{ message }}
-          </li>
+        <label>
+          Password confirmation
+          <VeeValidateField name="password_confirmation" type="password" />
+        </label>
 
-          <button>Register</button>
+
+        <br>
+        <li v-for="(message, field) in errors" :key="field">
+          {{ message }}
+        </li>
+
+        <button>Register</button>
       </form>
     </VeeValidateForm>
   </div>
@@ -42,6 +48,7 @@
 
 import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
+import axios from 'axios';
 
 export default {
   name: "Registration",
@@ -59,6 +66,9 @@ export default {
       last_name: yup.string()
                   .required()
                   .label("Last name"),
+      username: yup.string()
+                .required()
+                .label("Username"),
       email: yup.string()
               .required()
               .email()
@@ -81,10 +91,29 @@ export default {
     };
   },
   methods: {
-    submit(values, { resetForm }) {
-      console.log(values);
+    submit(values, /*{ resetForm }*/) {
+      // Create a 'password' array since the password field in the backend is a type of 'RepeatedType',
+      // in which the two fields are children of the password field.
+      values.password = {
+          "password": values.password,
+          "password_confirmation": values.password_confirmation
+      };
+      delete values.password_confirmation;
 
-      resetForm();
+      axios
+          .post(process.env.VUE_APP_API_HOSTNAME + "/register", {
+            form: values,
+          },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+          .then(response => {
+            console.log(response.config.data)
+      })
+
+      //resetForm();
     }
   }
 }
