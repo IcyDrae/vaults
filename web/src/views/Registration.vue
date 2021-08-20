@@ -1,47 +1,49 @@
 <template>
-  <div>
-    <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
-      <form @submit="handleSubmit($event, submit)">
-        <label>
-          First Name
-          <VeeValidateField name="first_name" type="text" />
-        </label>
+  <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="registration-form">
+    <form @submit="handleSubmit($event, submit)">
+      <label>
+        First Name
+        <VeeValidateField name="first_name" type="text" />
+      </label>
 
-        <label>
-          Last Name
-          <VeeValidateField name="last_name" type="text" />
-        </label>
+      <label>
+        Last Name
+        <VeeValidateField name="last_name" type="text" />
+      </label>
 
-        <label>
-          Username
-          <VeeValidateField name="username" type="text" />
-        </label>
+      <label>
+        Username
+        <VeeValidateField name="username" type="text" />
+      </label>
 
-        <label>
-          E-Mail
-          <VeeValidateField name="email" type="email" />
-        </label>
+      <label>
+        E-Mail
+        <VeeValidateField name="email" type="email" />
+      </label>
 
-        <label>
-          Password
-          <VeeValidateField name="password" type="password" />
-        </label>
+      <label>
+        Password
+        <VeeValidateField name="password" type="password" />
+      </label>
 
-        <label>
-          Password confirmation
-          <VeeValidateField name="password_confirmation" type="password" />
-        </label>
+      <label>
+        Password confirmation
+        <VeeValidateField name="password_confirmation" type="password" />
+      </label>
 
+      <label>
+        Terms & Conditions
+        <VeeValidateField name="terms" type="checkbox" />
+      </label>
 
-        <br>
-        <li v-for="(message, field) in errors" :key="field">
-          {{ message }}
-        </li>
+      <br>
+      <li v-for="(message, field) in errors" :key="field">
+        {{ message }}
+      </li>
 
-        <button>Register</button>
-      </form>
-    </VeeValidateForm>
-  </div>
+      <button>Register</button>
+    </form>
+  </VeeValidateForm>
 </template>
 
 <script>
@@ -84,6 +86,9 @@ export default {
                               .required()
                               .oneOf([yup.ref('password'), null], 'Passwords must match')
                               .label("Password confirmation"),
+      terms: yup.boolean()
+              .oneOf([true], "You must accept the terms and conditions")
+              .label("Terms & Condition")
     });
 
     return {

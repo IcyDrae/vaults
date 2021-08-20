@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
+.registration-form {
+  width: 50%;
+  display: inline-block;
+
+  input {
+    width: 100%;
+    //padding: 12px 20px;
+    margin: 8px;
+  }
+}
