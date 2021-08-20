@@ -91,7 +91,7 @@ export default {
       terms_and_conditions: yup.boolean()
           .required()
           .oneOf([true], "You must accept the terms and conditions")
-          .label("Terms & Condition")
+          .label("Terms & Conditions")
     });
 
     return {
