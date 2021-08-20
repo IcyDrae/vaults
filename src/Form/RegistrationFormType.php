@@ -24,6 +24,7 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                "mapped" => false,
                 'invalid_message' => 'The password fields must match.',
                 'required' => true,
                 'first_name' => 'password',
