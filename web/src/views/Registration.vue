@@ -33,7 +33,7 @@
 
       <label>
         Terms & Conditions
-        <VeeValidateField name="terms" type="checkbox" />
+        <VeeValidateField name="terms_and_conditions" type="checkbox" :value="true" checked-value="true" unchecked-value="false" />
       </label>
 
       <br>
@@ -59,8 +59,10 @@ export default {
     VeeValidateForm: VeeValidate.Form,
     VeeValidateField: VeeValidate.Field,
   },
-  data() {
-    // Validation schema using 'yup'.
+  setup() {
+    /**
+     * Validation rules using 'yup'.
+     */
     const schema = yup.object({
       first_name: yup.string()
                   .required()
@@ -86,16 +88,25 @@ export default {
                               .required()
                               .oneOf([yup.ref('password'), null], 'Passwords must match')
                               .label("Password confirmation"),
-      terms: yup.boolean()
-              .oneOf([true], "You must accept the terms and conditions")
-              .label("Terms & Condition")
+      terms_and_conditions: yup.boolean()
+          .required()
+          .oneOf([true], "You must accept the terms and conditions")
+          .label("Terms & Condition")
     });
 
     return {
       schema
     };
   },
+  data() {
+    return {}
+  },
   methods: {
+    /**
+     * The main submit handler.
+     *
+     * @param values
+     */
     submit(values, /*{ resetForm }*/) {
       // Create a 'password' array since the password field in the backend is a type of 'RepeatedType',
       // in which the two fields are children of the password field.
