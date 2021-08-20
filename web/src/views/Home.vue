@@ -8,7 +8,6 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
-import axios from 'axios';
 
 export default {
   name: 'Home',
@@ -16,11 +15,6 @@ export default {
     HelloWorld
   },
   mounted() {
-    axios
-        .get('https://api.password-manager.dev.local:444/test')
-        .then(response => {
-          console.log(response.data)
-        })
   }
 }
 </script>
