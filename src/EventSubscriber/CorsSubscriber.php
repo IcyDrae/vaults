@@ -27,7 +27,9 @@ class CorsSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event): void
     {
-        $this->setCorsHeaders($event);
+        if ($event->getResponse()) {
+            $this->setCorsHeaders($event);
+        }
     }
 
     public function onKernelRequest(RequestEvent $event)
