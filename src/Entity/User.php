@@ -2,11 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -64,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $logins;
 
+    #[Pure]
     public function __construct()
     {
         $this->logins = new ArrayCollection();
@@ -72,6 +71,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 
     public function getFirstName(): ?string
