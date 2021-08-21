@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,14 +12,23 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
+
+    /**
+     * Registers a user using JSON data from the frontend.
+     *
+     * @throws \Exception if {@link DateTime} fails.
+     */
     public function register(Request $request, UserPasswordHasherInterface $passwordEncoder): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+
+        $form->submit(
+            json_decode($request->getContent(), true)["form"]
+        );
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Encode the plain password.
             $user->setPassword(
                 $passwordEncoder->hashPassword(
                     $user,
@@ -26,20 +36,27 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $user->setRegisteredAt(new \DateTime(
+            $user->setRegisteredAt(new DateTime(
                 'now',
                 new \DateTimeZone("Europe/Berlin")
             ));
+
+            $user->setRoles([
+                "ROLE_USER"
+            ]);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('index');
+            return $this->json([
+                "registration" => true
+            ]);
+        } else {
+            return $this->json([
+                "registration" => false,
+                "errors" => (string) $form->getErrors(true)
+            ], 500);
         }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
     }
 }
