@@ -41,6 +41,14 @@
         {{ message }}
       </li>
 
+      <li v-for="error in backendErrors" :key="error">
+        {{ error }}
+      </li>
+
+      <li v-if="success">
+        {{ success }}
+      </li>
+
       <button>Register</button>
     </form>
   </VeeValidateForm>
@@ -99,15 +107,19 @@ export default {
     };
   },
   data() {
-    return {}
+    return {
+      success: "",
+      backendErrors: []
+    }
   },
   methods: {
     /**
      * The main submit handler.
      *
      * @param values
+     * @param resetForm
      */
-    submit(values, /*{ resetForm }*/) {
+    submit(values, { resetForm }) {
       // Create a 'password' array since the password field in the backend is a type of 'RepeatedType',
       // in which the two fields are children of the password field.
       values.password = {
@@ -126,10 +138,17 @@ export default {
                 },
               })
           .then(response => {
-            console.log(response.config.data)
-      })
+            if(response.data.registration === true) {
+              this.success = "Registration completed successfully! You can now proceed to login.";
 
-      //resetForm();
+              resetForm();
+            }
+          })
+          .catch(error => {
+            if (error.response.data.registration === false) {
+              this.backendErrors.push(error.response.data.errors)
+            }
+          })
     }
   }
 }
