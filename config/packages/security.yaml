@@ -18,6 +18,8 @@ security:
             security: false
         main:
             lazy: true
+            json_login:
+                check_path: /login
             provider: app_user_provider
             custom_authenticator: App\Security\Authenticator
             logout:
