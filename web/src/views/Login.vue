@@ -80,7 +80,7 @@ export default {
     submit(values, /*{ resetForm }*/) {
       axios
           .post(process.env.VUE_APP_API_HOSTNAME + "/login", {
-                data: values,
+                form: values,
               },
               {
                 headers: {
