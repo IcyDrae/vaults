@@ -86,6 +86,7 @@ export default {
                 headers: {
                   'Content-Type': 'application/json',
                 },
+                withCredentials: true
               })
           .then(response => {
             if(response.data.login === true) {
