@@ -33,16 +33,13 @@ class Authenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-        $email = $request->request->get('email', '');
+        $body = json_decode($request->getContent(), true)["form"];
 
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->set(Security::LAST_USERNAME, $body["login_email"]);
 
         return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
-            [
-                new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
-            ]
+            new UserBadge($body["login_email"]),
+            new PasswordCredentials($body["login_password"])
         );
     }
 
@@ -52,9 +49,9 @@ class Authenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        return new RedirectResponse($this->urlGenerator->generate('index'));
-        //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        return new JsonResponse([
+            "login" => true
+        ]);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
@@ -67,7 +64,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
             "login" => false,
             "errors" => array_filter([
                 $exception->getMessage(),
-                $exception->getPrevious()->getMessage() ?? false
+                $exception->getPrevious() ? $exception->getPrevious()->getMessage() : false
             ])
         ], 401);
     }
