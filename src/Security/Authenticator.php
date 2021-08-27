@@ -3,10 +3,12 @@
 namespace App\Security;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
@@ -16,6 +18,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class Authenticator extends AbstractLoginFormAuthenticator
 {
@@ -25,9 +28,17 @@ class Authenticator extends AbstractLoginFormAuthenticator
 
     private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    private ContainerInterface $container;
+
+    private SerializerInterface $serializer;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator,
+                                ContainerInterface $container,
+                                SerializerInterface $serializer)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->container = $container;
+        $this->serializer = $serializer;
     }
 
     public function authenticate(Request $request): PassportInterface
@@ -44,13 +55,38 @@ class Authenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
+        /**
+         * @var TokenStorage $tokenStorage
+         */
+        $tokenStorage = $this->container->get('security.token_storage');
+
+        $data = [];
+
+        if (
+            ($token = $tokenStorage->getToken()) !== null
+        ) {
+            if (is_object($user = $token->getUser())) {
+                $serializedUser = $this->serializer->serialize($user,'json', [AbstractNormalizer::ATTRIBUTES =>
+                    [
+                        "id",
+                        "username",
+                        "firstName",
+                        "lastName",
+                        "userName",
+                        "email",
+                        "roles",
+                        "registeredAt"
+                    ]
+                ]);
+
+                $data = [
+                    "authenticated" => true,
+                    "user" => $serializedUser
+                ];
+            }
         }
 
-        return new JsonResponse([
-            "login" => true
-        ]);
+        return new JsonResponse($data, 200);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
