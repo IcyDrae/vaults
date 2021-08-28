@@ -12,7 +12,7 @@ class LogoutHandler implements LogoutSuccessHandlerInterface
 {
 
     /**
-     * Send a 204 status code as an API and don't redirect like in a normal flow.
+     * Sends a 204 status code as an API and don't redirect like in a normal flow.
      */
     public function onLogoutSuccess(Request $request): Response
     {
