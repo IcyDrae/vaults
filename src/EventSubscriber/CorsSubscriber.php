@@ -19,9 +19,9 @@ class CorsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.request' => 'onKernelRequest',
-            'kernel.response' => 'onKernelResponse',
-            'kernel.exception' => 'onKernelException',
+            'kernel.request' => ['onKernelRequest', 9999],
+            'kernel.response' => ['onKernelResponse', 9999],
+            'kernel.exception' => ['onKernelException', 9999],
         ];
     }
 
