@@ -41,6 +41,14 @@ class Authenticator extends AbstractLoginFormAuthenticator
         $this->serializer = $serializer;
     }
 
+    public function start(Request $request, AuthenticationException $authException = null): Response
+    {
+        return new JsonResponse([
+            "authenticated" => false,
+            "message" => $authException->getMessage()
+        ], 403);
+    }
+
     public function authenticate(Request $request): PassportInterface
     {
         $body = json_decode($request->getContent(), true)["form"];

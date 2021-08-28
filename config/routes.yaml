@@ -7,9 +7,13 @@ register:
   controller: App\Controller\RegistrationController:register
 
 login:
-  path: /login
+  path: /user/login
   controller: App\Controller\SecurityController:login
 
 logout:
-  path: /logout
+  path: /user/logout
   controller: App\Controller\SecurityController:logout
+
+profile:
+  path: /user/profile
+  controller: App\Controller\SecurityController:profile
