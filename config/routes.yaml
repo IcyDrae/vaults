@@ -14,4 +14,4 @@ logout:
 
 profile:
   path: /user/profile
-  controller: App\Controller\SecurityController:profile
+  controller: App\Controller\UserController:profile
