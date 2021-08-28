@@ -41,11 +41,19 @@ class Authenticator extends AbstractLoginFormAuthenticator
         $this->serializer = $serializer;
     }
 
+    /**
+     * Returns a custom JSON response including the error message and the requested resource.
+     *
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return Response
+     */
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
         return new JsonResponse([
             "authenticated" => false,
-            "message" => $authException->getMessage()
+            "message" => $authException->getMessage(),
+            "request_uri" => $request->getRequestUri()
         ], 403);
     }
 
@@ -61,6 +69,14 @@ class Authenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    /**
+     * Returns a custom JSON response including the serialized user.
+     *
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $firewallName
+     * @return Response|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         /**
@@ -97,6 +113,13 @@ class Authenticator extends AbstractLoginFormAuthenticator
         return new JsonResponse($data, 200);
     }
 
+    /**
+     * Returns a custom JSON response and the errors that happened.
+     *
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return Response
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         if ($request->hasSession()) {

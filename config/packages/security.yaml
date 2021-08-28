@@ -22,8 +22,7 @@ security:
             custom_authenticator: App\Security\Authenticator
             logout:
                 path: logout
-                # where to redirect after logout
-                target: index
+                success_handler: App\Security\LogoutHandler
         user:
             context: authentication
             pattern: ^/user
@@ -33,4 +32,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: ROLE_USER }
         - { path: ^/user/profile, roles: ROLE_USER }
