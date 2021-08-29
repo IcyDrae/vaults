@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $black;
+  color: $white;
+  font-size: 18px;
+
+  #app {
+    width: 100vw;
+    height: 100vh;
+
+    .dashboard {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      .navigation {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      .logins {
+        display: flex;
+        flex-grow: 5;
+      }
+
+      .login {
+        display: flex;
+        //justify-content: flex-end;
+        flex-grow: 10;
+
+        form {
+          width: 25%;
+          display: inline-block;
+
+          input, textarea {
+            width: 100%;
+            margin: 8px;
+          }
+        }
+      }
+    }
+  }
+}
