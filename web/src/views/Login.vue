@@ -77,7 +77,7 @@ export default {
      * @param values
      * @param resetForm
      */
-    submit(values, /*{ resetForm }*/) {
+    submit(values, { resetForm }) {
       axios
           .post(process.env.VUE_APP_API_HOSTNAME + "/login", {
                 form: values,
@@ -89,10 +89,15 @@ export default {
                 withCredentials: true
               })
           .then(response => {
-            if(response.data.login === true) {
+            if(response.data.authenticated === true) {
               this.success = "You are now logged in!";
 
-              //resetForm();
+              // TODO state management
+              window.user = JSON.parse(
+                  response.data.user
+              )
+
+              resetForm();
             }
           })
           .catch(error => {
