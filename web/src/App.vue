@@ -1,4 +1,7 @@
 <template>
+  <div class="head">
+    <p>somelogo</p>
+  </div>
   <div class="dashboard">
     <div class="navigation">
       <div class="folders">
@@ -10,13 +13,27 @@
       <p>Trash</p>
     </div>
     <div class="logins">
-      <p>Facebook</p>
-      <p>Instagram</p>
-      <p>Medium</p>
-      <p>Reddit</p>
-      <p>Discord</p>
-      <p>Slack</p>
-      <p>Twitter</p>
+      <div>
+        <p>Facebook</p>
+      </div>
+      <div>
+        <p>Instagram</p>
+      </div>
+      <div>
+        <p>Medium</p>
+      </div>
+      <div>
+        <p>Reddit</p>
+      </div>
+      <div>
+        <p>Discord</p>
+      </div>
+      <div>
+        <p>Slack</p>
+      </div>
+      <div>
+        <p>Twitter</p>
+      </div>
     </div>
     <div class="login">
       <form action="#">
