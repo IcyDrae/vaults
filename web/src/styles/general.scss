@@ -7,6 +7,7 @@
 body {
   background-color: $black;
   color: $white;
+  font-family: 'STIX Two Math', serif;
   font-size: 18px;
 
   #app {
@@ -28,7 +29,7 @@ body {
       flex-direction: row;
       flex-wrap: nowrap;
 
-      > div, .folders {
+      > div {
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
@@ -40,13 +41,28 @@ body {
 
         align-items: center;
 
-        .folders {
-          align-items: center;
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
           width: 100%;
         }
 
-        p {
-          margin: 15px -10px 15px 10px;
+        li {
+          text-align: center;
+          margin-top: 15px;
+
+          a {
+            display: block;
+            color: $white;
+            padding: 8px 16px;
+            text-decoration: none;
+          }
+        }
+
+        li a:hover {
+          background-color: #555;
+          color: white;
         }
       }
 

@@ -4,13 +4,28 @@
   </div>
   <div class="dashboard">
     <div class="navigation">
-      <div class="folders">
-        <p>Social Networks</p>
-        <p>Online Banking</p>
-        <p>Shopping</p>
-      </div>
-      <p>Settings</p>
-      <p>Trash</p>
+        <ul class="folders">
+          <li>
+            <a href="#">Social Networks</a>
+          </li>
+          <li>
+            <a href="#">Online Banking</a>
+          </li>
+          <li>
+            <a href="#">Shopping</a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="#">Favourites</a>
+          </li>
+          <li>
+            <a href="#">Settings</a>
+          </li>
+          <li>
+            <a href="#">Trash</a>
+          </li>
+        </ul>
     </div>
     <div class="logins">
       <div>
@@ -67,6 +82,7 @@
 </template>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap');
 @import "./styles/index.scss";
 
 </style>
