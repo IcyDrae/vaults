@@ -71,6 +71,54 @@
           </div>
           <p>Twitter</p>
         </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Reddit</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Discord</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Slack</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Twitter</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Reddit</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Discord</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Slack</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Twitter</p>
+        </div>
 
       </div>
     </div>

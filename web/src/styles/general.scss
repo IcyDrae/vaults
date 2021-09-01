@@ -75,6 +75,7 @@ body {
       }
 
       .logins {
+        overflow: scroll;
         flex-grow: 4;
 
         border: 1.5px solid $borderColor;
@@ -87,7 +88,7 @@ body {
             display: flex;
             align-items: center;
 
-            height: 75px;
+            height: 80px;
             border-bottom: 1.5px solid $borderColor;
 
             > div {
@@ -100,6 +101,10 @@ body {
 
             p {
               margin: 20px;
+            }
+
+            &:hover {
+              background-color: $hoverBackgroundColor;
             }
           }
         }
