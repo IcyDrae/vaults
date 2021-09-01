@@ -57,20 +57,17 @@ body {
         li {
           text-align: center;
 
-          height: 50px;
-          line-height: 50px;
-
           a {
             display: block;
             color: $white;
-            //padding: 16px 16px;
+            padding: 16px 16px;
             text-decoration: none;
           }
         }
 
         li a:hover {
           background-color: #232323;
-          color: #ffffff;
+          color: #e1e1e1;
           font-weight: 600;
         }
       }
