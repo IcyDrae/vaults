@@ -28,29 +28,53 @@
         </ul>
     </div>
     <div class="logins">
-      <div>
-        <p>Facebook</p>
-      </div>
-      <div>
-        <p>Instagram</p>
-      </div>
-      <div>
-        <p>Medium</p>
-      </div>
-      <div>
-        <p>Reddit</p>
-      </div>
-      <div>
-        <p>Discord</p>
-      </div>
-      <div>
-        <p>Slack</p>
-      </div>
-      <div>
-        <p>Twitter</p>
+      <div class="logins-container">
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Facebook</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Instagram</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Medium</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Reddit</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Discord</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Slack</p>
+        </div>
+        <div class="login">
+          <div>
+            <img src="@/assets/instagram.png" alt="Instagram">
+          </div>
+          <p>Twitter</p>
+        </div>
+
       </div>
     </div>
-    <div class="login">
+    <div class="account">
       <form action="#">
         <label>
           Username or E-Mail

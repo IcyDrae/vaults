@@ -7,7 +7,7 @@
 body {
   background-color: $black;
   color: $white;
-  font-family: 'STIX Two Math', serif;
+  font-family: $fontFamily;
   font-size: 18px;
 
   #app {
@@ -66,8 +66,8 @@ body {
         }
 
         li a:hover {
-          background-color: #232323;
-          color: #e1e1e1;
+          background-color: $hoverBackgroundColor;
+          color: $hoverColor;
           font-weight: 600;
         }
       }
@@ -76,9 +76,29 @@ body {
         flex-grow: 4;
 
         border: 1px solid blue;
+
+        .logins-container {
+          height: 100%;
+
+          margin-top: 15px;
+
+          .login {
+            margin: 15px 0 0 20px;
+            display: flex;
+            height: 75px;
+
+            > div {
+              margin-right: 25px;
+
+              img {
+                width: 25px;
+              }
+            }
+          }
+        }
       }
 
-      .login {
+      .account {
         border: 1px solid green;
         //justify-content: flex-end;
         flex-grow: 10;
