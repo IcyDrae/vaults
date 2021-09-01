@@ -19,6 +19,11 @@ body {
       border: 1px solid white;
       width: 100%;
       height: 50px;
+
+      img {
+        width: 35px;
+        margin: 5px 5px 5px 50px;
+      }
     }
 
     .dashboard {
@@ -36,33 +41,37 @@ body {
       }
 
       .navigation {
-        flex-grow: 2;
+        flex-grow: 3;
+        flex-basis: 0;
         border: 1px solid red;
 
         align-items: center;
 
         ul {
           list-style-type: none;
-          margin: 0;
+          margin-top: 15px;
           padding: 0;
           width: 100%;
         }
 
         li {
           text-align: center;
-          margin-top: 15px;
+
+          height: 50px;
+          line-height: 50px;
 
           a {
             display: block;
             color: $white;
-            padding: 8px 16px;
+            //padding: 16px 16px;
             text-decoration: none;
           }
         }
 
         li a:hover {
-          background-color: #555;
-          color: white;
+          background-color: #232323;
+          color: #ffffff;
+          font-weight: 600;
         }
       }
 
