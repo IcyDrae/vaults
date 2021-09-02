@@ -16,8 +16,7 @@ body {
     overflow: auto;
 
     .head {
-      border: 1.5px solid $borderColor;
-      border-bottom: none;
+      border-bottom: 1.5px solid $borderColor;
       width: 100%;
       height: 50px;
 
@@ -44,8 +43,7 @@ body {
       .navigation {
         flex-grow: 3;
         flex-basis: 0;
-        border: 1.5px solid $borderColor;
-        border-right: none;
+        border-right: 1.5px solid $borderColor;
 
         align-items: center;
 
@@ -78,11 +76,22 @@ body {
         overflow: scroll;
         flex-grow: 4;
 
-        border: 1.5px solid $borderColor;
-        border-right: none;
+        /**
+        Hide scrollbar styles.
+         */
+        // Firefox
+        scrollbar-width: none;
+        // IE 10+
+        -ms-overflow-style: none;
+        &::-webkit-scrollbar {
+          width: 0;
+          // Chrome/Safari/Webkit
+          background: transparent;
+        }
+
+        border-right: 1.5px solid $borderColor;
 
         .logins-container {
-          height: 100%;
 
           .login {
             display: flex;
@@ -111,7 +120,6 @@ body {
       }
 
       .account {
-        border: 1.5px solid $borderColor;
         //justify-content: flex-end;
         flex-grow: 10;
         flex-basis: 0;
