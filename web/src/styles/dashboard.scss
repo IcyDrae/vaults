@@ -45,7 +45,8 @@
   }
 
   .logins {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     flex-grow: 4;
 
     /**
