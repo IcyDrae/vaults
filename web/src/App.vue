@@ -125,19 +125,19 @@
     <div class="account">
       <form action="#">
         <label>
-          Username or E-Mail
+          <span>Username or E-Mail</span>
           <input type="text">
         </label>
         <label>
-          Password
+          <span>Password</span>
           <input type="text">
         </label>
         <label>
-          Website
+          <span>Website</span>
           <input type="text">
         </label>
         <label>
-          Notes
+          <span>Notes</span>
           <textarea cols="30" rows="10"></textarea>
         </label>
       </form>

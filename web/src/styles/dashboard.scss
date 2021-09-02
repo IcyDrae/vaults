@@ -93,17 +93,43 @@
   }
 
   .account {
-    //justify-content: flex-end;
     flex-grow: 10;
     flex-basis: 0;
+    display: block;
+    text-align: center;
+    padding-top: 50px;
 
     form {
-      width: 25%;
       display: inline-block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      width: 85%;
 
-      input, textarea {
-        width: 100%;
-        margin: 8px;
+      label {
+        display: block;
+        margin: 50px 0;
+
+        span, input, textarea {
+          color: $accountWhite;
+        }
+
+        input, textarea {
+          display: block;
+          margin: 5px 0;
+          padding: 4px;
+          width: 100%;
+
+          border: 0;
+          outline: 0;
+          background: $black;
+          border-bottom: 1px solid $white;
+        }
+
+        input, textarea {
+          font-size: 18px;
+          font-family: $fontFamily;
+        }
       }
     }
   }
