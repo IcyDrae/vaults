@@ -133,6 +133,30 @@
           <input type="text">
         </label>
         <label>
+          <span>Password</span>
+          <input type="text">
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="text">
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="text">
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="text">
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="text">
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="text">
+        </label>
+        <label>
           <span>Website</span>
           <input type="text">
         </label>

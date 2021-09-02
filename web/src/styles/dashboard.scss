@@ -45,23 +45,9 @@
   }
 
   .logins {
-    overflow-y: scroll;
-    overflow-x: hidden;
+    @include hide-scrollbar;
+
     flex-grow: 4;
-
-    /**
-    Hide scrollbar styles.
-     */
-    // Firefox
-    scrollbar-width: none;
-    // IE 10+
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      width: 0;
-      // Chrome/Safari/Webkit
-      background: transparent;
-    }
-
     border-right: 1.5px solid $borderColor;
 
     .logins-container {
@@ -93,6 +79,8 @@
   }
 
   .account {
+    @include hide-scrollbar;
+
     flex-grow: 10;
     flex-basis: 0;
     display: block;

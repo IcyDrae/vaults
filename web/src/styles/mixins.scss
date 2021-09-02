@@ -1,0 +1,19 @@
+/**
+Hide scrollbar styles.
+ */
+@mixin hide-scrollbar {
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  // Firefox
+  scrollbar-width: none;
+
+  // IE 10+
+  -ms-overflow-style: none;
+
+  // Chrome/Safari/Webkit
+  &::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+}
