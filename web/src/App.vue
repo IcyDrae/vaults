@@ -177,6 +177,37 @@
   <router-view/>-->
 </template>
 
+<script>
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
+
+export default {
+  name: 'App',
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+    ...mapGetters([
+        "getSomeGlobalStateProperty"
+    ])
+  },
+  mounted() {
+    this.setSomeGlobalStateProperty("global mutated")
+    console.log(
+        this.getSomeGlobalStateProperty
+    )
+  },
+  methods: {
+    ...mapActions([
+        "setSomeGlobalStateProperty",
+    ])
+  }
+}
+
+</script>
+
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap');
 @import "./styles/index.scss";
