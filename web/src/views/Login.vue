@@ -34,6 +34,9 @@
 import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
 import axios from 'axios';
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Login",
@@ -41,6 +44,17 @@ export default {
     // Rename the components from VeeValidate so there may be no conflicts with native HTML elements.
     VeeValidateForm: VeeValidate.Form,
     VeeValidateField: VeeValidate.Field,
+  },
+  data() {
+    return {
+      success: "",
+      backendErrors: []
+    }
+  },
+  computed: {
+    ...mapGetters([
+        "getUser"
+    ])
   },
   setup() {
     /**
@@ -64,13 +78,10 @@ export default {
       schema
     };
   },
-  data() {
-    return {
-      success: "",
-      backendErrors: []
-    }
-  },
   methods: {
+    ...mapActions([
+       "setUser"
+    ]),
     /**
      * The main submit handler.
      *
@@ -92,10 +103,22 @@ export default {
             if(response.data.authenticated === true) {
               this.success = "You are now logged in!";
 
-              // TODO state management
-              window.user = JSON.parse(
-                  response.data.user
-              )
+              // Set the global user object.
+              let user = JSON.parse(response.data.user);
+
+              if (
+                  !(Object.keys(this.getUser).length)
+              ) {
+                this.setUser({
+                  "id": user.id,
+                  "firstName": user.firstName,
+                  "lastName": user.lastName,
+                  "email": user.email,
+                  "username": user.username,
+                  "roles": user.roles,
+                  "registeredAt": user.registeredAt
+                })
+              }
 
               resetForm();
             }

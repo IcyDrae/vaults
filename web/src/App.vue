@@ -167,14 +167,14 @@
       </form>
     </div>
   </div>
-<!--  <div id="nav">
+  <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/registration">Registration</router-link> |
     <router-link to="/login">Login</router-link> |
     <router-link to="/profile">Profile</router-link> |
     <router-link to="/logout">Logout</router-link>
   </div>
-  <router-view/>-->
+  <router-view/>
 </template>
 
 <script>
@@ -191,18 +191,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-        "getSomeGlobalStateProperty"
     ])
   },
   mounted() {
-    this.setSomeGlobalStateProperty("TEST")
-    console.log(
-        this.getSomeGlobalStateProperty
-    )
   },
   methods: {
     ...mapActions([
-        "setSomeGlobalStateProperty",
     ])
   }
 }

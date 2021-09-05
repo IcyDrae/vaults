@@ -4,21 +4,21 @@
 export default {
     namespaced: true,
     state: {
-        someGlobalStateProperty: String
+        user: Object
     },
     mutations: {
-        setSomeGlobalStateProperty(state, someGlobalStateProperty) {
-            state.someGlobalStateProperty = someGlobalStateProperty;
-        },
+        setUser(state, payload) {
+            state.user = payload;
+        }
     },
     actions: {
-        setSomeGlobalStateProperty(context, someGlobalStateProperty) {
-            context.commit("setSomeGlobalStateProperty", someGlobalStateProperty)
-        },
+        setUser(context, payload) {
+            context.commit("setUser", payload)
+        }
     },
     getters: {
-        getSomeGlobalStateProperty: (state) => {
-            return state.someGlobalStateProperty;
+        getUser(state) {
+            return state.user;
         }
     },
 }
