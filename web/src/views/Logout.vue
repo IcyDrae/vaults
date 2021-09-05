@@ -5,6 +5,9 @@
 <script>
 
 import axios from "axios";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Logout",
@@ -12,7 +15,15 @@ export default {
     return {
     }
   },
+  computed: {
+    ...mapGetters([
+      "getUser"
+    ])
+  },
   methods: {
+    ...mapActions([
+      "setUser"
+    ]),
     logout() {
       axios.get(process.env.VUE_APP_API_HOSTNAME + "/logout", {
         headers: {
@@ -22,9 +33,12 @@ export default {
         withCredentials: true
       })
       .then(response => {
-        console.log(
-            response
-        )
+        if (response.status === 204) {
+          // Delete the global user object from the state management storage.
+          if (!this.isObjectEmpty(this.getUser)) {
+            this.setUser({})
+          }
+        }
       })
       .catch(error => {
         console.log(

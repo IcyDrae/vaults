@@ -1,5 +1,9 @@
 <template>
-  <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="login-form">
+  <VeeValidateForm v-if="this.isObjectEmpty(this.getUser)"
+                   :validation-schema="schema"
+                   v-slot="{ errors, handleSubmit }"
+                   as="div"
+                   class="login-form">
     <form @submit="handleSubmit($event, submit)">
       <label>
         E-Mail
@@ -106,9 +110,7 @@ export default {
               // Set the global user object.
               let user = JSON.parse(response.data.user);
 
-              if (
-                  !(Object.keys(this.getUser).length)
-              ) {
+              if (this.isObjectEmpty(this.getUser)) {
                 this.setUser({
                   "id": user.id,
                   "firstName": user.firstName,
