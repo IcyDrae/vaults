@@ -178,8 +178,9 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import { mapGetters } from "vuex";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: 'App',
@@ -194,7 +195,7 @@ export default {
     ])
   },
   mounted() {
-    this.setSomeGlobalStateProperty("global mutated")
+    this.setSomeGlobalStateProperty("TEST")
     console.log(
         this.getSomeGlobalStateProperty
     )
