@@ -1,6 +1,5 @@
 <template>
-  <VeeValidateForm v-if="this.isObjectEmpty(this.getUser)"
-                   :validation-schema="schema"
+  <VeeValidateForm :validation-schema="schema"
                    v-slot="{ errors, handleSubmit }"
                    as="div"
                    class="login-form">
