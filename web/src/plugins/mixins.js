@@ -6,6 +6,12 @@ export default {
         this.isObjectEmpty;
     },
     methods: {
+        /**
+         * Checks if a given Object is empty.
+         *
+         * @param object
+         * @returns {boolean}
+         */
         isObjectEmpty(object) {
             return !(Object.keys(object).length);
         },
