@@ -11,9 +11,13 @@
       text-align: left;
       width: 35%;
 
-      label {
+      h1 {
+        margin-bottom: 50px;
+      }
+
+      label:not([for="terms_and_conditions"]) {
         display: block;
-        margin: 50px 0;
+        margin: 10px 0;
 
         span, input, textarea {
           color: $accountWhite;
@@ -34,6 +38,30 @@
         input, textarea {
           font-size: 18px;
           font-family: $fontFamily;
+        }
+      }
+
+      .checkbox {
+        margin: 20px 0;
+
+        [type="checkbox"] {
+          width: 14px;
+          height: 14px;
+          margin-right: 20px;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          -o-appearance: none;
+          appearance: none;
+          outline: 1px solid gray;
+          box-shadow: none;
+          font-size: 0.8em;
+          text-align: center;
+          line-height: 1em;
+          background: $black;
+        }
+
+        input[type="checkbox"]:checked {
+          background-color: $white;
         }
       }
 
@@ -67,7 +95,7 @@
       }
 
       .backend-success {
-        margin: 50px 0;
+        margin-top: 50px;
         color: green;
       }
     }

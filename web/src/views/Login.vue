@@ -4,6 +4,7 @@
                    as="div"
                    class="login-form form">
     <form @submit="handleSubmit($event, submit)">
+      <h1>Login</h1>
       <label>
         <span>E-Mail</span>
         <VeeValidateField name="login_email" type="email" />

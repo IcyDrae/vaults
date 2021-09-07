@@ -1,55 +1,56 @@
 <template>
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="registration-form form">
     <form @submit="handleSubmit($event, submit)">
+      <h1>Register an account!</h1>
       <label>
-        First Name
+        <span>First Name</span>
         <VeeValidateField name="first_name" type="text" />
+        <p class="form-error">{{ errors.first_name }}</p>
       </label>
 
       <label>
-        Last Name
+        <span>Last Name</span>
         <VeeValidateField name="last_name" type="text" />
+        <p class="form-error">{{ errors.last_name }}</p>
       </label>
 
       <label>
-        Username
+        <span>Username</span>
         <VeeValidateField name="username" type="text" />
+        <p class="form-error">{{ errors.username }}</p>
       </label>
 
       <label>
-        E-Mail
+        <span>E-Mail</span>
         <VeeValidateField name="email" type="email" />
+        <p class="form-error">{{ errors.email }}</p>
       </label>
 
       <label>
-        Password
+        <span>Password</span>
         <VeeValidateField name="password" type="password" />
+        <p class="form-error">{{ errors.password }}</p>
       </label>
 
       <label>
-        Password confirmation
+        <span>Password confirmation</span>
         <VeeValidateField name="password_confirmation" type="password" />
+        <p class="form-error">{{ errors.password_confirmation }}</p>
       </label>
 
-      <label>
-        Terms & Conditions
-        <VeeValidateField name="terms_and_conditions" type="checkbox" :value="true" checked-value="true" unchecked-value="false" />
-      </label>
+      <div class="checkbox">
+        <VeeValidateField name="terms_and_conditions" id="terms_and_conditions" type="checkbox" :value="true" checked-value="true" unchecked-value="false" />
+        <label for="terms_and_conditions">Terms & Conditions</label>
+        <p class="form-error">{{ errors.terms_and_conditions }}</p>
+      </div>
 
-      <br>
-      <li v-for="(message, field) in errors" :key="field">
-        {{ message }}
-      </li>
+      <button>Register</button>
 
-      <li v-for="error in backendErrors" :key="error">
+      <li class="backend-errors" v-for="error in backendErrors" :key="error">
         {{ error }}
       </li>
 
-      <li v-if="success">
-        {{ success }}
-      </li>
-
-      <button>Register</button>
+      <p class="backend-success">{{ success }}</p>
     </form>
   </VeeValidateForm>
 </template>
