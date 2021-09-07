@@ -118,6 +118,8 @@ export default {
               }
 
               resetForm();
+
+              this.$router.push("/");
             }
           })
           .catch(error => {

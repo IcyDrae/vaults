@@ -143,6 +143,8 @@ export default {
               this.success = "Registration completed successfully! You can now proceed to login.";
 
               resetForm();
+
+              this.$router.push("/login");
             }
           })
           .catch(error => {
