@@ -8,8 +8,8 @@ These links are rendered based on the user state.
     <router-link to="/logout">Logout</router-link>
   </div>
   <div :class="containerClass" v-if="this.isObjectEmpty(this.getUser)">
-    <router-link to="/registration">Registration</router-link>
     <router-link to="/login">Login</router-link>
+    <router-link to="/registration">Registration</router-link>
   </div>
 </template>
 
