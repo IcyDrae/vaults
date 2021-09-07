@@ -2,32 +2,27 @@
   <VeeValidateForm :validation-schema="schema"
                    v-slot="{ errors, handleSubmit }"
                    as="div"
-                   class="login-form">
+                   class="login-form form">
     <form @submit="handleSubmit($event, submit)">
       <label>
-        E-Mail
+        <span>E-Mail</span>
         <VeeValidateField name="login_email" type="email" />
+        <p class="form-error">{{ errors.login_email }}</p>
       </label>
 
       <label>
-        Password
+        <span>Password</span>
         <VeeValidateField name="login_password" type="password" />
+        <p class="form-error">{{ errors.login_password }}</p>
       </label>
 
-      <br>
-      <li v-for="(message, field) in errors" :key="field">
-        {{ message }}
-      </li>
+      <button>Login</button>
 
-      <li v-for="error in backendErrors" :key="error">
+      <li class="backend-errors" v-for="error in backendErrors" :key="error">
         {{ error }}
       </li>
 
-      <li v-if="success">
-        {{ success }}
-      </li>
-
-      <button>Login</button>
+      <p class="backend-success">{{ success }}</p>
     </form>
   </VeeValidateForm>
 </template>

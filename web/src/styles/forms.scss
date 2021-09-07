@@ -1,0 +1,75 @@
+#app {
+  .form {
+    display: block;
+    text-align: center;
+    padding: 50px 0;
+
+    form {
+      display: inline-block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      width: 35%;
+
+      label {
+        display: block;
+        margin: 50px 0;
+
+        span, input, textarea {
+          color: $accountWhite;
+        }
+
+        input, textarea {
+          display: block;
+          margin: 5px 0;
+          padding: 4px;
+          width: 100%;
+
+          border: 0;
+          outline: 0;
+          background: $black;
+          border-bottom: 1px solid $borderColor;
+        }
+
+        input, textarea {
+          font-size: 18px;
+          font-family: $fontFamily;
+        }
+      }
+
+      button {
+        background-color: $black;
+        color: $white;
+        border: 1px solid $borderColor;
+        width: 100px;
+        padding: 15px 0;
+        font-size: 16px;
+        font-family: $fontFamily;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:hover {
+          background-color: $white;
+          color: $black;
+          cursor: pointer;
+        }
+      }
+
+      .form-error {
+        color: $errorColor;
+        height: 30px;
+        padding-top: 5px;
+      }
+
+      .backend-errors {
+        margin: 50px 0;
+        color: $errorColor;
+        list-style: none;
+      }
+
+      .backend-success {
+        margin: 50px 0;
+        color: green;
+      }
+    }
+  }
+}
