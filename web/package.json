@@ -8,8 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "aes-js": "^3.1.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "pbkdf2": "^3.1.2",
     "sass": "^1.38.0",
     "sass-loader": "^10.2.0",
     "vee-validate": "^4.4.9",
