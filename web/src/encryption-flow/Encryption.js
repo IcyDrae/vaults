@@ -60,7 +60,7 @@ export default class Encryption {
      */
     decrypt(data, encryptionKey) {
         let aesInstance = new aes.ModeOfOperation.cbc(encryptionKey);
-        let dataInBytes = aes.utils.hex.toBytes(encryptedData);
+        let dataInBytes = aes.utils.hex.toBytes(data);
         let decryptedBytes = aesInstance.decrypt(dataInBytes);
 
         return aes.utils.utf8.fromBytes(aes.padding.pkcs7.strip(decryptedBytes));
