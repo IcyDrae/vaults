@@ -8,24 +8,16 @@ import * as aes from "aes-js";
 export default class Encryption {
 
     /**
-     * Set the master password needed for both hashes.
-     *
-     * @param masterPassword
-     */
-    constructor(masterPassword) {
-        this.masterPassword = masterPassword;
-    }
-
-    /**
      * Asynchronously hashes the given data using PBKDF2 as a method.
      *
-     * @param salt
-     * @param iterations
+     * @param password The password to be hashed.
+     * @param salt A unique salt for each user, this will be the E-Mail.
+     * @param iterations How many times the hash takes places.
      * @returns {Promise<unknown>}
      */
-    hash(salt, iterations) {
+    hash(password, salt, iterations) {
         return new Promise((resolve, reject) => {
-            pbkdf2.pbkdf2(this.masterPassword, salt, iterations, 32, "sha256", (error, encryptionKey) => {
+            pbkdf2.pbkdf2(password, salt, iterations, 32, "sha256", (error, encryptionKey) => {
                 if (error) {
                     return reject(error);
                 }
