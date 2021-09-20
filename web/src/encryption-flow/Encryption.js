@@ -54,11 +54,11 @@ export default class Encryption {
     /**
      * Given encrypted data, decrypts it and converts it back to a readable UTF-8 string.
      *
-     * @param encryptedData
+     * @param data
      * @param encryptionKey
      * @returns {string}
      */
-    decrypt(encryptedData, encryptionKey) {
+    decrypt(data, encryptionKey) {
         let aesInstance = new aes.ModeOfOperation.cbc(encryptionKey);
         let dataInBytes = aes.utils.hex.toBytes(encryptedData);
         let decryptedBytes = aesInstance.decrypt(dataInBytes);
