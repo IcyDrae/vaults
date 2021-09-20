@@ -27,15 +27,15 @@
       </label>
 
       <label>
-        <span>Password</span>
-        <VeeValidateField name="password" type="password" />
-        <p class="form-error">{{ errors.password }}</p>
+        <span>Master Password</span>
+        <VeeValidateField name="master_password" type="password" />
+        <p class="form-error">{{ errors.master_password }}</p>
       </label>
 
       <label>
-        <span>Password confirmation</span>
-        <VeeValidateField name="password_confirmation" type="password" />
-        <p class="form-error">{{ errors.password_confirmation }}</p>
+        <span>Master Password confirmation</span>
+        <VeeValidateField name="master_password_confirmation" type="password" />
+        <p class="form-error">{{ errors.master_password_confirmation }}</p>
       </label>
 
       <div class="checkbox">
@@ -59,7 +59,11 @@
 
 import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
-import axios from 'axios';
+//import axios from 'axios';
+import Encryption from "../encryption-flow/Encryption";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Registration",
@@ -86,17 +90,17 @@ export default {
               .required()
               .email()
               .label("E-Mail"),
-      password: yup.string()
+      master_password: yup.string()
                 .required()
                 .matches(
                     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{16,}$/,
-                    "The password must Contain at least 16 characters, one uppercase, one lowercase, one number and one special case character."
+                    "The master password must Contain at least 16 characters, one uppercase, one lowercase, one number and one special case character."
                 )
-                .label("Password"),
-      password_confirmation: yup.string()
+                .label("Master Password"),
+      master_password_confirmation: yup.string()
                               .required()
-                              .oneOf([yup.ref('password'), null], 'Passwords must match')
-                              .label("Password confirmation"),
+                              .oneOf([yup.ref('master_password'), null], 'Passwords must match')
+                              .label("Master Password confirmation"),
       terms_and_conditions: yup.boolean()
           .required()
           .oneOf([true], "You must accept the terms and conditions")
@@ -110,26 +114,40 @@ export default {
   data() {
     return {
       success: "",
-      backendErrors: []
+      backendErrors: [],
+      encryption: new Encryption()
     }
   },
+  computed: {
+    ...mapGetters([
+        "getEncryptionKey",
+        "getAuthenticationHash"
+    ])
+  },
   methods: {
+    ...mapActions([
+        "setEncryptionKey",
+        "setAuthenticationHash"
+    ]),
     /**
      * The main submit handler.
      *
      * @param values
      * @param resetForm
      */
-    submit(values, { resetForm }) {
-      // Create a 'password' array since the password field in the backend is a type of 'RepeatedType',
-      // in which the two fields are children of the password field.
-      values.password = {
-          "password": values.password,
-          "password_confirmation": values.password_confirmation
-      };
-      delete values.password_confirmation;
+    async submit(values/*, { resetForm }*/) {
+      // Hash the master password into an encryption key and an authentication hash, and then persist them to the global storage.
+      let encryptionKey = await this.encryption.hash(values.master_password, values.username, 100100);
+      this.setEncryptionKey(encryptionKey);
 
-      axios
+      let authenticationHash = await this.encryption.hash(values.master_password, this.getEncryptionKey, 1);
+      this.setAuthenticationHash(authenticationHash);
+
+      values.master_password = this.getAuthenticationHash.toString("hex");
+
+      delete values.master_password_confirmation;
+
+      /*axios
           .post(process.env.VUE_APP_API_HOSTNAME + "/register", {
             form: values,
           },
@@ -142,16 +160,16 @@ export default {
             if(response.data.registration === true) {
               this.success = "Registration completed successfully! You can now proceed to login.";
 
-              resetForm();
+              //resetForm();
 
-              this.$router.push("/login");
+              //this.$router.push("/login");
             }
           })
           .catch(error => {
             if (error.response.data.registration === false) {
               this.backendErrors.push(error.response.data.errors)
             }
-          })
+          })*/
     }
   }
 }
