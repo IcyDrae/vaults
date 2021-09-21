@@ -4,7 +4,7 @@
     <HeadLinks></HeadLinks>
   </div>
   <router-view/>
-  <div class="dashboard">
+<!--  <div class="dashboard">
     <div class="navigation">
         <ul class="folders">
           <li>
@@ -168,12 +168,13 @@
         </label>
       </form>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
 
 import HeadLinks from "./components/HeadLinks";
+//import Encryption from "./encryption-flow/Encryption";
 
 export default {
   name: 'App',
@@ -182,7 +183,6 @@ export default {
   },
   data() {
     return {
-
     }
   },
   mounted() {

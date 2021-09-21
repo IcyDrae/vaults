@@ -49,8 +49,7 @@ class RegistrationFormType extends AbstractType
                         "message" => "You must agree to our terms.",
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

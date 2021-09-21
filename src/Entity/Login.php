@@ -58,6 +58,12 @@ class Login
      */
     private $modifiedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Vault::class, inversedBy="logins")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Vault $vault_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +161,18 @@ class Login
     public function setModifiedAt(\DateTimeInterface $modifiedAt): self
     {
         $this->modifiedAt = $modifiedAt;
+
+        return $this;
+    }
+
+    public function getVaultId(): ?Vault
+    {
+        return $this->vault_id;
+    }
+
+    public function setVaultId(?Vault $vault_id): self
+    {
+        $this->vault_id = $vault_id;
 
         return $this;
     }

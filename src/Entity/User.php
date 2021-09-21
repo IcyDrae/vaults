@@ -61,14 +61,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $registeredAt;
 
     /**
+     * @ORM\OneToMany(targetEntity=Vault::class, mappedBy="user_id")
+     */
+    private $vaults;
+
+    /**
      * @ORM\OneToMany(targetEntity=Login::class, mappedBy="userId")
      */
     private $logins;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="user_id")
+     */
+    private $notes;
+
     #[Pure]
     public function __construct()
     {
+        $this->vaults = new ArrayCollection();
         $this->logins = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +191,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return Collection|Vault[]
+     */
+    public function getVaults(): Collection
+    {
+        return $this->vaults;
+    }
+
+    public function addVault(Vault $vault): self
+    {
+        if (!$this->vaults->contains($vault)) {
+            $this->vaults[] = $vault;
+            $vault->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVault(Vault $vault): self
+    {
+        if ($this->vaults->removeElement($vault)) {
+            // set the owning side to null (unless already changed)
+            if ($vault->getUserId() === $this) {
+                $vault->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Login[]
      */
     public function getLogins(): Collection
@@ -226,5 +268,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getUserId() === $this) {
+                $note->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }
