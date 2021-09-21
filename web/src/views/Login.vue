@@ -3,7 +3,7 @@
                    v-slot="{ errors, handleSubmit }"
                    as="div"
                    class="login-form form">
-    <form @submit="handleSubmit($event, submit)">
+    <form @submit="handleSubmit($event, handleForm)">
       <h1>Login</h1>
       <label>
         <span>E-Mail</span>
@@ -12,8 +12,8 @@
       </label>
 
       <label>
-        <span>Password</span>
-        <VeeValidateField name="login_password" type="password" />
+        <span>Master Password</span>
+        <VeeValidateField name="login_master_password" type="password" />
         <p class="form-error">{{ errors.login_password }}</p>
       </label>
 
@@ -34,6 +34,7 @@ import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
 import axios from 'axios';
 import { createNamespacedHelpers } from 'vuex';
+import Encryption from "../encryption-flow/Encryption";
 
 const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
@@ -47,12 +48,14 @@ export default {
   data() {
     return {
       success: "",
-      backendErrors: []
+      backendErrors: [],
+      encryption: new Encryption()
     }
   },
   computed: {
     ...mapGetters([
-        "getUser"
+        "getUser",
+        "getEncryptionKey",
     ])
   },
   setup() {
@@ -64,13 +67,13 @@ export default {
           .required()
           .email()
           .label("E-Mail"),
-      login_password: yup.string()
+      login_master_password: yup.string()
           .required()
           .matches(
               /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{16,}$/,
               "The password must Contain at least 16 characters, one uppercase, one lowercase, one number and one special case character."
           )
-          .label("Password"),
+          .label("Master Password"),
     });
 
     return {
@@ -79,7 +82,8 @@ export default {
   },
   methods: {
     ...mapActions([
-       "setUser"
+        "setUser",
+        "setEncryptionKey",
     ]),
     /**
      * The main submit handler.
@@ -87,7 +91,31 @@ export default {
      * @param values
      * @param resetForm
      */
-    submit(values, { resetForm }) {
+    async handleForm(values, { resetForm }) {
+      let hashes = await this.deriveFromMasterPassword(values)
+
+      this.setEncryptionKey(hashes.encryptionKey);
+
+      values.login_master_password = hashes.authenticationHash.toString("hex");
+
+      this.submitForm(values, resetForm);
+    },
+    /**
+     * Hash the master password into an encryption key and an authentication hash.
+     *
+     * @param values
+     * @returns Object
+     */
+    async deriveFromMasterPassword(values) {
+      let encryptionKey = await this.encryption.hash(values.login_master_password, values.login_email, 100100);
+      let authenticationHash = await this.encryption.hash(values.login_master_password, encryptionKey, 1);
+
+      return {
+        encryptionKey,
+        authenticationHash
+      };
+    },
+    submitForm(values, resetForm) {
       axios
           .post(process.env.VUE_APP_API_HOSTNAME + "/login", {
                 form: values,
@@ -102,20 +130,7 @@ export default {
             if(response.data.authenticated === true) {
               this.success = "You are now logged in!";
 
-              // Set the global user object.
-              let user = JSON.parse(response.data.user);
-
-              if (this.isObjectEmpty(this.getUser)) {
-                this.setUser({
-                  "id": user.id,
-                  "firstName": user.firstName,
-                  "lastName": user.lastName,
-                  "email": user.email,
-                  "username": user.username,
-                  "roles": user.roles,
-                  "registeredAt": user.registeredAt
-                })
-              }
+              this.persistUser(response.data.user);
 
               resetForm();
 
@@ -127,6 +142,26 @@ export default {
               this.backendErrors.push(error.response.data.errors)
             }
           })
+    },
+    /**
+     * Set the global user object.
+     *
+     * @param data
+     */
+    persistUser(data) {
+      let user = JSON.parse(data);
+
+      if (this.isObjectEmpty(this.getUser)) {
+        this.setUser({
+          "id": user.id,
+          "firstName": user.firstName,
+          "lastName": user.lastName,
+          "email": user.email,
+          "username": user.username,
+          "roles": user.roles,
+          "registeredAt": user.registeredAt
+        })
+      }
     }
   }
 }
