@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
             );
 
             $user->setRegisteredAt(new DateTime(
-                'now',
+                "now",
                 new \DateTimeZone("Europe/Berlin")
             ));
 

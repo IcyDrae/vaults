@@ -82,7 +82,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
         /**
          * @var TokenStorage $tokenStorage
          */
-        $tokenStorage = $this->container->get('security.token_storage');
+        $tokenStorage = $this->container->get("security.token_storage");
 
         $data = [];
 
@@ -90,7 +90,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
             ($token = $tokenStorage->getToken()) !== null
         ) {
             if (is_object($user = $token->getUser())) {
-                $serializedUser = $this->serializer->serialize($user,'json', [AbstractNormalizer::ATTRIBUTES =>
+                $serializedUser = $this->serializer->serialize($user,"json", [AbstractNormalizer::ATTRIBUTES =>
                     [
                         "id",
                         "username",
