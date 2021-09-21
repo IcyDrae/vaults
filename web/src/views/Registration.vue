@@ -151,7 +151,7 @@ export default {
      * Hash the master password into an encryption key and an authentication hash.
      *
      * @param password
-     * @returns {Promise<void>}
+     * @returns Object
      */
     async deriveFromMasterPassword(password) {
       let encryptionKey = await this.encryption.hash(password, password, 100100);
