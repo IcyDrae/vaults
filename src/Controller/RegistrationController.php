@@ -54,7 +54,7 @@ class RegistrationController extends AbstractController
             return $this->json([
                 "registration" => false,
                 "errors" => (string) $form->getErrors(true)
-            ], 500);
+            ], 400);
         }
     }
 }
