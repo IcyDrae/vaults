@@ -49,9 +49,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->json([
-                "registration" => true
-            ]);
+            return new Response("", 201);
         } else {
             return $this->json([
                 "registration" => false,

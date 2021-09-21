@@ -212,7 +212,7 @@ export default {
                 },
               })
           .then(response => {
-            if(response.data.registration === true) {
+            if(response.status === 201) {
               this.success = "Registration completed successfully! You can now proceed to login.";
 
               resetForm();
