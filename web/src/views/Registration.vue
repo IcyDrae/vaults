@@ -1,6 +1,6 @@
 <template>
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="registration-form form">
-    <form @submit="handleSubmit($event, submit)">
+    <form @submit="handleSubmit($event, handleForm)">
       <h1>Register an account!</h1>
       <label>
         <span>First Name</span>
@@ -59,7 +59,7 @@
 
 import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
-//import axios from 'axios';
+import axios from 'axios';
 import Encryption from "../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 
@@ -130,46 +130,99 @@ export default {
         "setAuthenticationHash"
     ]),
     /**
-     * The main submit handler.
+     * The main form handler.
      *
      * @param values
      * @param resetForm
      */
-    async submit(values/*, { resetForm }*/) {
-      // Hash the master password into an encryption key and an authentication hash, and then persist them to the global storage.
-      let encryptionKey = await this.encryption.hash(values.master_password, values.username, 100100);
-      this.setEncryptionKey(encryptionKey);
+    async handleForm(values, { resetForm }) {
+      let derived = await this.deriveFromMasterPassword(values.master_password);
 
-      let authenticationHash = await this.encryption.hash(values.master_password, this.getEncryptionKey, 1);
+      this.persistDerivedValues(derived.encryptionKey, derived.authenticationHash);
+
+      this.resetMasterPassword(values);
+
+      this.createMasterPasswordArray(values);
+
+      this.submitForm(values, resetForm);
+    },
+    /**
+     * Hash the master password into an encryption key and an authentication hash.
+     *
+     * @param password
+     */
+    async deriveFromMasterPassword(password) {
+      let encryptionKey = await this.encryption.hash(password, password, 100100);
+      let authenticationHash = await this.encryption.hash(password, encryptionKey, 1);
+
+      return {
+        encryptionKey,
+        authenticationHash
+      };
+    },
+    /**
+     * Persist the derived values to the global storage.
+     *
+     * @param encryptionKey
+     * @param authenticationHash
+     */
+    persistDerivedValues(encryptionKey, authenticationHash) {
       this.setAuthenticationHash(authenticationHash);
-
+      this.setEncryptionKey(encryptionKey);
+    },
+    /**
+     * Sets the password & password confirmation to the authentication hash.
+     *
+     * @param values
+     */
+    resetMasterPassword(values) {
       values.master_password = this.getAuthenticationHash.toString("hex");
+      values.master_password_confirmation = this.getAuthenticationHash.toString("hex")
+    },
+    /**
+     * Create a "master_password" array since the password field in the backend is a type of "RepeatedType",
+     * in which the two fields are children of the password field. In the end deleting the remaining "master_password_confirmation".
+     *
+     * @param values
+     */
+    createMasterPasswordArray(values) {
+      values.master_password = {
+        "password": values.master_password,
+        "password_confirmation": values.master_password_confirmation
+      };
 
       delete values.master_password_confirmation;
-
-      /*axios
+    },
+    /**
+     * Submit the form to the API.
+     *
+     * @param values
+     * @param resetForm
+     */
+    submitForm(values, resetForm) {
+      axios
           .post(process.env.VUE_APP_API_HOSTNAME + "/register", {
             form: values,
           },
               {
                 headers: {
-                  'Content-Type': 'application/json',
+                  "Content-Type": "application/json",
                 },
               })
           .then(response => {
             if(response.data.registration === true) {
               this.success = "Registration completed successfully! You can now proceed to login.";
 
-              //resetForm();
+              resetForm();
 
-              //this.$router.push("/login");
+              this.$router.push("/login");
             }
           })
           .catch(error => {
             if (error.response.data.registration === false) {
               this.backendErrors.push(error.response.data.errors)
             }
-          })*/
+          })
     }
   }
 }
