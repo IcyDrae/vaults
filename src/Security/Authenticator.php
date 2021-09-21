@@ -54,7 +54,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
             "authenticated" => false,
             "message" => $authException->getMessage(),
             "request_uri" => $request->getRequestUri()
-        ], 403);
+        ], 401);
     }
 
     public function authenticate(Request $request): PassportInterface
