@@ -3,7 +3,11 @@ security:
     enable_authenticator_manager: true
     password_hashers:
         App\Entity\User:
-            algorithm: auto
+            algorithm: "pbkdf2"
+            hash_algorithm: "sha256"
+            encode_as_base64: true
+            iterations: 100000
+            key_length: 32
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:

@@ -24,7 +24,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'login';
+    public const LOGIN_ROUTE = "login";
 
     private UrlGeneratorInterface $urlGenerator;
 
@@ -65,7 +65,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
 
         return new Passport(
             new UserBadge($body["login_email"]),
-            new PasswordCredentials($body["login_password"])
+            new PasswordCredentials($body["login_master_password"])
         );
     }
 
