@@ -18,35 +18,35 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('first_name')
-            ->add('last_name')
-            ->add('username')
-            ->add('email')
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
+            ->add("first_name")
+            ->add("last_name")
+            ->add("username")
+            ->add("email")
+            ->add("master_password", RepeatedType::class, [
+                "type" => PasswordType::class,
                 "mapped" => false,
-                'invalid_message' => 'The password fields must match.',
-                'required' => true,
-                'first_name' => 'password',
-                'second_name' => 'password_confirmation',
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
+                "invalid_message" => "The password fields must match.",
+                "required" => true,
+                "first_name" => "password",
+                "second_name" => "password_confirmation",
+                "attr" => ["autocomplete" => "new-password"],
+                "constraints" => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        "message" => "Please enter a password",
                     ]),
                     new Length([
-                        'min' => 16,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        "min" => 16,
+                        "minMessage" => "Your password should be at least {{ limit }} characters",
                         // max length allowed by Symfony for security reasons
-                        'max' => 256,
+                        "max" => 256,
                     ]),
                 ],
             ])
-            ->add('terms_and_conditions', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
+            ->add("terms_and_conditions", CheckboxType::class, [
+                "mapped" => false,
+                "constraints" => [
                     new IsTrue([
-                        'message' => 'You must agree to our terms.',
+                        "message" => "You must agree to our terms.",
                     ]),
                 ],
             ])
