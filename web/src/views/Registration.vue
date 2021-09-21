@@ -137,7 +137,7 @@ export default {
      * @returns {Promise<void>}
      */
     async handleForm(values, { resetForm }) {
-      let derived = await this.deriveFromMasterPassword(values.master_password);
+      let derived = await this.deriveFromMasterPassword(values);
 
       this.persistDerivedValues(derived.encryptionKey, derived.authenticationHash);
 
@@ -150,12 +150,12 @@ export default {
     /**
      * Hash the master password into an encryption key and an authentication hash.
      *
-     * @param password
+     * @param values
      * @returns Object
      */
-    async deriveFromMasterPassword(password) {
-      let encryptionKey = await this.encryption.hash(password, password, 100100);
-      let authenticationHash = await this.encryption.hash(password, encryptionKey, 1);
+    async deriveFromMasterPassword(values) {
+      let encryptionKey = await this.encryption.hash(values.master_password, values.email, 100100);
+      let authenticationHash = await this.encryption.hash(values.master_password, encryptionKey, 1);
 
       return {
         encryptionKey,
