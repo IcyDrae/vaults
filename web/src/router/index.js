@@ -3,6 +3,7 @@ import Home from "../views/Home.vue"
 import Registration from "../views/Registration";
 import Login from "../views/Login";
 import Logout from "../views/Logout";
+import Vaults from "../views/Vaults";
 import Profile from "../views/Profile";
 import Dashboard from "../views/Dashboard";
 
@@ -26,6 +27,11 @@ const routes = [
     path: "/logout",
     name: "logout",
     component: Logout
+  },
+  {
+    path: "/vaults",
+    name: "vaults",
+    component: Vaults
   },
   {
     path: "/profile",
