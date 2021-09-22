@@ -3,6 +3,12 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+  align-items: center;
+
+  > div {
+    width: 300px;
+    height: 300px;
+  }
 
   .vault {
     display: flex;
@@ -11,8 +17,6 @@
     align-items: center;
 
     margin: 50px;
-    width: 300px;
-    height: 300px;
     background-color: $black;
     color: $white;
     border: 1px solid $borderColor;
@@ -30,6 +34,19 @@
 
     &:hover {
       border-color: $white;
+    }
+  }
+
+  .create-vault {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $white;
+
+    img {
+      width: 75px;
+      cursor: pointer;
     }
   }
 }

@@ -9,6 +9,9 @@
       <p>My work vault</p>
       <p>14 Items</p>
     </div>
+    <div class="create-vault">
+      <img src="@/assets/add.png" alt="An add icon.">
+    </div>
   </div>
 </template>
 
