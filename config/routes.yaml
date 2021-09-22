@@ -15,3 +15,23 @@ logout:
 profile:
   path: /user/profile
   controller: App\Controller\UserController:profile
+
+vaults:
+  path: /vaults
+  controller: App\Controller\VaultController:list
+
+vaults_create:
+  path: /vaults/create
+  controller: App\Controller\VaultController::create
+
+vaults_edit:
+  path: /vaults/edit/{id}
+  controller: App\Controller\VaultController::edit
+  requirements:
+    id: '\d+'
+
+vaults_delete:
+  path: /vaults/delete/{id}
+  controller: App\Controller/VaultController::delete
+  requirements:
+    id: '\d+'
