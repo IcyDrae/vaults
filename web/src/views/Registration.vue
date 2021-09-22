@@ -57,11 +57,11 @@
 
 <script>
 
-import * as VeeValidate from 'vee-validate';
-import * as yup from 'yup';
-import axios from 'axios';
+import * as VeeValidate from "vee-validate";
+import * as yup from "yup";
+import axios from "axios";
 import Encryption from "../encryption-flow/Encryption";
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from "vuex";
 
 const { mapActions, mapGetters } = createNamespacedHelpers("user");
 

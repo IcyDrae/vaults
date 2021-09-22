@@ -9,23 +9,19 @@
       <p>My work vault</p>
       <p>14 Items</p>
     </div>
-    <div class="create-vault">
-      <img v-on:click="createVault" src="@/assets/add.png" alt="An add icon.">
+    <div class="create-vault-cta">
+      <router-link to="/vaults/create">
+        <img src="@/assets/add.png" alt="An add icon.">
+      </router-link>
     </div>
   </div>
+  <router-view></router-view>
 </template>
 
 <script>
 
-import axios from "axios";
-
 export default {
   name: "Vaults",
-  methods: {
-    createVault() {
-      axios.put
-    }
-  }
 }
 </script>
 
