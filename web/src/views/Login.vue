@@ -134,7 +134,7 @@ export default {
 
               resetForm();
 
-              this.$router.push("/");
+              this.$router.push("/vaults");
             }
           })
           .catch(error => {

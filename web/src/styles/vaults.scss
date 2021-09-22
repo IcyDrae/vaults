@@ -20,6 +20,10 @@
 
     p {
       margin: 10px;
+
+      &.vault-description {
+        font-size: 16px;
+      }
     }
   }
 }
