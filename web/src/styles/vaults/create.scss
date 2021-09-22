@@ -9,4 +9,13 @@
   margin: auto;
   background-color: $overlayBackgroundColor;
   z-index: 2;
+
+  .exit-overlay {
+    color: $white;
+    background-color: transparent;
+    border: none;
+    font-size: 22px;
+    margin: 20px;
+    cursor: pointer;
+  }
 }

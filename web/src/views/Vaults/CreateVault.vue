@@ -1,5 +1,8 @@
 <template>
   <div class="create-vault">
+    <button class="exit-overlay" v-on:click="$router.go(-1)">
+      &#10006;
+    </button>
     <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="form">
       <form @submit="handleSubmit($event, handleForm)">
         <h1>Create a custom vault!</h1>
