@@ -8,6 +8,7 @@
   > div {
     width: 300px;
     height: 300px;
+    margin: 50px;
   }
 
   .vault {
@@ -16,7 +17,6 @@
     justify-content: center;
     align-items: center;
 
-    margin: 50px;
     background-color: $black;
     color: $white;
     border: 1px solid $borderColor;
