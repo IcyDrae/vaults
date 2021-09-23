@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Vault;
 use App\Repository\VaultRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,9 +42,31 @@ class VaultController extends AbstractController
         ], $responseCode);
     }
 
-    public function create(): Response
+    /**
+     * Given encrypted data and a user id that owns it, persists that data as a new entity.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request): Response
     {
-        return new Response();
+        $requestBody = json_decode($request->getContent(), true);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = $this->getDoctrine()
+                        ->getRepository(User::class)
+                        ->find($requestBody["userId"]);
+
+        $vault = new Vault();
+        $vault->setData(
+            $requestBody["data"]
+        );
+        $vault->setUser($user);
+
+        $entityManager->persist($vault);
+        $entityManager->flush();
+
+        return new Response("", 201);
     }
 
     public function edit(string $id): Response
