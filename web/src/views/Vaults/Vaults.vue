@@ -1,13 +1,9 @@
 <template>
   <div class="vaults">
-    <div class="vault">
-      <p>My personal vault</p>
+    <div v-for="vault in vaults" :key="vault" class="vault">
+      <p>{{ vault.name }}</p>
       <p>37 Items</p>
-      <p class="vault-description">This is my personal vault, where I store my personal things!</p>
-    </div>
-    <div class="vault">
-      <p>My work vault</p>
-      <p>14 Items</p>
+      <p class="vault-description">{{ vault.description }}</p>
     </div>
     <div class="create-vault-cta">
       <router-link to="/vaults/create">
@@ -20,8 +16,52 @@
 
 <script>
 
+import axios from "axios";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapGetters } = createNamespacedHelpers("user");
+
 export default {
   name: "Vaults",
+  data() {
+    return {
+      vaults: JSON,
+      backendErrors: [],
+    }
+  },
+  mounted() {
+    this.fetchVaults();
+  },
+  computed: {
+    ...mapGetters([
+      "getUser",
+    ])
+  },
+  methods: {
+    fetchVaults() {
+      axios
+          .get(process.env.VUE_APP_API_HOSTNAME + "/vaults", {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: null,
+            params: {
+              userId: this.getUser.id
+            },
+            withCredentials: true
+          })
+          .then(response => {
+            if(response.status === 200) {
+              this.vaults = response.data.vaults;
+            }
+          })
+          .catch(error => {
+            if (error.response.data.registration === false) {
+              this.backendErrors.push(error.response.data.errors)
+            }
+          })
+    }
+  }
 }
 </script>
 
