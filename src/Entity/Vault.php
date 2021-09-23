@@ -23,12 +23,12 @@ class Vault
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vaults")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $user_id;
+    private $user;
 
     /**
      * @ORM\OneToMany(targetEntity=Login::class, mappedBy="vault_id")
      */
-    private ArrayCollection $logins;
+    private $logins;
 
     /**
      * @ORM\OneToMany(targetEntity=Note::class, mappedBy="vault_id")
@@ -41,22 +41,21 @@ class Vault
         $this->notes = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     /**

@@ -21,7 +21,7 @@ class Note
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -37,21 +37,21 @@ class Note
      * @ORM\ManyToOne(targetEntity=Vault::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $vault_id;
+    private $vault;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -80,14 +80,14 @@ class Note
         return $this;
     }
 
-    public function getVaultId(): ?Vault
+    public function getVault(): ?Vault
     {
-        return $this->vault_id;
+        return $this->vault;
     }
 
-    public function setVaultId(?Vault $vault_id): self
+    public function setVault(?Vault $vault): self
     {
-        $this->vault_id = $vault_id;
+        $this->vault = $vault;
 
         return $this;
     }

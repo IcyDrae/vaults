@@ -62,7 +62,7 @@ class Login
      * @ORM\ManyToOne(targetEntity=Vault::class, inversedBy="logins")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Vault $vault_id;
+    private $vault;
 
     public function getId(): ?int
     {
@@ -165,14 +165,14 @@ class Login
         return $this;
     }
 
-    public function getVaultId(): ?Vault
+    public function getVault(): ?Vault
     {
-        return $this->vault_id;
+        return $this->vault;
     }
 
-    public function setVaultId(?Vault $vault_id): self
+    public function setVault(?Vault $vault): self
     {
-        $this->vault_id = $vault_id;
+        $this->vault = $vault;
 
         return $this;
     }

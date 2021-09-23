@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $vaults;
 
     /**
-     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="userId")
+     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="user_id")
      */
     private $logins;
 
@@ -202,7 +202,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->vaults->contains($vault)) {
             $this->vaults[] = $vault;
-            $vault->setUserId($this);
+            $vault->setUser($this);
         }
 
         return $this;
@@ -212,8 +212,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->vaults->removeElement($vault)) {
             // set the owning side to null (unless already changed)
-            if ($vault->getUserId() === $this) {
-                $vault->setUserId(null);
+            if ($vault->getUser() === $this) {
+                $vault->setUser(null);
             }
         }
 
