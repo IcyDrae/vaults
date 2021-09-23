@@ -19,22 +19,19 @@ class VaultRepository extends ServiceEntityRepository
         parent::__construct($registry, Vault::class);
     }
 
-    // /**
-    //  * @return Vault[] Returns an array of Vault objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Queries based on the user id and returns an array.
+     *
+     * @return Vault[] Returns an array of Vault objects.
+     */
+    public function findByUserId(int $id): array
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder("v")
+            ->select("v")
+            ->where("v.user = $id")
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Vault
