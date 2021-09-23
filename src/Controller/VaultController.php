@@ -19,18 +19,26 @@ class VaultController extends AbstractController
     }
 
     /**
-     * Queries the repository by the given user id and returns all(if any) found vaults.
+     * Queries the database by the given user id and returns all(if any) found vaults.
      *
      * @param Request $request
      * @return Response
      */
     public function list(Request $request): Response
     {
-        $vaults = $this->repository->findByUserId($request->get("userId"));
+        $responseCode = 200;
+
+        $vaults = $this->repository->findByUserId(
+            $request->get("userId")
+        );
+
+        if (empty($vaults)) {
+            $responseCode = 404;
+        }
 
         return new JsonResponse([
             "vaults" => $vaults
-        ]);
+        ], $responseCode);
     }
 
     public function create(): Response
