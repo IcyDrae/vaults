@@ -35,6 +35,16 @@ class Vault
      */
     private $notes;
 
+    /**
+     * @ORM\Column(type="string", length=35)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=86, nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->logins = new ArrayCollection();
@@ -70,7 +80,7 @@ class Vault
     {
         if (!$this->logins->contains($login)) {
             $this->logins[] = $login;
-            $login->setVaultId($this);
+            $login->setVault($this);
         }
 
         return $this;
@@ -80,8 +90,8 @@ class Vault
     {
         if ($this->logins->removeElement($login)) {
             // set the owning side to null (unless already changed)
-            if ($login->getVaultId() === $this) {
-                $login->setVaultId(null);
+            if ($login->getVault() === $this) {
+                $login->setVault(null);
             }
         }
 
@@ -100,7 +110,7 @@ class Vault
     {
         if (!$this->notes->contains($note)) {
             $this->notes[] = $note;
-            $note->setVaultId($this);
+            $note->setVault($this);
         }
 
         return $this;
@@ -110,10 +120,34 @@ class Vault
     {
         if ($this->notes->removeElement($note)) {
             // set the owning side to null (unless already changed)
-            if ($note->getVaultId() === $this) {
-                $note->setVaultId(null);
+            if ($note->getVault() === $this) {
+                $note->setVault(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
