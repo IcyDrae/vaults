@@ -36,14 +36,9 @@ class Vault
     private $notes;
 
     /**
-     * @ORM\Column(type="string", length=35)
+     * @ORM\Column(type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=86, nullable=true)
-     */
-    private $description;
+    private $data;
 
     public function __construct()
     {
@@ -128,26 +123,14 @@ class Vault
         return $this;
     }
 
-    public function getName(): ?string
+    public function getData(): ?string
     {
-        return $this->name;
+        return $this->data;
     }
 
-    public function setName(string $name): self
+    public function setData(string $data): self
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+        $this->data = $data;
 
         return $this;
     }
