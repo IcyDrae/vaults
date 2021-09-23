@@ -38,3 +38,4 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/logout, roles: ROLE_USER }
         - { path: ^/user/profile, roles: ROLE_USER }
+        - { path: ^/vaults, roles: ROLE_USER }
