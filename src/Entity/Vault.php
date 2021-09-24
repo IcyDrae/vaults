@@ -26,12 +26,12 @@ class Vault
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="vault_id")
+     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="vault")
      */
     private $logins;
 
     /**
-     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="vault_id")
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="vault")
      */
     private $notes;
 
