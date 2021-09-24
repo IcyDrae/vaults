@@ -30,7 +30,7 @@ class VaultRepository extends ServiceEntityRepository
         $whereCondition = "vaults.user = $id AND logins.vault = vaults.id";
 
         return $this->createQueryBuilder("vaults")
-            ->select("vaults, $countExpression")
+            ->select("vaults AS data, $countExpression")
             ->from("App\Entity\Login", "logins")
             ->where($whereCondition)
             ->groupBy("vaults.id")
