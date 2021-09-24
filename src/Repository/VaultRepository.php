@@ -26,9 +26,14 @@ class VaultRepository extends ServiceEntityRepository
      */
     public function findByUserId(int $id): array
     {
-        return $this->createQueryBuilder("v")
-            ->select("v")
-            ->where("v.user = $id")
+        $countExpression = "COUNT(logins) AS logins_amount";
+        $whereCondition = "vaults.user = $id AND logins.vault = vaults.id";
+
+        return $this->createQueryBuilder("vaults")
+            ->select("vaults, $countExpression")
+            ->from("App\Entity\Login", "logins")
+            ->where($whereCondition)
+            ->groupBy("vaults.id")
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
     }
