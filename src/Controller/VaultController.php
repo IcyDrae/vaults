@@ -58,9 +58,7 @@ class VaultController extends AbstractController
                         ->find($requestBody["userId"]);
 
         $vault = new Vault();
-        $vault->setData(
-            $requestBody["data"]
-        );
+        $vault->setData($requestBody["data"]);
         $vault->setUser($user);
 
         $entityManager->persist($vault);
