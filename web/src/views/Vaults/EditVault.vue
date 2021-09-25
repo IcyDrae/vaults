@@ -1,11 +1,13 @@
 <template>
-  <div class="create-vault">
+  <div class="edit-vault vault-overlay">
     <button class="exit-overlay" v-on:click="$router.go(-1)">
       &#10006;
     </button>
-    <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="form">
+    <VeeValidateForm :validation-schema="schema"
+                     :initial-values="{ vault_name: vault_name, vault_description: vault_description }"
+                     v-slot="{ errors, handleSubmit }" as="div" class="form">
       <form @submit="handleSubmit($event, handleForm)">
-        <h1>Create a custom vault!</h1>
+        <h1>Edit your vault!</h1>
         <label>
           <span>Vault Name</span>
           <VeeValidateField name="vault_name" type="text" />
@@ -18,7 +20,7 @@
           <p class="form-error">{{ errors.vault_description }}</p>
         </label>
 
-        <button>Create</button>
+        <button>Save</button>
 
         <li class="backend-errors" v-for="error in backendErrors" :key="error">
           {{ error }}
@@ -47,6 +49,7 @@ export default {
     VeeValidateForm: VeeValidate.Form,
     VeeValidateField: VeeValidate.Field,
   },
+  props: ["vault_name", "vault_description"],
   data() {
     return {
       success: "",

@@ -5,11 +5,10 @@
       <p>{{ vault.logins_amount }} Items</p>
       <p class="vault-description">{{ vault.vault_description }}</p>
       <div class="settings">
-        <router-link :to="{ name: 'editVault', params: { id: vault.id }}">
+        <router-link :to="{ name: 'editVault', params: { id: vault.id, vault_name: vault.vault_name, vault_description: vault.vault_description }}">
           <img src="@/assets/settings.png" alt="A settings icon.">
         </router-link>
       </div>
-      <router-view :vault_name="vault.vault_name" :vault_description="vault.vault_description"></router-view>
     </div>
     <div class="create-vault-cta">
       <router-link to="/vaults/create">
@@ -17,6 +16,7 @@
       </router-link>
     </div>
   </div>
+  <router-view></router-view>
 </template>
 
 <script>

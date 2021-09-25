@@ -1,5 +1,5 @@
 <template>
-  <div class="create-vault">
+  <div class="create-vault vault-overlay">
     <button class="exit-overlay" v-on:click="$router.go(-1)">
       &#10006;
     </button>

@@ -5,6 +5,7 @@ import Login from "../views/Login";
 import Logout from "../views/Logout";
 import Vaults from "../views/Vaults/Vaults";
 import CreateVault from "../views/Vaults/CreateVault";
+import EditVault from "../views/Vaults/EditVault";
 import Profile from "../views/Profile";
 import Dashboard from "../views/Dashboard";
 
@@ -38,6 +39,12 @@ const routes = [
         path: "create",
         name: "createVault",
         component: CreateVault
+      },
+      {
+        path: ":id/edit",
+        name: "editVault",
+        component: EditVault,
+        props: true
       }
     ]
   },
