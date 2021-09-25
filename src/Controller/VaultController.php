@@ -37,9 +37,7 @@ class VaultController extends AbstractController
             $responseCode = 404;
         }
 
-        return new JsonResponse([
-            "vaults" => $vaults
-        ], $responseCode);
+        return new JsonResponse($vaults, $responseCode);
     }
 
     /**
