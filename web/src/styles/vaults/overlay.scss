@@ -1,0 +1,21 @@
+.vault-overlay {
+  position: fixed;
+  width: 95%;
+  height: 95%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: $overlayBackgroundColor;
+  z-index: 2;
+
+  .exit-overlay {
+    color: $white;
+    background-color: transparent;
+    border: none;
+    font-size: 22px;
+    margin: 20px;
+    cursor: pointer;
+  }
+}
