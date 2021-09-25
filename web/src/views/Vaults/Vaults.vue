@@ -2,7 +2,7 @@
   <div class="vaults">
     <div v-for="vault in vaults" :key="vault" class="vault">
       <p>{{ vault.vault_name }}</p>
-      <p>37 Items</p>
+      <p>{{ vault.logins_amount }} Items</p>
       <p class="vault-description">{{ vault.vault_name }}</p>
     </div>
     <div class="create-vault-cta">
@@ -62,27 +62,40 @@ export default {
             }
           })
           .catch(error => {
-            this.backendErrors.push(error.response.data.errors)
+            console.log(error.message);
+            this.backendErrors.push(error.message);
           })
     },
     /**
      * Decrypts the given vaults & decodes them into an array.
      *
      * @param vaults
-     * @returns {*[]}
+     * @returns {{}}
      */
     decryptVaults(vaults) {
-      let decryptedVaults = [];
+      let decryptedVaults = {};
 
       vaults.forEach((vault, index) => {
-        vaults[index] = this.encryption.decrypt(vault.data, this.getEncryptionKey);
+        vault.data.data = this.encryption.decrypt(vault.data.data, this.getEncryptionKey);
+        vault.data.data = JSON.parse(vault.data.data);
 
-        let jsonDecodedVault = JSON.parse(vaults[index]);
-
-        decryptedVaults.push(jsonDecodedVault);
+        decryptedVaults[index] = this.restructureVaultObject(vault);
       });
 
       return decryptedVaults;
+    },
+    /**
+     * Makes a new vault array with the decrypted data.
+     *
+     * @param vault
+     */
+    restructureVaultObject(vault) {
+      return {
+        "id": vault.data.id,
+        "vault_name": vault.data.data.vault_name,
+        "vault_description": vault.data.data.vault_description,
+        "logins_amount": vault.logins_amount
+        };
     }
   }
 }
