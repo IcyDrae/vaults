@@ -4,6 +4,9 @@
       <p>{{ vault.vault_name }}</p>
       <p>{{ vault.logins_amount }} Items</p>
       <p class="vault-description">{{ vault.vault_name }}</p>
+      <div class="settings">
+        <img src="@/assets/settings.png" alt="A settings icon.">
+      </div>
     </div>
     <div class="create-vault-cta">
       <router-link to="/vaults/create">
@@ -15,6 +18,7 @@
 </template>
 
 <script>
+// TODO change vault data in frontend and persist in backend
 
 import axios from "axios";
 import Encryption from "../../encryption-flow/Encryption";
