@@ -3,10 +3,13 @@
     <div v-for="vault in vaults" :key="vault" class="vault">
       <p>{{ vault.vault_name }}</p>
       <p>{{ vault.logins_amount }} Items</p>
-      <p class="vault-description">{{ vault.vault_name }}</p>
+      <p class="vault-description">{{ vault.vault_description }}</p>
       <div class="settings">
-        <img src="@/assets/settings.png" alt="A settings icon.">
+        <router-link :to="{ name: 'editVault', params: { id: vault.id }}">
+          <img src="@/assets/settings.png" alt="A settings icon.">
+        </router-link>
       </div>
+      <router-view :vault_name="vault.vault_name" :vault_description="vault.vault_description"></router-view>
     </div>
     <div class="create-vault-cta">
       <router-link to="/vaults/create">
@@ -14,11 +17,9 @@
       </router-link>
     </div>
   </div>
-  <router-view></router-view>
 </template>
 
 <script>
-// TODO change vault data in frontend and persist in backend
 
 import axios from "axios";
 import Encryption from "../../encryption-flow/Encryption";
@@ -62,7 +63,7 @@ export default {
           })
           .then(response => {
             if(response.status === 200) {
-              this.vaults = this.decryptVaults(response.data.vaults);
+              this.vaults = this.decryptVaults(response.data);
             }
           })
           .catch(error => {
@@ -73,17 +74,19 @@ export default {
     /**
      * Decrypts the given vaults & decodes them into an array.
      *
-     * @param vaults
+     * @param results
      * @returns {{}}
      */
-    decryptVaults(vaults) {
+    decryptVaults(results) {
       let decryptedVaults = {};
 
-      vaults.forEach((vault, index) => {
-        vault.data.data = this.encryption.decrypt(vault.data.data, this.getEncryptionKey);
-        vault.data.data = JSON.parse(vault.data.data);
+      results.forEach((result, index) => {
+        let vault = result.vault;
 
-        decryptedVaults[index] = this.restructureVaultObject(vault);
+        vault.data = this.encryption.decrypt(vault.data, this.getEncryptionKey);
+        vault.data = JSON.parse(vault.data);
+
+        decryptedVaults[index] = this.restructureVaultObject(result);
       });
 
       return decryptedVaults;
@@ -91,14 +94,14 @@ export default {
     /**
      * Makes a new vault array with the decrypted data.
      *
-     * @param vault
+     * @param object
      */
-    restructureVaultObject(vault) {
+    restructureVaultObject(object) {
       return {
-        "id": vault.data.id,
-        "vault_name": vault.data.data.vault_name,
-        "vault_description": vault.data.data.vault_description,
-        "logins_amount": vault.logins_amount
+        "id": object.vault.id,
+        "vault_name": object.vault.data.vault_name,
+        "vault_description": object.vault.data.vault_description,
+        "logins_amount": object.logins_amount
         };
     }
   }
