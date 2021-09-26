@@ -25,7 +25,7 @@ class VaultRepository extends ServiceEntityRepository
      *
      * @return Vault[] Returns an array of Vault objects.
      */
-    public function findByUserId(int $id): array
+    public function findMultipleByUserId(int $id): array
     {
         return $this->createQueryBuilder("v")
             ->select("v AS vault, COUNT(login.vault) AS logins_amount")

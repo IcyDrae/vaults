@@ -30,7 +30,7 @@ class VaultController extends AbstractController
     {
         $responseCode = 200;
 
-        $vaults = $this->repository->findByUserId(
+        $vaults = $this->repository->findMultipleByUserId(
             $request->get("userId")
         );
 
