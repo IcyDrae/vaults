@@ -32,6 +32,6 @@ vaults_update:
 
 vaults_delete:
   path: /vaults/delete/{id}
-  controller: App\Controller/VaultController::delete
+  controller: App\Controller\VaultController::delete
   requirements:
     id: '\d+'

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Vault;
 use App\Repository\VaultRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,7 +69,7 @@ class VaultController extends AbstractController
     /**
      * Updates a single vault with the new encrypted data.
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function update(Request $request, string $id): Response
     {
@@ -76,7 +77,7 @@ class VaultController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $requestBody = json_decode($request->getContent(), true);
 
-        $vault = $this->repository->findSingleByUserId($request->get("id"), $requestBody["userId"]);
+        $vault = $this->repository->findSingleByUserId($id, $requestBody["userId"]);
 
         if (!empty($vault)) {
             $vault->setData($requestBody["data"]);
@@ -88,8 +89,28 @@ class VaultController extends AbstractController
         return new Response("", $statusCode);
     }
 
-    public function delete(string $id): Response
+    /**
+     * Deletes a single vault by id. Orphaned children will also be deleted.
+     *
+     * @throws NonUniqueResultException
+     */
+    public function delete(Request $request, string $id): Response
     {
-        return new Response();
+        $statusCode = 404;
+        $requestBody = json_decode($request->getContent(), true);
+        $userId = $requestBody["userId"];
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $vault = $this->repository->findSingleByUserId($id, $userId);
+
+        if (!empty($vault)) {
+            $entityManager->remove($vault);
+            $entityManager->flush();
+
+            $statusCode = 204;
+        }
+
+        return new Response("", $statusCode);
     }
 }
