@@ -94,7 +94,7 @@ export default {
     },
     submitForm(values, resetForm) {
       axios
-          .post(process.env.VUE_APP_API_HOSTNAME + "/vaults/create", {
+          .put(process.env.VUE_APP_API_HOSTNAME + `/vaults/update/${this.$route.params.id}`, {
             userId: this.getUser.id,
             data: values
           },
@@ -105,17 +105,15 @@ export default {
             withCredentials: true
           })
           .then(response => {
-            if(response.status === 201) {
+            if(response.status === 204) {
               resetForm();
 
-              this.$router.push("/vaults");
+              this.$router.go(-1);
             }
           })
           .catch(error => {
-            if (error.response.data.registration === false) {
-              this.backendErrors.push(error.response.data.errors)
-            }
-          })
+            this.backendErrors.push(error.response.data.errors)
+          });
     }
   }
 }
