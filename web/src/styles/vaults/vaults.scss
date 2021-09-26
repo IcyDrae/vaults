@@ -22,11 +22,18 @@
     border: 1px solid $borderColor;
     cursor: pointer;
 
-    p {
-      margin: 10px;
+    div {
+      display: inherit;
+      flex-direction: inherit;
+      align-items: center;
+      width: 100%;
 
-      &.vault-description {
-        font-size: 16px;
+      p {
+        margin: 10px;
+
+        &.vault-description {
+          font-size: 16px;
+        }
       }
     }
 

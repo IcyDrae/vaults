@@ -1,9 +1,11 @@
 <template>
   <div class="vaults">
     <div v-for="vault in vaults" :key="vault" class="vault">
-      <p>{{ vault.vault_name }}</p>
-      <p>{{ vault.logins_amount }} Items</p>
-      <p class="vault-description">{{ vault.vault_description }}</p>
+      <div @click="$router.push({name: 'vaultDashboard', params: { id: vault.id }})">
+        <p>{{ vault.vault_name }}</p>
+        <p>{{ vault.logins_amount }} Items</p>
+        <p class="vault-description">{{ vault.vault_description }}</p>
+      </div>
       <div class="settings">
         <router-link :to="{ name: 'editVault', params: { id: vault.id, vault_name: vault.vault_name, vault_description: vault.vault_description }}">
           <img src="@/assets/settings.png" alt="A settings icon.">
