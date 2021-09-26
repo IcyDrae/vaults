@@ -1,5 +1,5 @@
 .delete-vault-overlay {
-  width: 30%;
+  width: 40%;
   height: 30%;
   border: 1px solid white;
 
@@ -12,6 +12,7 @@
     align-items: center;
 
     .prompt-message {
+      text-align: center;
       padding: 10px;
       text-transform: uppercase;
     }

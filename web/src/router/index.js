@@ -7,7 +7,7 @@ import Vaults from "../views/Vaults/Vaults";
 import CreateVault from "../views/Vaults/CreateVault";
 import EditVault from "../views/Vaults/EditVault";
 import Profile from "../views/Profile";
-import Dashboard from "../views/Dashboard";
+import VaultDashboard from "../views/Vaults/VaultDashboard";
 
 const routes = [
   {
@@ -45,6 +45,11 @@ const routes = [
         name: "editVault",
         component: EditVault,
         props: true
+      },
+      {
+        path: ":id",
+        name: "vaultDashboard",
+        component: VaultDashboard,
       }
     ]
   },
@@ -52,11 +57,6 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: Profile
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: Dashboard
   }
 ]
 
