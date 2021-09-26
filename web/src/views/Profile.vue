@@ -1,5 +1,5 @@
 <template>
-  <button v-on:click="fetchProfile">Fetch profile</button>
+  <button class="btn" v-on:click="fetchProfile">Fetch profile</button>
 </template>
 
 <script>

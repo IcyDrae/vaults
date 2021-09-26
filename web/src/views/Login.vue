@@ -17,7 +17,7 @@
         <p class="form-error">{{ errors.login_password }}</p>
       </label>
 
-      <button>Login</button>
+      <button class="btn">Login</button>
 
       <li class="backend-errors" v-for="error in backendErrors" :key="error">
         {{ error }}

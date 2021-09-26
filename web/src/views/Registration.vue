@@ -44,7 +44,7 @@
         <p class="form-error">{{ errors.terms_and_conditions }}</p>
       </div>
 
-      <button>Register</button>
+      <button class="btn">Register</button>
 
       <li class="backend-errors" v-for="error in backendErrors" :key="error">
         {{ error }}
