@@ -18,7 +18,7 @@
           <p class="form-error">{{ errors.vault_description }}</p>
         </label>
 
-        <button>Create</button>
+        <button class="btn">Create</button>
 
         <li class="backend-errors" v-for="error in backendErrors" :key="error">
           {{ error }}
