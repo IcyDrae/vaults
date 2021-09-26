@@ -61,17 +61,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $registeredAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Vault::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Vault::class, mappedBy="user_id", orphanRemoval=true)
      */
     private $vaults;
 
     /**
-     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="user_id", orphanRemoval=true)
      */
     private $logins;
 
     /**
-     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="user_id", orphanRemoval=true)
      */
     private $notes;
 
