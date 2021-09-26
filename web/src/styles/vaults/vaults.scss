@@ -43,6 +43,11 @@
         left: 90%;
         transform: translate(-90%, -50%);
         width: 25px;
+        transition: all 0.2s;
+
+        &:hover {
+          width: 26px;
+        }
       }
     }
 
