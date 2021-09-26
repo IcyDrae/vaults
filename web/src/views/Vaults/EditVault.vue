@@ -41,7 +41,7 @@
 
 <script>
 
-import DeletePrompt from "./DeletePrompt";
+import DeletePrompt from "../../components/DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import Encryption from "../../encryption-flow/Encryption";
