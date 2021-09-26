@@ -72,7 +72,7 @@ class CorsSubscriber implements EventSubscriberInterface
 
         $response->headers->add([
             "Access-Control-Allow-Origin" => $_ENV["ALLOWED_ORIGIN"],
-            "Access-Control-Allow-Methods" => "OPTIONS, GET, POST, PUT, DELETE",
+            "Access-Control-Allow-Methods" => "GET, POST, PUT, PATCH, DELETE, OPTIONS",
             "Access-Control-Allow-Credentials" => "true",
             "Access-Control-Allow-Headers" => "DNT, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type",
             "Access-Control-Max-Age" => 1728000,
