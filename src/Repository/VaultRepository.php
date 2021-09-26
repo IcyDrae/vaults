@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Vault;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method Vault|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,7 +34,29 @@ class VaultRepository extends ServiceEntityRepository
             ->setParameter("user_id", $id)
             ->groupBy("v.id")
             ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->getResult(Query::HYDRATE_ARRAY);
+    }
+
+    /**
+     * Finds a single vault by its id and its user id. Returns only one result.
+     *
+     * @param $id
+     * @param $userId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findSingleByUserId($id, $userId): mixed
+    {
+        return $this->createQueryBuilder("v")
+            ->select("v")
+            ->where("v.id = :vault_id")
+            ->andWhere("v.user = :user_id")
+            ->setParameters([
+                "vault_id" => $id,
+                "user_id" => $userId
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /*

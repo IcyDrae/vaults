@@ -65,9 +65,27 @@ class VaultController extends AbstractController
         return new Response("", 201);
     }
 
+    /**
+     * Updates a single vault with the new encrypted data.
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function update(Request $request, string $id): Response
     {
-        return new Response();
+        $statusCode = 404;
+        $entityManager = $this->getDoctrine()->getManager();
+        $requestBody = json_decode($request->getContent(), true);
+
+        $vault = $this->repository->findSingleByUserId($request->get("id"), $requestBody["userId"]);
+
+        if (!empty($vault)) {
+            $vault->setData($requestBody["data"]);
+            $entityManager->flush();
+
+            $statusCode = 204;
+        }
+
+        return new Response("", $statusCode);
     }
 
     public function delete(string $id): Response
