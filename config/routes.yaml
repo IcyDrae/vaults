@@ -24,9 +24,9 @@ vaults_create:
   path: /vaults/create
   controller: App\Controller\VaultController::create
 
-vaults_edit:
-  path: /vaults/edit/{id}
-  controller: App\Controller\VaultController::edit
+vaults_update:
+  path: /vaults/update/{id}
+  controller: App\Controller\VaultController::update
   requirements:
     id: '\d+'
 

@@ -65,7 +65,7 @@ class VaultController extends AbstractController
         return new Response("", 201);
     }
 
-    public function edit(string $id): Response
+    public function update(Request $request, string $id): Response
     {
         return new Response();
     }
