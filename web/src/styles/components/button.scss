@@ -1,0 +1,26 @@
+.btn {
+  background-color: $black;
+  color: $white;
+  border: 1px solid $borderColor;
+  padding: 15px 20px;
+  margin-right: 20px;
+  font-size: 16px;
+  font-family: $fontFamily;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: $white;
+    color: $black;
+    cursor: pointer;
+  }
+
+  &.delete-vault-cta {
+    border-color: $warningDeleteColor;
+    background-color: $warningDeleteColor;
+    color: black;
+
+    &:hover {
+      background-color: $warningDeleteColorHover;
+    }
+  }
+}
