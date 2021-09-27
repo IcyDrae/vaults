@@ -43,6 +43,10 @@ vaults_items:
     id: '\d+'
     userId: '\d+'
 
+logins_create:
+  path: /logins/create
+  controller: App\Controller\LoginController::create
+
 logins_update:
   path: /logins/update/{id}
   controller: App\Controller\LoginController::update
@@ -54,14 +58,3 @@ logins_delete:
   controller: App\Controller\LoginController::delete
   requirements:
     id: '\d+'
-
-logins_items:
-  path: /logins/{id}/{userId}
-  controller: App\Controller\LoginController::listItems
-  requirements:
-    id: '\d+'
-    userId: '\d+'
-
-logins_create:
-  path: /logins/create
-  controller: App\Controller\LoginController::create
