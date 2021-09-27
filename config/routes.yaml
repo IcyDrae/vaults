@@ -35,3 +35,33 @@ vaults_delete:
   controller: App\Controller\VaultController::delete
   requirements:
     id: '\d+'
+
+vaults_items:
+  path: /vaults/{id}/{userId}
+  controller: App\Controller\VaultController::listItems
+  requirements:
+    id: '\d+'
+    userId: '\d+'
+
+logins_update:
+  path: /logins/update/{id}
+  controller: App\Controller\LoginController::update
+  requirements:
+    id: '\d+'
+
+logins_delete:
+  path: /logins/delete/{id}
+  controller: App\Controller\LoginController::delete
+  requirements:
+    id: '\d+'
+
+logins_items:
+  path: /logins/{id}/{userId}
+  controller: App\Controller\LoginController::listItems
+  requirements:
+    id: '\d+'
+    userId: '\d+'
+
+logins_create:
+  path: /logins/create
+  controller: App\Controller\LoginController::create
