@@ -24,20 +24,15 @@ class Note
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=1020)
-     */
-    private $description;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Vault::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $vault;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $data;
 
     public function getId(): ?int
     {
@@ -56,30 +51,6 @@ class Note
         return $this;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getVault(): ?Vault
     {
         return $this->vault;
@@ -88,6 +59,18 @@ class Note
     public function setVault(?Vault $vault): self
     {
         $this->vault = $vault;
+
+        return $this;
+    }
+
+    public function getData(): ?string
+    {
+        return $this->data;
+    }
+
+    public function setData(string $data): self
+    {
+        $this->data = $data;
 
         return $this;
     }
