@@ -10,14 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class VaultController extends AbstractController
 {
     private VaultRepository $repository;
 
-    public function __construct(VaultRepository $repository)
+    private SerializerInterface $serializer;
+
+    public function __construct(VaultRepository $repository, SerializerInterface $serializer)
     {
         $this->repository = $repository;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -112,5 +116,33 @@ class VaultController extends AbstractController
         }
 
         return new Response("", $statusCode);
+    }
+
+    /**
+     * Queries the database by the given user id and returns all(if any) found vaults.
+     *
+     * @param Request $request
+     * @param string $id
+     * @param string $userId
+     * @return Response
+     * @throws NonUniqueResultException
+     */
+    public function listItems(Request $request, string $id, string $userId): Response
+    {
+        $responseCode = 200;
+
+        $vault = $this->repository->findSingleByUserId($id, $userId);
+        $vaultLogins = $vault->getLogins();
+
+        if (empty($vault) || empty($vaultLogins)) {
+            $responseCode = 404;
+        }
+
+        $serialized = $this->serializer->serialize($vaultLogins, "json", ["attributes"  => [
+            "id",
+            "data"
+        ]]);
+
+        return new Response($serialized, $responseCode);
     }
 }

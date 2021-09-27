@@ -1,5 +1,7 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard vault-overlay">
+<!--    <router-link :to="{ name: 'createLogin', params: { id: this.$route.params.id } }">Create Login</router-link>
+    <router-view></router-view>-->
     <div class="navigation">
       <ul class="folders">
         <li>
@@ -26,95 +28,11 @@
     </div>
     <div class="logins">
       <div class="logins-container">
-        <div class="login">
+        <div v-for="login in logins" :key="login" class="login">
           <div>
             <img src="@/assets/instagram.png" alt="Instagram">
           </div>
-          <p>Facebook</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Instagram</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Medium</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Reddit</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Discord</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Slack</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Twitter</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Reddit</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Discord</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Slack</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Twitter</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Reddit</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Discord</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Slack</p>
-        </div>
-        <div class="login">
-          <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
-          </div>
-          <p>Twitter</p>
+          <p>{{ login.login_name }}</p>
         </div>
 
       </div>
@@ -167,11 +85,26 @@
 </template>
 
 <script>
+import axios from "axios";
+import Encryption from "../../encryption-flow/Encryption";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapGetters } = createNamespacedHelpers("user");
+
 export default {
   name: "Dashboard",
   data() {
     return {
+      logins: [],
+      backendErrors: [],
+      encryption: new Encryption()
     }
+  },
+  computed: {
+    ...mapGetters([
+      "getUser",
+      "getEncryptionKey"
+    ])
   },
   beforeRouteEnter(to, from, next) {
     document.querySelector("#app").classList.add("dashboard-view")
@@ -181,6 +114,67 @@ export default {
     document.querySelector("#app").classList.remove("dashboard-view")
     next();
   },
+  mounted() {
+    this.fetchVaultItems();
+  },
+  methods: {
+    /**
+     * Requests the user's encrypted vaults.
+     */
+    fetchVaultItems() {
+      axios
+          .get(process.env.VUE_APP_API_HOSTNAME + `/vaults/${this.$route.params.id}/${this.getUser.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: null,
+            withCredentials: true
+          })
+          .then(response => {
+            if(response.status === 200) {
+              this.logins = this.decryptLogins(response.data);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.backendErrors.push(error.message);
+          })
+    },
+    /**
+     * Decrypts the given logins & decodes them into an array.
+     *
+     * @param results
+     * @returns {{}}
+     */
+    decryptLogins(results) {
+      let decryptedLogins = {};
+
+      results.forEach((result, index) => {
+        let login = result.data;
+
+        login = this.encryption.decrypt(login, this.getEncryptionKey);
+        login = JSON.parse(login);
+
+        result.data = login;
+
+        decryptedLogins[index] = this.restructureLoginObject(result);
+      });
+
+      return decryptedLogins;
+    },
+    /**
+     * Makes a new login array with the decrypted data.
+     *
+     * @param object
+     */
+    restructureLoginObject(object) {
+      return {
+        "id": object.id,
+        "login_name": object.data.login_name,
+        "login_description": object.data.login_description,
+      };
+    }
+  }
 }
 </script>
 
