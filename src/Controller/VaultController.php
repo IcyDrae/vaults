@@ -119,7 +119,7 @@ class VaultController extends AbstractController
     }
 
     /**
-     * Queries the database by the given user id and returns all(if any) found vaults.
+     * Queries the database by the given user id & vault id and returns all(if any) found logins for that vault.
      *
      * @param Request $request
      * @param string $id
