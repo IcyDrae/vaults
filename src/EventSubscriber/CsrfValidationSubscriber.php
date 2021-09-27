@@ -22,7 +22,6 @@ class CsrfValidationSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        // Don't do anything if it's not the master request.
         if (!$event->isMainRequest()) {
             return;
         }
@@ -30,9 +29,7 @@ class CsrfValidationSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $method = $request->getRealMethod();
 
-        # Check if the request method is anything but OPTIONS.
         if ($method !== Request::METHOD_OPTIONS) {
-            # Make sure the Content-Type is set to "application/json".
             if ($request->headers->get("Content-Type") !== "application/json") {
                 $response = new JsonResponse([
                     "message" => "Invalid Content-Type"

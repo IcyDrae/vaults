@@ -34,7 +34,6 @@ class CorsSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        // Don't do anything if it's not the master request.
         if (!$event->isMainRequest()) {
             return;
         }
@@ -43,7 +42,6 @@ class CorsSubscriber implements EventSubscriberInterface
 
         $method = $request->getRealMethod();
 
-        # Check if the request method is OPTIONS.
         if ($method === Request::METHOD_OPTIONS) {
             $response = new Response();
             $event->setResponse($response);
@@ -63,7 +61,6 @@ class CorsSubscriber implements EventSubscriberInterface
      */
     private function setCorsHeaders(KernelEvent $event)
     {
-        // Don't do anything if it's not the main request.
         if (!$event->isMainRequest()) {
             return;
         }
