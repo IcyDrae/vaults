@@ -8,8 +8,8 @@ import CreateVault from "../views/Vaults/CreateVault";
 import EditVault from "../views/Vaults/EditVault";
 import Profile from "../views/Profile";
 import VaultDashboard from "../views/Vaults/VaultDashboard";
-import Logins from "../views/Vaults/Logins/Logins";
-import CreateLogin from "../views/Vaults/Logins/CreateLogin";
+import ItemsCollection from "../views/Vaults/Items/ItemsCollection";
+import CreateLogin from "../views/Vaults/Items/CreateLogin";
 
 const routes = [
   {
@@ -49,19 +49,22 @@ const routes = [
         props: true
       },
       {
-        path: ":id",
-        name: "vaultDashboard",
-        component: VaultDashboard,
-      },
-      {
-        path: ":id/loginswtf",
-        name: "loginswtf",
-        component: Logins,
-      },
-      {
         path: ":id/create",
         name: "createLogin",
         component: CreateLogin
+      }
+    ]
+  },
+  {
+    path: "/vaults/:id/items",
+    name: "vaultDashboard",
+    component: VaultDashboard,
+    children: [
+      {
+        path: ":loginId",
+        name: "item",
+        component: ItemsCollection,
+        props: true
       }
     ]
   },
