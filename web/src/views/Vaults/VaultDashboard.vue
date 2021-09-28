@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard vault-overlay">
+  <div class="dashboard">
 <!--    <router-link :to="{ name: 'createLogin', params: { id: this.$route.params.id } }">Create Login</router-link>
     <router-view></router-view>-->
     <div class="navigation">
@@ -28,7 +28,8 @@
     </div>
     <div class="logins">
       <div class="logins-container">
-        <div v-for="login in logins" :key="login" class="login">
+        <div v-for="login in logins" :key="login"
+             class="login" @click="this.$router.push({ name: 'item', params: { loginId: login.id, type: login.item_type } })">
           <div>
             <img src="@/assets/instagram.png" alt="Instagram">
           </div>
@@ -38,7 +39,7 @@
       </div>
     </div>
     <div class="account">
-      <form action="#">
+<!--      <form action="#">
         <label>
           <span>Username or E-Mail</span>
           <input type="text">
@@ -79,8 +80,9 @@
           <span>Notes</span>
           <textarea cols="30" rows="10"></textarea>
         </label>
-      </form>
+      </form>-->
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -133,6 +135,7 @@ export default {
           .then(response => {
             if(response.status === 200) {
               this.logins = this.decryptLogins(response.data);
+              console.log(this.logins)
             }
           })
           .catch(error => {
@@ -172,6 +175,7 @@ export default {
         "id": object.id,
         "login_name": object.data.login_name,
         "login_description": object.data.login_description,
+        "item_type": object.data.item_type
       };
     }
   }
