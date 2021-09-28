@@ -8,8 +8,8 @@ import CreateVault from "../views/Vaults/CreateVault";
 import EditVault from "../views/Vaults/EditVault";
 import Profile from "../views/Profile";
 import VaultDashboard from "../views/Vaults/VaultDashboard";
-import ItemsCollection from "../views/Vaults/Items/ItemsCollection";
-import CreateLogin from "../views/Vaults/Items/CreateLogin";
+import ItemsCollection from "../views/Vaults/Item/Item";
+import CreateLogin from "../views/Vaults/Item/CreateLogin";
 
 const routes = [
   {

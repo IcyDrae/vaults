@@ -87,6 +87,7 @@
 </template>
 
 <script>
+
 import axios from "axios";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
@@ -135,7 +136,6 @@ export default {
           .then(response => {
             if(response.status === 200) {
               this.logins = this.decryptLogins(response.data);
-              console.log(this.logins)
             }
           })
           .catch(error => {
