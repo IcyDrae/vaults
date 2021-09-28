@@ -1,31 +1,7 @@
 <template>
-  <div class="vault-overlay">
-    <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="form">
-      <form @submit="handleSubmit($event, handleForm)">
-        <h1>Create a password!</h1>
-        <label>
-          <span>Login Name</span>
-          <VeeValidateField name="login_name" type="text" />
-          <p class="form-error">{{ errors.login_name }}</p>
-        </label>
-
-        <label>
-          <span>Description</span>
-          <VeeValidateField name="login_description" as="textarea" />
-          <p class="form-error">{{ errors.login_description }}</p>
-        </label>
-
-        <button class="btn">Create</button>
-
-        <li class="backend-errors" v-for="error in backendErrors" :key="error">
-          {{ error }}
-        </li>
-
-        <p class="backend-success">{{ success }}</p>
-      </form>
-    </VeeValidateForm>
+  <div>
+    {{ type }}
   </div>
-  <router-view></router-view>
 </template>
 
 <script>
@@ -33,17 +9,14 @@
 import axios from "axios";
 import Encryption from "../../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import * as VeeValidate from "vee-validate";
-import * as yup from "yup";
 
 const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
-  name: "CreateLogin",
+  name: "ItemsCollection",
+  props: ["type"],
   components: {
-    // Rename the components from VeeValidate so there may be no conflicts with native HTML elements.
-    VeeValidateForm: VeeValidate.Form,
-    VeeValidateField: VeeValidate.Field,
+
   },
   data() {
     return {
@@ -59,23 +32,6 @@ export default {
       "getUser",
       "getEncryptionKey"
     ])
-  },
-  setup() {
-    /**
-     * Validation rules using 'yup'.
-     */
-    const schema = yup.object({
-      login_name: yup.string()
-          .required()
-          .label("Login Name"),
-      login_description: yup.string()
-          .required()
-          .label("Login Description"),
-    });
-
-    return {
-      schema
-    };
   },
   methods: {
     /**

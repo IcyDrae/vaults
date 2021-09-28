@@ -30,6 +30,8 @@
 
 <script>
 
+const ITEM_TYPE = "login";
+
 import axios from "axios";
 import Encryption from "../../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
@@ -74,7 +76,8 @@ export default {
     });
 
     return {
-      schema
+      schema,
+      ITEM_TYPE
     };
   },
   methods: {
@@ -84,6 +87,7 @@ export default {
      * @param resetForm
      */
     handleForm(values, { resetForm }) {
+      values.item_type = ITEM_TYPE;
       values = JSON.stringify(values);
       let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
 
