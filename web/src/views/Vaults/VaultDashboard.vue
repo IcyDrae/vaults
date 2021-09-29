@@ -29,60 +29,25 @@
     <div class="logins">
       <div class="logins-container">
         <div v-for="login in logins" :key="login"
-             class="login" @click="this.$router.push({ name: 'item', params: { loginId: login.id, type: login.item_type } })">
+             class="login"
+             @click="this.$router.push({
+             name: 'item',
+             params: {
+               loginId: login.id,
+               type: login.item_type,
+               itemData: JSON.stringify(login)
+             }
+             })">
           <div>
             <img src="@/assets/instagram.png" alt="Instagram">
           </div>
           <p>{{ login.login_name }}</p>
         </div>
-
       </div>
     </div>
     <div class="account">
-<!--      <form action="#">
-        <label>
-          <span>Username or E-Mail</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Password</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Website</span>
-          <input type="text">
-        </label>
-        <label>
-          <span>Notes</span>
-          <textarea cols="30" rows="10"></textarea>
-        </label>
-      </form>-->
+      <router-view></router-view>
     </div>
-    <router-view></router-view>
   </div>
 </template>
 

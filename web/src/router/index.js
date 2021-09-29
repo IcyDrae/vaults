@@ -8,7 +8,7 @@ import CreateVault from "../views/Vaults/CreateVault";
 import EditVault from "../views/Vaults/EditVault";
 import Profile from "../views/Profile";
 import VaultDashboard from "../views/Vaults/VaultDashboard";
-import ItemsCollection from "../views/Vaults/Item/Item";
+import Item from "../views/Vaults/Item/Item";
 import CreateLogin from "../views/Vaults/Item/CreateLogin";
 
 const routes = [
@@ -63,7 +63,7 @@ const routes = [
       {
         path: ":loginId",
         name: "item",
-        component: ItemsCollection,
+        component: Item,
         props: true
       }
     ]

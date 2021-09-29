@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Login v-if="type === 'login'"></Login>
-    <Note v-if="type === 'note'"></Note>
+    <Login v-if="type === 'login'" v-bind:itemData="itemData"></Login>
+    <Note v-if="type === 'note'" v-bind:itemData="itemData"></Note>
   </div>
 </template>
 
@@ -11,19 +11,15 @@ import Login from "../../../components/Item/Login";
 import Note from "../../../components/Item/Note";
 
 export default {
-  name: "ItemsCollection",
-  props: ["type"],
+  name: "Item",
+  props: ["type", "itemData"],
   components: {
     Login,
     Note
   },
   data() {
     return {
-      success: "",
-      backendErrors: [],
     }
-  },
-  methods: {
   }
 }
 </script>
