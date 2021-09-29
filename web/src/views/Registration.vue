@@ -59,7 +59,7 @@
 
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import axios from "axios";
+import http from "../services/http";
 import Encryption from "../encryption-flow/Encryption";
 import { createNamespacedHelpers } from "vuex";
 
@@ -202,29 +202,31 @@ export default {
      * @param resetForm
      */
     submitForm(values, resetForm) {
-      axios
-          .post(process.env.VUE_APP_API_HOSTNAME + "/register", {
-            form: values,
-          },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-          .then(response => {
-            if(response.status === 201) {
-              this.success = "Registration completed successfully! You can now proceed to login.";
+      http.request({
+        method: "post",
+        url: "/register",
+        data: {
+          form: values
+        }
+      }, (response) => {
+        this.successHandler(response, resetForm);
+      }, (error) => {
+        this.errorHandler(error);
+      });
+    },
+    successHandler(response, resetForm) {
+      if(response.status === 201) {
+        this.success = "Registration completed successfully! You can now proceed to login.";
 
-              resetForm();
+        resetForm();
 
-              this.$router.push("/login");
-            }
-          })
-          .catch(error => {
-            if (error.response.data.registration === false) {
-              this.backendErrors.push(error.response.data.errors)
-            }
-          })
+        this.$router.push("/login");
+      }
+    },
+    errorHandler(error) {
+      if (error.response.data.registration === false) {
+        this.backendErrors.push(error.response.data.errors)
+      }
     }
   }
 }
