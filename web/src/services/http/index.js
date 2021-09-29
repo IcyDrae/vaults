@@ -11,7 +11,9 @@ export default {
      * @param onError
      */
     request(requestConfig, onSuccess, onError) {
-        let mergedConfigs = Object.assign(requestConfig, config);
+        let mergedConfigs = Object.assign(config, requestConfig);
+
+        console.log(mergedConfigs)
 
         axios
             .request(mergedConfigs)
