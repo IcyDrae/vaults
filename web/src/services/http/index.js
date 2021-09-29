@@ -2,13 +2,19 @@ import axios from "axios";
 import config from "./config"
 
 export default {
-    logConfig() {
-        return config;
-    },
+    /**
+     * Used for each request verb.
+     * Configuration options are the same as axios; some options are provided by the global config.
+     *
+     * @param requestConfig
+     * @param onSuccess
+     * @param onError
+     */
     request(requestConfig, onSuccess, onError) {
-        config {...requestConfig, ...config};
+        let mergedConfigs = Object.assign(requestConfig, config);
 
-        axios.request(config)
+        axios
+            .request(mergedConfigs)
             .then((response) => {
                 onSuccess(response);
             })
