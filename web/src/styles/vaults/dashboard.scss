@@ -48,6 +48,7 @@
     @include hide-scrollbar;
 
     flex-grow: 4;
+    flex-basis: 0;
     border-right: 1.5px solid $borderColor;
 
     .logins-container {
