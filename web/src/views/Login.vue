@@ -32,7 +32,7 @@
 
 import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
-import axios from 'axios';
+import http from "../services/http";
 import { createNamespacedHelpers } from 'vuex';
 import Encryption from "../encryption-flow/Encryption";
 
@@ -116,32 +116,34 @@ export default {
       };
     },
     submitForm(values, resetForm) {
-      axios
-          .post(process.env.VUE_APP_API_HOSTNAME + "/login", {
-                form: values,
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                withCredentials: true
-              })
-          .then(response => {
-            if(response.data.authenticated === true) {
-              this.success = "You are now logged in!";
 
-              this.persistUser(response.data.user);
+      http.request({
+        method: "post",
+        url: "/login",
+        data: {
+          form: values
+        }
+      }, (response) => {
+        this.successHandler(response, resetForm);
+      }, (error) => {
+        this.errorHandler(error);
+      });
+    },
+    successHandler(response, resetForm) {
+      if(response.data.authenticated === true) {
+        this.success = "You are now logged in!";
 
-              resetForm();
+        this.persistUser(response.data.user);
 
-              this.$router.push("/vaults");
-            }
-          })
-          .catch(error => {
-            if (error.response.data.login === false) {
-              this.backendErrors.push(error.response.data.errors)
-            }
-          })
+        resetForm();
+
+        this.$router.push("/vaults");
+      }
+    },
+    errorHandler(error) {
+      if (error.response.data.login === false) {
+        this.backendErrors.push(error.response.data.errors)
+      }
     },
     /**
      * Set the global user object.
