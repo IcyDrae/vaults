@@ -13,8 +13,6 @@ export default {
     request(requestConfig, onSuccess, onError) {
         let mergedConfigs = Object.assign(config, requestConfig);
 
-        console.log(mergedConfigs)
-
         axios
             .request(mergedConfigs)
             .then((response) => {
