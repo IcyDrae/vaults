@@ -116,7 +116,6 @@ export default {
       };
     },
     submitForm(values, resetForm) {
-
       http.request({
         method: "post",
         url: "/login",
