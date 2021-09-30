@@ -23,7 +23,7 @@
 
 <script>
 
-import axios from "axios";
+import http from "../../services/http"
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 
@@ -52,26 +52,26 @@ export default {
      * Requests the user's encrypted vaults.
      */
     fetchVaults() {
-      axios
-          .get(process.env.VUE_APP_API_HOSTNAME + "/vaults", {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            data: null,
-            params: {
-              userId: this.getUser.id
-            },
-            withCredentials: true
-          })
-          .then(response => {
-            if(response.status === 200) {
-              this.vaults = this.decryptVaults(response.data);
-            }
-          })
-          .catch(error => {
-            console.log(error.message);
-            this.backendErrors.push(error.message);
-          })
+      http.request({
+        method: "get",
+        url: "/vaults",
+        params: {
+          userId: this.getUser.id
+        }
+      }, (response) => {
+        this.successHandler(response);
+      }, (error) => {
+        this.errorHandler(error);
+      });
+    },
+    successHandler(response) {
+      if(response.status === 200) {
+        this.vaults = this.decryptVaults(response.data);
+      }
+    },
+    errorHandler(error) {
+      console.log(error.message);
+      this.backendErrors.push(error.message);
     },
     /**
      * Decrypts the given vaults & decodes them into an array.
