@@ -1,7 +1,5 @@
 <template>
   <div class="dashboard">
-<!--    <router-link :to="{ name: 'createLogin', params: { id: this.$route.params.id } }">Create Login</router-link>
-    <router-view></router-view>-->
     <div class="navigation">
       <ul class="folders">
         <li>
@@ -27,6 +25,7 @@
       </ul>
     </div>
     <div class="logins">
+      <TypeSelect></TypeSelect>
       <div class="logins-container">
         <div v-for="login in logins" :key="login"
              class="login"
@@ -44,6 +43,8 @@
           <p>{{ login.login_name }}</p>
         </div>
       </div>
+
+<!--      <router-link :to="{ name: 'createLogin', params: { id: this.$route.params.id } }">Create Login</router-link>-->
     </div>
     <div class="account">
       <router-view></router-view>
@@ -56,11 +57,15 @@
 import http from "../../services/http";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
+import TypeSelect from "../../components/TypeSelect";
 
 const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Dashboard",
+  components: {
+    TypeSelect
+  },
   data() {
     return {
       logins: [],
