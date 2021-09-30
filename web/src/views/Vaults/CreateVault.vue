@@ -36,7 +36,7 @@ import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import axios from "axios";
+import http from "../../services/http";
 
 const { mapGetters } = createNamespacedHelpers("user");
 
@@ -90,29 +90,30 @@ export default {
       this.submitForm(encryptedValues, resetForm);
     },
     submitForm(values, resetForm) {
-      axios
-          .post(process.env.VUE_APP_API_HOSTNAME + "/vaults/create", {
-            userId: this.getUser.id,
-            data: values
-          },
-              {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true
-          })
-          .then(response => {
-            if(response.status === 201) {
-              resetForm();
+      http.request({
+        method: "post",
+        url: "/vaults/create",
+        data: {
+          userId: this.getUser.id,
+          data: values
+        }
+      }).then(response => {
+        this.successHandler(response, resetForm)
+      }).catch(error => {
+        this.errorHandler(error);
+      });
+    },
+    successHandler(response, resetForm) {
+      if(response.status === 201) {
+        resetForm();
 
-              this.$router.push("/vaults");
-            }
-          })
-          .catch(error => {
-            if (error.response.data.registration === false) {
-              this.backendErrors.push(error.response.data.errors)
-            }
-          })
+        this.$router.push("/vaults");
+      }
+    },
+    errorHandler(error) {
+      if (error.response.data.registration === false) {
+        this.backendErrors.push(error.response.data.errors)
+      }
     }
   }
 }
