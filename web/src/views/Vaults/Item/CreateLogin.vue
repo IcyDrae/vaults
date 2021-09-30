@@ -10,6 +10,30 @@
         </label>
 
         <label>
+          <span>Username</span>
+          <VeeValidateField name="login_username" type="text" />
+          <p class="form-error">{{ errors.login_username }}</p>
+        </label>
+
+        <label>
+          <span>E-Mail Address</span>
+          <VeeValidateField name="login_email" type="text" />
+          <p class="form-error">{{ errors.login_email }}</p>
+        </label>
+
+        <label>
+          <span>Website</span>
+          <VeeValidateField name="website" type="text" />
+          <p class="form-error">{{ errors.website }}</p>
+        </label>
+
+        <label>
+          <span>Password</span>
+          <VeeValidateField name="login_password" type="text" />
+          <p class="form-error">{{ errors.login_password }}</p>
+        </label>
+
+        <label>
           <span>Description</span>
           <VeeValidateField name="login_description" as="textarea" />
           <p class="form-error">{{ errors.login_description }}</p>
@@ -32,7 +56,7 @@
 
 const ITEM_TYPE = "login";
 
-import axios from "axios";
+import http from "../../../services/http";
 import Encryption from "../../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 import * as VeeValidate from "vee-validate";
@@ -94,30 +118,31 @@ export default {
       this.submitForm(encryptedValues, resetForm);
     },
     submitForm(values, resetForm) {
-      axios
-          .post(process.env.VUE_APP_API_HOSTNAME + "/logins/create", {
-                vaultId: this.$route.params.id,
-                userId: this.getUser.id,
-                data: values
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                withCredentials: true
-              })
-          .then(response => {
-            if(response.status === 201) {
-              resetForm();
+      http.request({
+        method: "post",
+        url: "/logins/create",
+        data: {
+          vaultId: this.$route.params.id,
+          userId: this.getUser.id,
+          data: values
+        }
+      }).then(response => {
+        this.successHandler(response, resetForm);
+      }).catch(error => {
+        this.errorHandler(error);
+      });
+    },
+    successHandler(response, resetForm) {
+      if(response.status === 201) {
+        resetForm();
 
-              this.$router.push("/vaults");
-            }
-          })
-          .catch(error => {
-            if (error.response.data.registration === false) {
-              this.backendErrors.push(error.response.data.errors)
-            }
-          })
+        this.$router.push("/vaults");
+      }
+    },
+    errorHandler(error) {
+      if (error.response.data.registration === false) {
+        this.backendErrors.push(error.response.data.errors);
+      }
     }
   }
 }
