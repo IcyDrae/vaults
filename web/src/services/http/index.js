@@ -7,19 +7,10 @@ export default {
      * Configuration options are the same as axios; some options are provided by the global config.
      *
      * @param requestConfig
-     * @param onSuccess
-     * @param onError
      */
-    request(requestConfig, onSuccess, onError) {
+    request(requestConfig) {
         let mergedConfigs = Object.assign(config, requestConfig);
 
-        axios
-            .request(mergedConfigs)
-            .then((response) => {
-                onSuccess(response);
-            })
-            .catch((error) => {
-                onError(error)
-            });
+        return axios.request(mergedConfigs);
     }
 }
