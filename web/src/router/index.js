@@ -47,11 +47,6 @@ const routes = [
         name: "editVault",
         component: EditVault,
         props: true
-      },
-      {
-        path: ":id/create",
-        name: "createLogin",
-        component: CreateLogin
       }
     ]
   },
@@ -65,6 +60,11 @@ const routes = [
         name: "item",
         component: Item,
         props: true
+      },
+      {
+        path: "create",
+        name: "createLogin",
+        component: CreateLogin
       }
     ]
   },

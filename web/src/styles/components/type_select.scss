@@ -1,0 +1,14 @@
+.type-select {
+  position: fixed;
+
+  select {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    color: $white;
+
+    border: 1px solid $borderColor;
+    outline: 0;
+    background: $black;
+  }
+}
