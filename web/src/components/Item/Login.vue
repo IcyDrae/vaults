@@ -1,8 +1,8 @@
 <template>
   <VeeValidateForm :validation-schema="schema"
                    :initial-values="{
-                      login_name: this.loginData.login_name,
-                      login_description: this.loginData.login_description,
+                      login_name: loginData.login_name,
+                      login_description: loginData.login_description,
                    }"
                    v-slot="{ errors, handleSubmit }" as="div">
     <form @submit="handleSubmit($event, handleForm)">
@@ -51,7 +51,6 @@ export default {
       success: "",
       backendErrors: [],
       //encryption: new Encryption(),
-      loginData: JSON.parse(this.$props.itemData),
     }
   },
   props: ["itemData"],
@@ -59,7 +58,10 @@ export default {
     ...mapGetters([
       "getUser",
       "getEncryptionKey"
-    ])
+    ]),
+    loginData() {
+      return JSON.parse(this.$props.itemData);
+    }
   },
   setup() {
     /**
