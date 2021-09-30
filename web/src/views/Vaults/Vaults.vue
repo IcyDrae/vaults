@@ -23,7 +23,7 @@
 
 <script>
 
-import http from "../../services/http"
+import http from "../../services/http";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 
@@ -58,9 +58,9 @@ export default {
         params: {
           userId: this.getUser.id
         }
-      }, (response) => {
+      }).then(response => {
         this.successHandler(response);
-      }, (error) => {
+      }).catch(error => {
         this.errorHandler(error);
       });
     },

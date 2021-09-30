@@ -208,9 +208,9 @@ export default {
         data: {
           form: values
         }
-      }, (response) => {
+      }).then(response => {
         this.successHandler(response, resetForm);
-      }, (error) => {
+      }).catch(error => {
         this.errorHandler(error);
       });
     },

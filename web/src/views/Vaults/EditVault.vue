@@ -112,13 +112,13 @@ export default {
           userId: this.getUser.id,
           data: values
         }
-      }, (response) => {
+      }).then(response => {
         if(response.status === 204) {
           resetForm();
 
           this.$router.go(-1);
         }
-      }, (error) => {
+      }).catch(error => {
         this.backendErrors.push(error.response.data.errors);
       });
     },
@@ -131,13 +131,13 @@ export default {
         data: JSON.stringify({
           userId: this.getUser.id
         })
-      }, (response) => {
+      }).then(response => {
         if(response.status === 204) {
           this.showModal = false;
 
           this.$router.go(-1);
         }
-      }, (error) => {
+      }).catch(error => {
         this.backendErrors.push(error.response.data.errors)
       });
     }

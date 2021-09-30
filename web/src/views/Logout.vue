@@ -22,20 +22,23 @@ export default {
   },
   methods: {
     ...mapActions([
-      "setUser"
+        "setUser",
+        "setEncryptionKey"
     ]),
     logout() {
       http.request({
         method: "get",
         url: "/logout"
-      }, (response) => {
+      }).then(response => {
         this.successHandler(response);
-      }, (error) => {
+      }).catch(error => {
         this.errorHandler(error);
       });
     },
     successHandler(response) {
       if (response.status === 204) {
+        this.setEncryptionKey({});
+
         if (!this.isObjectEmpty(this.getUser)) {
           this.setUser({})
         }

@@ -95,9 +95,9 @@ export default {
       http.request({
         method: "get",
         url: url
-      }, (response) => {
+      }).then(response => {
         this.successHandler(response);
-      }, (error) => {
+      }).catch(error => {
         this.errorHandler(error);
       });
     },
