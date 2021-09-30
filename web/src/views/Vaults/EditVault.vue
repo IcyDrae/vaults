@@ -46,7 +46,7 @@ import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import axios from "axios";
+import http from "../../services/http";
 
 const { mapGetters } = createNamespacedHelpers("user");
 
@@ -103,49 +103,43 @@ export default {
       this.submitForm(encryptedValues, resetForm);
     },
     submitForm(values, resetForm) {
-      axios
-          .put(process.env.VUE_APP_API_HOSTNAME + `/vaults/update/${this.$route.params.id}`, {
-            userId: this.getUser.id,
-            data: values
-          },
-              {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true
-          })
-          .then(response => {
-            if(response.status === 204) {
-              resetForm();
+      let url = `/vaults/update/${this.$route.params.id}`;
 
-              this.$router.go(-1);
-            }
-          })
-          .catch(error => {
-            this.backendErrors.push(error.response.data.errors)
-          });
+      http.request({
+        method: "put",
+        url: url,
+        data: {
+          userId: this.getUser.id,
+          data: values
+        }
+      }, (response) => {
+        if(response.status === 204) {
+          resetForm();
+
+          this.$router.go(-1);
+        }
+      }, (error) => {
+        this.backendErrors.push(error.response.data.errors);
+      });
     },
     deleteVault() {
-      axios
-          .delete(process.env.VUE_APP_API_HOSTNAME + `/vaults/delete/${this.$route.params.id}`, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-            data: JSON.stringify({
-              userId: this.getUser.id,
-            })
-          })
-          .then(response => {
-            if(response.status === 204) {
-              this.showModal = false;
+      let url = `/vaults/delete/${this.$route.params.id}`;
 
-              this.$router.go(-1);
-            }
-          })
-          .catch(error => {
-            this.backendErrors.push(error.response.data.errors)
-          });
+      http.request({
+        method: "delete",
+        url: url,
+        data: JSON.stringify({
+          userId: this.getUser.id
+        })
+      }, (response) => {
+        if(response.status === 204) {
+          this.showModal = false;
+
+          this.$router.go(-1);
+        }
+      }, (error) => {
+        this.backendErrors.push(error.response.data.errors)
+      });
     }
   }
 }
