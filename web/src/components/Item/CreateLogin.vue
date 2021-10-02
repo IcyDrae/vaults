@@ -187,7 +187,7 @@ export default {
 
         resetForm();
 
-        this.$router.push({ name: "vaultDashboard", params: { id: this.$props.vaultId } });
+        this.$router.push({ name: "item", params: { loginId: this.login.id, itemData: JSON.stringify(this.login) } });
       }
     },
     errorHandler(error) {
