@@ -51,10 +51,10 @@
 
 <script>
 
-import http from "../../../services/http";
+import http from "../../services/http";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import Encryption from "../../../encryption-flow/Encryption";
+import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 const { mapActions, mapGetters } = createNamespacedHelpers("user");
 

@@ -33,7 +33,6 @@
              name: 'item',
              params: {
                loginId: login.id,
-               type: login.item_type,
                itemData: JSON.stringify(login)
              }
              })">

@@ -1,26 +1,36 @@
 <template>
   <div>
-    <Login v-if="type === 'login'" v-bind:itemData="itemData"></Login>
-    <Note v-if="type === 'note'" v-bind:itemData="itemData"></Note>
+    <div v-for="property in loginData" :key="property.id">
+      {{ property }}
+    </div>
   </div>
 </template>
 
 <script>
 
-import Login from "../../../components/Item/Login/Login";
-import Note from "../../../components/Item/Note/Note";
-
 export default {
   name: "Item",
-  props: ["type", "itemData"],
-  components: {
-    Login,
-    Note
-  },
+  props: ["itemData"],
   data() {
     return {
     }
-  }
+  },
+  computed: {
+    /**
+     * Watches for changes for the $props.itemData, excludes specific properties.
+     */
+    loginData() {
+      let data = JSON.parse(this.$props.itemData);
+
+      let dataArray = Object.entries(data);
+
+      let filtered = dataArray.filter((key) => {
+        return key[0] !== "id" && key[0] !== "item_type";
+      });
+
+      return Object.fromEntries(filtered);
+    }
+  },
 }
 </script>
 
