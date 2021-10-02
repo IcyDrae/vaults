@@ -73,7 +73,12 @@ class LoginController extends AbstractController
         $entityManager->persist($login);
         $entityManager->flush();
 
-        return new Response("", 201);
+        $serialized = $this->serializer->serialize($login, "json", ["attributes"  => [
+            "id",
+            "data"
+        ]]);
+
+        return new Response($serialized, 201);
     }
 
     public function update(Request $request, string $id): Response
