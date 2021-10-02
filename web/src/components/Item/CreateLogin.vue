@@ -170,12 +170,30 @@ export default {
     restructureLoginObject(object) {
       return {
         "id": object.id,
-        "login_name": object.data.login_name,
-        "login_username": object.data.login_username,
-        "login_email": object.data.login_email ?? "",
-        "login_website": object.data.login_website,
-        "login_password": object.data.login_password,
-        "login_description": object.data.login_description ?? "",
+        "login_name": {
+          "label": "Name",
+          "value": object.data.login_name,
+        },
+        "login_username": {
+          "label": "Username",
+          "value": object.data.login_username
+        },
+        "login_email": {
+          "label": "E-Mail",
+          "value": object.data.login_email ?? ""
+        },
+        "login_website": {
+          "label": "Website",
+          "value": object.data.login_website
+        },
+        "login_password": {
+          "label": "Password",
+          "value": object.data.login_password
+        },
+        "login_description": {
+          "label": "Description",
+          "value": object.data.login_description ?? ""
+        },
         "item_type": object.data.item_type
       };
     },

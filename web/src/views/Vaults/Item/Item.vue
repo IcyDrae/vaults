@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-for="property in loginData" :key="property.id">
-      {{ property }}
+    <div v-for="(property) in loginData" :key="property.id">
+      {{ property.label }} | {{ property.value }}
     </div>
   </div>
 </template>
