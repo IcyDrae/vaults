@@ -56,7 +56,7 @@ import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import Encryption from "../../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-const { mapGetters } = createNamespacedHelpers("user");
+const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "CreateLogin",
@@ -70,13 +70,15 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      encryption: new Encryption()
+      encryption: new Encryption(),
+      login: Object
     }
   },
   computed: {
     ...mapGetters([
-      "getUser",
-      "getEncryptionKey"
+        "getUser",
+        "getEncryptionKey",
+        "getLogins"
     ])
   },
   setup() {
@@ -112,6 +114,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      "addLogin"
+    ]),
     /**
      *
      * @param values
@@ -139,17 +144,55 @@ export default {
         this.errorHandler(error);
       });
     },
+    /**
+     * Decrypts the given logins & decodes them into an array.
+     *
+     * @param response
+     * @returns {{}}
+     */
+    decryptLogin(response) {
+      let decryptedLogins = {};
+
+      let login = response.data;
+
+      login = this.encryption.decrypt(login, this.getEncryptionKey);
+      login = JSON.parse(login);
+
+      response.data = login;
+
+      decryptedLogins = this.restructureLoginObject(response);
+
+      return decryptedLogins;
+    },
+    /**
+     * Makes a new login array with the decrypted data.
+     *
+     * @param object
+     */
+    restructureLoginObject(object) {
+      return {
+        "id": object.id,
+        "login_name": object.data.login_name,
+        "login_username": object.data.login_username,
+        "login_email": object.data.login_email ?? "",
+        "login_website": object.data.login_website,
+        "login_password": object.data.login_password,
+        "login_description": object.data.login_description ?? "",
+        "item_type": object.data.item_type
+      };
+    },
     successHandler(response, resetForm) {
       if(response.status === 201) {
+        this.login = this.decryptLogin(response.data);
+        this.addLogin(this.login);
+
         resetForm();
 
         this.$router.push({ name: "vaultDashboard", params: { id: this.$props.vaultId } });
       }
     },
     errorHandler(error) {
-      if (error.response.data.registration === false) {
-        this.backendErrors.push(error.response.data.errors);
-      }
+      console.log(error)
     }
   }
 }

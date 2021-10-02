@@ -57,7 +57,7 @@ import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
-const { mapGetters } = createNamespacedHelpers("user");
+const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Dashboard",
@@ -73,8 +73,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "getUser",
-      "getEncryptionKey"
+        "getUser",
+        "getEncryptionKey",
+        "getLogins"
     ])
   },
   beforeRouteEnter(to, from, next) {
@@ -89,6 +90,9 @@ export default {
     this.fetchVaultItems();
   },
   methods: {
+    ...mapActions([
+        "setLogins"
+    ]),
     /**
      * Requests the user's encrypted vaults.
      */
@@ -106,7 +110,13 @@ export default {
     },
     successHandler(response) {
       if(response.status === 200) {
-        this.logins = this.decryptLogins(response.data);
+        let decryptedLogins = this.decryptLogins(response.data);
+
+        Object.values(decryptedLogins).forEach((login) => {
+          this.logins.push(login);
+        });
+
+        this.setLogins(this.logins);
       }
     },
     errorHandler(error) {
