@@ -1,7 +1,7 @@
 <template>
   <div>
-    <CreateLogin v-if="type === 'login'" v-bind:type="type" v-bind:vaultId="vaultId"></CreateLogin>
-    <CreateNote v-if="type === 'note'" v-bind:type="type" v-bind:vaultId="vaultId"></CreateNote>
+    <CreateLogin v-if="type === 'login'" v-bind:vaultId="vaultId"></CreateLogin>
+    <CreateNote v-if="type === 'note'" v-bind:vaultId="vaultId"></CreateNote>
   </div>
 </template>
 

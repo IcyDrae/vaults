@@ -51,8 +51,6 @@
 
 <script>
 
-const ITEM_TYPE = "login";
-
 import http from "../../../services/http";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
@@ -110,8 +108,7 @@ export default {
     });
 
     return {
-      schema,
-      ITEM_TYPE
+      schema
     };
   },
   methods: {
@@ -121,7 +118,7 @@ export default {
      * @param resetForm
      */
     handleForm(values, { resetForm }) {
-      values.item_type = ITEM_TYPE;
+      values.item_type = "login";
       values = JSON.stringify(values);
       let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
 
