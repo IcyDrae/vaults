@@ -9,7 +9,7 @@ import EditVault from "../views/Vaults/EditVault";
 import Profile from "../views/Profile";
 import VaultDashboard from "../views/Vaults/VaultDashboard";
 import Item from "../views/Vaults/Item/Item";
-import CreateLogin from "../views/Vaults/Item/CreateLogin";
+import CreateItem from "../views/Vaults/Item/CreateItem";
 
 const routes = [
   {
@@ -63,8 +63,9 @@ const routes = [
       },
       {
         path: "create",
-        name: "createLogin",
-        component: CreateLogin
+        name: "createItem",
+        component: CreateItem,
+        props: true
       }
     ]
   },

@@ -25,7 +25,7 @@
       </ul>
     </div>
     <div class="logins">
-      <TypeSelect></TypeSelect>
+      <CreationTypeSelector v-bind:vaultId="$route.params.id"></CreationTypeSelector>
       <div class="logins-container">
         <div v-for="login in logins" :key="login"
              class="login"
@@ -43,8 +43,6 @@
           <p>{{ login.login_name }}</p>
         </div>
       </div>
-
-<!--      <router-link :to="{ name: 'createLogin', params: { id: this.$route.params.id } }">Create Login</router-link>-->
     </div>
     <div class="account">
       <router-view></router-view>
@@ -57,14 +55,14 @@
 import http from "../../services/http";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import TypeSelect from "../../components/TypeSelect";
+import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
 const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Dashboard",
   components: {
-    TypeSelect
+    CreationTypeSelector
   },
   data() {
     return {
@@ -146,7 +144,11 @@ export default {
       return {
         "id": object.id,
         "login_name": object.data.login_name,
-        "login_description": object.data.login_description,
+        "login_username": object.data.login_username,
+        "login_email": object.data.login_email ?? "",
+        "login_website": object.data.login_website,
+        "login_password": object.data.login_password,
+        "login_description": object.data.login_description ?? "",
         "item_type": object.data.item_type
       };
     }

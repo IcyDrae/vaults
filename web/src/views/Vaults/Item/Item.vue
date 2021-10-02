@@ -7,8 +7,8 @@
 
 <script>
 
-import Login from "../../../components/Item/Login";
-import Note from "../../../components/Item/Note";
+import Login from "../../../components/Item/Login/Login";
+import Note from "../../../components/Item/Note/Note";
 
 export default {
   name: "Item",
