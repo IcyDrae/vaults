@@ -77,8 +77,7 @@ export default {
   computed: {
     ...mapGetters([
         "getUser",
-        "getEncryptionKey",
-        "getLogins"
+        "getEncryptionKey"
     ])
   },
   setup() {
@@ -115,7 +114,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "addLogin"
+      "addItem"
     ]),
     /**
      *
@@ -184,7 +183,7 @@ export default {
     successHandler(response, resetForm) {
       if(response.status === 201) {
         this.login = this.decryptLogin(response.data);
-        this.addLogin(this.login);
+        this.addItem(this.login);
 
         resetForm();
 

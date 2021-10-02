@@ -74,8 +74,7 @@ export default {
   computed: {
     ...mapGetters([
         "getUser",
-        "getEncryptionKey",
-        "getLogins"
+        "getEncryptionKey"
     ])
   },
   beforeRouteEnter(to, from, next) {
@@ -91,7 +90,7 @@ export default {
   },
   methods: {
     ...mapActions([
-        "setLogins"
+        "setItems"
     ]),
     /**
      * Requests the user's encrypted vaults.
@@ -116,7 +115,7 @@ export default {
           this.logins.push(login);
         });
 
-        this.setLogins(this.logins);
+        this.setItems(this.logins);
       }
     },
     errorHandler(error) {

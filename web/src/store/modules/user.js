@@ -7,7 +7,7 @@ export default {
         user: Object,
         encryptionKey: Uint8Array,
         authenticationHash: Uint8Array,
-        logins: []
+        items: []
     },
     mutations: {
         setUser(state, payload) {
@@ -19,11 +19,11 @@ export default {
         setAuthenticationHash(state, payload) {
             state.authenticationHash = payload;
         },
-        setLogins(state, payload) {
-            state.logins = payload;
+        setItems(state, payload) {
+            state.items = payload;
         },
-        addLogin(state, payload) {
-            state.logins.push(payload);
+        addItem(state, payload) {
+            state.items.push(payload);
         }
     },
     actions: {
@@ -36,11 +36,11 @@ export default {
         setAuthenticationHash(context, payload) {
             context.commit("setAuthenticationHash", payload);
         },
-        setLogins(context, payload) {
-            context.commit("setLogins", payload);
+        setItems(context, payload) {
+            context.commit("setItems", payload);
         },
-        addLogin(context, payload) {
-            context.commit("addLogin", payload);
+        addItem(context, payload) {
+            context.commit("addItem", payload);
         }
     },
     getters: {
@@ -53,8 +53,8 @@ export default {
         getAuthenticationHash(state) {
             return state.authenticationHash;
         },
-        getLogins(state) {
-            return state.logins;
+        getItems(state) {
+            return state.items;
         }
     },
 }
