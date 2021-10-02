@@ -15,7 +15,6 @@
 
 export default {
   name: "CreationTypeSelector",
-  props: ["vaultId"],
   data() {
     return {
       selected: "",
@@ -28,7 +27,7 @@ export default {
   methods: {
     selectorHandler(value) {
       this.selected = "";
-      this.$router.push({ name: 'createItem', params: { vaultId: this.$props.vaultId, type: value } });
+      this.$router.push({ name: 'createItem', params: { type: value } });
     },
   }
 }

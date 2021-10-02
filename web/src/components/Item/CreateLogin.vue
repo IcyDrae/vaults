@@ -65,7 +65,6 @@ export default {
     VeeValidateForm: VeeValidate.Form,
     VeeValidateField: VeeValidate.Field,
   },
-  props: ["type", "vaultId"],
   data() {
     return {
       success: "",

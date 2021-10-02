@@ -25,7 +25,7 @@
       </ul>
     </div>
     <div class="logins">
-      <CreationTypeSelector v-bind:vaultId="$route.params.id"></CreationTypeSelector>
+      <CreationTypeSelector></CreationTypeSelector>
       <div class="logins-container">
         <div v-for="login in logins" :key="login"
              class="login"
