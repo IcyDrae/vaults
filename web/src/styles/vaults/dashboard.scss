@@ -98,6 +98,25 @@
       text-align: left;
       width: 75%;
 
+      #toggle-password {
+        position: relative;
+        cursor: pointer;
+        float: right;
+        margin-top: -83px;
+
+        &.show-password {
+          &::after {
+            content: "Hide";
+          }
+        }
+
+        &.hide-password {
+          &::after {
+            content: "Show";
+          }
+        }
+      }
+
       label {
         display: block;
         margin: 50px 0;

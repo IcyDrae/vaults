@@ -42,6 +42,8 @@ export default {
         if (!this.isObjectEmpty(this.getUser)) {
           this.setUser({})
         }
+
+        this.$router.push("/login");
       }
     },
     errorHandler(error) {

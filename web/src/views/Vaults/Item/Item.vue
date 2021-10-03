@@ -1,16 +1,22 @@
 <template>
-  <div>
-    <div>
-      <form>
-        <h1>{{ loginData.login_name.value }}</h1>
-        <label v-for="property in loginData" :key="property.id">
+  <div class="item-detail">
+    <form>
+      <h1>{{ loginData.login_name.value }}</h1>
+      <div v-for="(property, index) in loginData" :key="property.id">
+        <label>
           <span>{{ property.label }}</span>
-          <input :name="property.label"
+          <input :ref="property.label"
+                 :name="index"
                  :type="property.type"
                  :value="property.value" readonly />
         </label>
-      </form>
-    </div>
+        <span v-if="property.type === 'password'"
+              ref="togglePassword"
+              id="toggle-password"
+              class="hide-password"
+              @click="togglePasswordVisibility"></span>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -39,6 +45,38 @@ export default {
       return Object.fromEntries(filtered);
     }
   },
+  beforeUpdate() {
+    let password = this.$refs.Password;
+    let toggle = this.$refs.togglePassword;
+
+    toggle.className = "hide-password";
+
+    if (password.getAttribute("type") === "text") {
+      password.setAttribute("type", "password");
+    }
+  },
+  methods: {
+    togglePasswordVisibility() {
+      let password = this.$refs.Password;
+
+      if (password.getAttribute("type") === "password") {
+        password.setAttribute("type", "text");
+      } else {
+        password.setAttribute("type", "password");
+      }
+
+      this.toggleInputText();
+    },
+    toggleInputText() {
+      let toggle = this.$refs.togglePassword;
+
+      if (toggle.className === "hide-password") {
+        toggle.className = "show-password";
+      } else {
+        toggle.className = "hide-password";
+      }
+    }
+  }
 }
 </script>
 
