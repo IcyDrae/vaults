@@ -15,6 +15,7 @@
               id="toggle-password"
               class="hide-password"
               @click="togglePasswordVisibility"></span>
+        <span class="copy">Copy</span>
       </div>
     </form>
   </div>

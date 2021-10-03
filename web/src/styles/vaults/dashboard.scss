@@ -103,6 +103,7 @@
         cursor: pointer;
         float: right;
         margin-top: -83px;
+        margin-right: 50px;
 
         &.show-password {
           &::after {
@@ -115,6 +116,13 @@
             content: "Show";
           }
         }
+      }
+
+      .copy {
+        position: relative;
+        cursor: pointer;
+        float: right;
+        margin-top: -83px;
       }
 
       label {
