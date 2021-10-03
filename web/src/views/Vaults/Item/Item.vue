@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div v-for="(property) in loginData" :key="property.id">
-      {{ property.label }} | {{ property.value }}
+    <div>
+      <form>
+        <h1>{{ loginData.login_name.value }}</h1>
+        <label v-for="property in loginData" :key="property.id">
+          <span>{{ property.label }}</span>
+          <input :name="property.label"
+                 :type="property.type"
+                 :value="property.value" readonly />
+        </label>
+      </form>
     </div>
   </div>
 </template>

@@ -173,26 +173,32 @@ export default {
         "login_name": {
           "label": "Name",
           "value": object.data.login_name,
+          "type": "text"
         },
         "login_username": {
           "label": "Username",
-          "value": object.data.login_username
+          "value": object.data.login_username,
+          "type": "text"
         },
         "login_email": {
           "label": "E-Mail",
-          "value": object.data.login_email ?? ""
+          "value": object.data.login_email ?? "",
+          "type": "text"
         },
         "login_website": {
           "label": "Website",
-          "value": object.data.login_website
+          "value": object.data.login_website,
+          "type": "text"
         },
         "login_password": {
           "label": "Password",
-          "value": object.data.login_password
+          "value": object.data.login_password,
+          "type": "password"
         },
         "login_description": {
           "label": "Description",
-          "value": object.data.login_description ?? ""
+          "value": object.data.login_description ?? "",
+          "type": "textarea"
         },
         "item_type": object.data.item_type
       };
