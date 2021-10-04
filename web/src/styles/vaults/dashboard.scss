@@ -98,36 +98,13 @@
       text-align: left;
       width: 75%;
 
-      #toggle-password {
-        position: relative;
-        cursor: pointer;
-        float: right;
-        margin-top: -83px;
-        margin-right: 50px;
-
-        &.show-password {
-          &::after {
-            content: "Hide";
-          }
-        }
-
-        &.hide-password {
-          &::after {
-            content: "Show";
-          }
-        }
-      }
-
-      .copy {
-        position: relative;
-        cursor: pointer;
-        float: right;
-        margin-top: -83px;
-      }
-
       label {
         display: block;
         margin: 50px 0;
+
+        &:hover + .input-cta-container {
+          opacity: 1;
+        }
 
         span, input, textarea {
           color: $accountWhite;
@@ -148,6 +125,46 @@
         input, textarea {
           font-size: 18px;
           font-family: $fontFamily;
+        }
+      }
+
+      .input-cta-container {
+        opacity: 0;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        .input-cta {
+          position: relative;
+          cursor: pointer;
+          padding: 5px;
+          border: 1px solid $borderColor;
+          transition: all 0.3s;
+          float: right;
+          margin-top: -90px;
+          font-size: 16px;
+
+          &:active {
+            color: $black;
+            background-color: $white;
+          }
+
+          &#toggle-password {
+            margin-right: 50px;
+
+            &.show-password {
+              &::after {
+                content: "Hide";
+              }
+            }
+
+            &.hide-password {
+              &::after {
+                content: "Show";
+              }
+            }
+          }
         }
       }
 

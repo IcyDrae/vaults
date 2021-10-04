@@ -10,12 +10,14 @@
                  :type="property.type"
                  :value="property.value" readonly />
         </label>
-        <span v-if="property.type === 'password'"
-              ref="togglePassword"
-              id="toggle-password"
-              class="hide-password"
-              @click="togglePasswordVisibility"></span>
-        <span class="copy">Copy</span>
+        <div class="input-cta-container">
+          <span v-if="property.type === 'password'"
+                ref="togglePassword"
+                id="toggle-password"
+                class="input-cta hide-password"
+                @click="togglePasswordVisibility"></span>
+          <span class="input-cta copy">Copy</span>
+        </div>
       </div>
     </form>
   </div>
@@ -50,7 +52,8 @@ export default {
     let password = this.$refs.Password;
     let toggle = this.$refs.togglePassword;
 
-    toggle.className = "hide-password";
+    toggle.classList.remove("show-password");
+    toggle.classList.add("hide-password");
 
     if (password.getAttribute("type") === "text") {
       password.setAttribute("type", "password");
@@ -71,10 +74,12 @@ export default {
     toggleInputText() {
       let toggle = this.$refs.togglePassword;
 
-      if (toggle.className === "hide-password") {
-        toggle.className = "show-password";
-      } else {
-        toggle.className = "hide-password";
+      if (toggle.classList.contains("hide-password")) {
+        toggle.classList.remove("hide-password");
+        toggle.classList.add("show-password");
+      } else if(toggle.classList.contains("show-password")) {
+        toggle.classList.remove("show-password");
+        toggle.classList.add("hide-password");
       }
     }
   }
