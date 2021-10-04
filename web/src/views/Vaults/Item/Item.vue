@@ -16,7 +16,7 @@
                 id="toggle-password"
                 class="input-cta hide-password"
                 @click="togglePasswordVisibility"></span>
-          <span class="input-cta copy">Copy</span>
+          <span class="input-cta copy" @click="copyToClipboard(property.label)">Copy</span>
         </div>
       </div>
     </form>
@@ -80,6 +80,21 @@ export default {
       } else if(toggle.classList.contains("show-password")) {
         toggle.classList.remove("show-password");
         toggle.classList.add("hide-password");
+      }
+    },
+    copyToClipboard(referenceName) {
+      let element = this.$refs[referenceName];
+      let typeAttribute = element.getAttribute("type");
+
+      if (typeAttribute === "password") {
+        element.setAttribute("type", "text");
+      }
+
+      element.select();
+      document.execCommand("copy");
+
+      if (typeAttribute === "password") {
+        element.setAttribute("type", "password");
       }
     }
   }
