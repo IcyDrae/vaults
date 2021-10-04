@@ -27,19 +27,19 @@
     <div class="logins">
       <CreationTypeSelector></CreationTypeSelector>
       <div class="logins-container">
-        <div v-for="login in logins" :key="login"
+        <div v-for="item in items" :key="item"
              class="login"
              @click="this.$router.push({
              name: 'item',
              params: {
-               loginId: login.id,
-               itemData: JSON.stringify(login)
+               itemId: item.id,
+               itemData: JSON.stringify(item)
              }
              })">
           <div>
             <img src="@/assets/instagram.png" alt="Instagram">
           </div>
-          <p>{{ login.login_name.value }}</p>
+          <p>{{ item.name.value }}</p>
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@ export default {
   },
   data() {
     return {
-      logins: [],
+      items: [],
       backendErrors: [],
       encryption: new Encryption()
     }
@@ -108,13 +108,13 @@ export default {
     },
     successHandler(response) {
       if(response.status === 200) {
-        let decryptedLogins = this.decryptLogins(response.data);
+        let decryptedItems = this.decryptItems(response.data);
 
-        Object.values(decryptedLogins).forEach((login) => {
-          this.logins.push(login);
+        Object.values(decryptedItems).forEach((item) => {
+          this.items.push(item);
         });
 
-        this.setItems(this.logins);
+        this.setItems(this.items);
       }
     },
     errorHandler(error) {
@@ -127,21 +127,22 @@ export default {
      * @param results
      * @returns {{}}
      */
-    decryptLogins(results) {
-      let decryptedLogins = {};
+    decryptItems(results) {
+      let decryptedItems = {};
 
       results.forEach((result, index) => {
-        let login = result.data;
+        let item = result.data;
 
-        login = this.encryption.decrypt(login, this.getEncryptionKey);
-        login = JSON.parse(login);
+        item = this.encryption.decrypt(item, this.getEncryptionKey);
+        item = JSON.parse(item);
 
-        result.data = login;
+        result.data = item;
 
-        decryptedLogins[index] = this.restructureLoginObject(result);
+        
+        decryptedItems[index] = this.restructureLoginObject(result);
       });
 
-      return decryptedLogins;
+      return decryptedItems;
     },
     /**
      * Makes a new login array with the decrypted data.
@@ -151,7 +152,7 @@ export default {
     restructureLoginObject(object) {
       return {
         "id": object.id,
-        "login_name": {
+        "name": {
           "label": "Name",
           "value": object.data.login_name,
           "type": "text"

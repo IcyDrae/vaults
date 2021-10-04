@@ -98,6 +98,29 @@
       text-align: left;
       width: 75%;
 
+      .detail-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        p {
+          cursor: pointer;
+          padding: 5px;
+          border: 1px solid $borderColor;
+          transition: all 0.3s;
+          font-size: 16px;
+
+          &:hover {
+            color: $black;
+            background-color: $white;
+          }
+
+          &:active {
+            background-color: gray;
+          }
+        }
+      }
+
       label {
         display: block;
         margin: 50px 0;

@@ -1,8 +1,12 @@
 <template>
   <div class="item-detail">
     <form>
-      <h1>{{ loginData.login_name.value }}</h1>
-      <div v-for="(property, index) in loginData" :key="property.id">
+      <div class="detail-head">
+        <h1>{{ item.name.value }}</h1>
+        <p @click="this.$router.push({ name: 'editItem', params: { itemId: $route.params.itemId } })">Edit</p>
+      </div>
+
+      <div v-for="(property, index) in item" :key="property.id">
         <label>
           <span>{{ property.label }}</span>
           <input :ref="property.label"
@@ -36,7 +40,7 @@ export default {
     /**
      * Watches for changes for the $props.itemData, excludes specific properties.
      */
-    loginData() {
+    item() {
       let data = JSON.parse(this.$props.itemData);
 
       let dataArray = Object.entries(data);

@@ -170,7 +170,7 @@ export default {
     restructureLoginObject(object) {
       return {
         "id": object.id,
-        "login_name": {
+        "name": {
           "label": "Name",
           "value": object.data.login_name,
           "type": "text"

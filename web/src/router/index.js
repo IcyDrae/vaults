@@ -10,6 +10,7 @@ import Profile from "../views/Profile";
 import VaultDashboard from "../views/Vaults/VaultDashboard";
 import Item from "../views/Vaults/Item/Item";
 import CreateItem from "../views/Vaults/Item/CreateItem";
+import EditItem from "../views/Vaults/Item/EditItem";
 
 const routes = [
   {
@@ -56,9 +57,15 @@ const routes = [
     component: VaultDashboard,
     children: [
       {
-        path: ":loginId",
+        path: ":itemId",
         name: "item",
         component: Item,
+        props: true
+      },
+      {
+        path: ":itemId/edit",
+        name: "editItem",
+        component: EditItem,
         props: true
       },
       {
