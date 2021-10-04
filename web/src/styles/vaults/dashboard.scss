@@ -145,9 +145,13 @@
           margin-top: -90px;
           font-size: 16px;
 
-          &:active {
+          &:hover {
             color: $black;
             background-color: $white;
+          }
+
+          &:active {
+            background-color: gray;
           }
 
           &#toggle-password {
