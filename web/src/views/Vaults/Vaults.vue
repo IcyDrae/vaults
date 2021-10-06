@@ -23,7 +23,7 @@
 
 <script>
 
-import http from "../../services/http";
+import {api} from "../../services/api";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 
@@ -52,13 +52,7 @@ export default {
      * Requests the user's encrypted vaults.
      */
     fetchVaults() {
-      http.request({
-        method: "get",
-        url: "/vaults",
-        params: {
-          userId: this.getUser.id
-        }
-      }).then(response => {
+      api.vault.fetchVaults().then(response => {
         this.successHandler(response);
       }).catch(error => {
         this.errorHandler(error);
