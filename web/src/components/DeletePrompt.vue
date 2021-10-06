@@ -2,7 +2,7 @@
   <div class="delete-vault-overlay vault-overlay">
     <div class="prompt">
       <div class="prompt-message">
-        You are about to delete this vault & all items inside it. This cannot be undone. Are you absolutely sure?
+        {{ promptText }}
       </div>
 
       <div>
@@ -16,7 +16,10 @@
 <script>
 
 export default {
-  name: "DeletePrompt"
+  name: "DeletePrompt",
+  props: {
+    promptText: String
+  }
 }
 
 </script>

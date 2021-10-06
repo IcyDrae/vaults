@@ -32,6 +32,7 @@
     </VeeValidateForm>
     <transition name="modal">
       <DeletePrompt v-if="showModal"
+                    :prompt-text="deletePromptText"
                     @deletionConfirmed="deleteVault"
                     @deletionCancelled="showModal = false">
       </DeletePrompt>
@@ -64,7 +65,8 @@ export default {
       success: "",
       backendErrors: [],
       encryption: new Encryption(),
-      showModal: false
+      showModal: false,
+      deletePromptText: "You are about to delete this vault & all items inside it. This cannot be undone. Are you absolutely sure?"
     }
   },
   computed: {

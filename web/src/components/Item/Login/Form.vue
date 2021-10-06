@@ -55,6 +55,7 @@
   </VeeValidateForm>
   <transition name="modal" v-if="edit">
     <DeletePrompt v-if="showModal"
+                  :prompt-text="deletePromptText"
                   @deletionConfirmed="deleteHandler"
                   @deletionCancelled="showModal = false">
     </DeletePrompt>
@@ -87,7 +88,8 @@ export default {
       ctaLabel: "",
       success: "",
       backendErrors: [],
-      showModal: false
+      showModal: false,
+      deletePromptText: "You are about to delete this login. This cannot be undone. Are you sure?"
     }
   },
   mounted() {
