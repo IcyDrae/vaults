@@ -47,10 +47,11 @@ export default {
   methods: {
     ...mapActions([
         "addItem",
-        "updateItem"
+        "updateItem",
+        "deleteItem"
     ]),
     deleteHandler() {
-      console.log("deleting from parent");
+      this.deleteVault();
     },
     /**
      *
@@ -153,7 +154,7 @@ export default {
       };
     },
     deleteVault() {
-      let url = `/vaults/delete/${this.$route.params.id}`;
+      let url = `/logins/delete/${this.loginData.id}`;
 
       http.request({
         method: "delete",
@@ -165,7 +166,9 @@ export default {
         if(response.status === 204) {
           this.showModal = false;
 
-          this.$router.go(-1);
+          this.deleteItem(this.loginData.id);
+
+          this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
         }
       }).catch(error => {
         this.backendErrors.push(error.response.data.errors)

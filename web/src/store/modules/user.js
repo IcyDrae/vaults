@@ -29,7 +29,12 @@ export default {
             let foundIndex = state.items.findIndex(element => element.id === payload.id);
 
             state.items.splice(foundIndex, 1, payload);
-        }
+        },
+        deleteItem(state, payload) {
+            let foundIndex = state.items.findIndex(element => element.id === payload);
+
+            state.items.splice(foundIndex, 1);
+        },
     },
     actions: {
         setUser(context, payload) {
@@ -49,6 +54,9 @@ export default {
         },
         updateItem(context, payload) {
             context.commit("updateItem", payload);
+        },
+        deleteItem(context, payload) {
+            context.commit("deleteItem", payload);
         }
     },
     getters: {
