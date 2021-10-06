@@ -26,27 +26,6 @@ class LoginController extends AbstractController
     }
 
     /**
-     * Queries the database by the given user id and returns all(if any) found vaults.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function list(Request $request): Response
-    {
-        $responseCode = 200;
-
-        $vaults = $this->repository->findMultipleByUserId(
-            $request->get("userId")
-        );
-
-        if (empty($vaults)) {
-            $responseCode = 404;
-        }
-
-        return new JsonResponse($vaults, $responseCode);
-    }
-
-    /**
      * Given encrypted data and a user id that owns it, persists that data as a new entity.
      *
      * @param Request $request
