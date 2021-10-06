@@ -46,7 +46,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      "addItem"
+        "addItem",
+        "updateItem"
     ]),
     deleteHandler() {
       console.log("deleting from parent");
@@ -83,15 +84,11 @@ export default {
     successHandler(response, resetForm) {
       if(response.status === 200) {
         let updatedLogin = this.decryptLogin(response.data);
-        /*this.addItem(updatedLogin);*/
+        this.updateItem(updatedLogin);
 
-        console.log(updatedLogin)
+        resetForm();
 
-        console.log(resetForm)
-
-        //resetForm();
-
-        /*this.$router.push({ name: "item", params: { itemId: updatedLogin.id, itemData: JSON.stringify(updatedLogin) } });*/
+        this.$router.push({ name: "item", params: { itemId: updatedLogin.id, itemData: JSON.stringify(updatedLogin) } });
       }
     },
     /**

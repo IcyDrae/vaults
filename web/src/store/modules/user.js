@@ -24,6 +24,11 @@ export default {
         },
         addItem(state, payload) {
             state.items.push(payload);
+        },
+        updateItem(state, payload) {
+            let foundIndex = state.items.findIndex(element => element.id === payload.id);
+
+            state.items.splice(foundIndex, 1, payload);
         }
     },
     actions: {
@@ -41,6 +46,9 @@ export default {
         },
         addItem(context, payload) {
             context.commit("addItem", payload);
+        },
+        updateItem(context, payload) {
+            context.commit("updateItem", payload);
         }
     },
     getters: {
