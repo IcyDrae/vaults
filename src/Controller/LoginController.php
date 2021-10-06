@@ -81,9 +81,32 @@ class LoginController extends AbstractController
         return new Response($serialized, 201);
     }
 
+    /**
+     * Updates a single login with the new encrypted data.
+     *
+     * @throws NonUniqueResultException
+     */
     public function update(Request $request, string $id): Response
     {
-        return new Response("");
+        $statusCode = 404;
+        $entityManager = $this->getDoctrine()->getManager();
+        $requestBody = json_decode($request->getContent(), true);
+
+        $login = $this->repository->findSingleByUserId($id, $requestBody["userId"]);
+
+        if (!empty($login)) {
+            $login->setData($requestBody["data"]);
+            $entityManager->flush();
+
+            $statusCode = 200;
+        }
+
+        $serialized = $this->serializer->serialize($login, "json", ["attributes"  => [
+            "id",
+            "data"
+        ]]);
+
+        return new Response($serialized, $statusCode);
     }
 
     public function delete(Request $request, string $id): Response
