@@ -34,13 +34,13 @@
 
 <script>
 
-import {api} from "../../services/api";
-import DeletePrompt from "../../components/DeletePrompt";
+import {api} from "../../../services/api";
+import DeletePrompt from "../../../components/DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import Encryption from "../../encryption-flow/Encryption";
+import Encryption from "../../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import http from "../../services/http";
+import http from "../../../services/http";
 
 const { mapGetters } = createNamespacedHelpers("user");
 

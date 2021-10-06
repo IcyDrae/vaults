@@ -39,7 +39,7 @@
       </label>
 
       <button class="btn">{{ ctaLabel }}</button>
-      <button v-if="editing"
+      <button v-if="edit"
               type="button"
               class="btn delete-vault-cta"
               @click="showModal = true">
@@ -53,7 +53,7 @@
       <p class="backend-success">{{ success }}</p>
     </form>
   </VeeValidateForm>
-  <transition name="modal" v-if="editing">
+  <transition name="modal" v-if="edit">
     <DeletePrompt v-if="showModal"
                   @deletionConfirmed="deleteHandler"
                   @deletionCancelled="showModal = false">
@@ -71,8 +71,8 @@ export default {
   name: "CreateLogin",
   props: {
     login: Object,
-    creation: Boolean,
-    editing: Boolean,
+    create: Boolean,
+    edit: Boolean,
     actionHandler: Function,
     deleteHandler: Function
   },
@@ -91,9 +91,9 @@ export default {
     }
   },
   mounted() {
-    if (this.$props.creation) {
+    if (this.$props.create) {
       this.ctaLabel = "Create";
-    } else if(this.$props.editing) {
+    } else if(this.$props.edit) {
       this.ctaLabel = "Save";
     }
   },

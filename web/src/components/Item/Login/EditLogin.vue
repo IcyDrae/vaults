@@ -1,7 +1,7 @@
 <template>
   <div class="item-detail edit-login">
     <Form
-        :editing="true"
+        :edit="true"
         :action-handler="handleForm"
         :delete-handler="deleteHandler"
         :login="loginData"
@@ -11,11 +11,11 @@
 
 <script>
 
-import {api} from "../../services/api";
-import Form from "../../components/Item/Login/Form";
-import Encryption from "../../encryption-flow/Encryption";
+import {api} from "../../../services/api";
+import Form from "../../../components/Item/Login/Form";
+import Encryption from "../../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import http from "../../services/http";
+import http from "../../../services/http";
 
 const { mapGetters } = createNamespacedHelpers("user");
 

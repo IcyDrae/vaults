@@ -7,8 +7,8 @@
 
 <script>
 
-import EditLogin from "../../../components/Item/EditLogin";
-import EditNote from "../../../components/Item/EditNote";
+import EditLogin from "../../../components/Item/Login/EditLogin";
+import EditNote from "../../../components/Item/Note/EditNote";
 
 export default {
   name: "EditItem",
