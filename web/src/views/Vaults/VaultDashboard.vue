@@ -138,7 +138,7 @@ export default {
 
         result.data = item;
 
-        
+        // TODO check type and call a different "restructurer"
         decryptedItems[index] = this.restructureLoginObject(result);
       });
 

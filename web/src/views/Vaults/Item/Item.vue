@@ -3,7 +3,12 @@
     <form>
       <div class="detail-head">
         <h1>{{ item.name.value }}</h1>
-        <p @click="this.$router.push({ name: 'editItem', params: { itemId: $route.params.itemId } })">Edit</p>
+        <p @click="this.$router.push({
+        name: 'editItem',
+        params: {
+          item: this.$props.itemData
+        }
+        })">Edit</p>
       </div>
 
       <div v-for="(property, index) in item" :key="property.id">
