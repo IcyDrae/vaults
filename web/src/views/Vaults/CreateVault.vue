@@ -83,8 +83,7 @@ export default {
      * @param resetForm
      */
     async handleForm(values, { resetForm }) {
-      values = JSON.stringify(values);
-      let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
+      let encryptedValues = api.vault.encryptVault(values);
 
       await this.submitForm(encryptedValues, resetForm);
     },

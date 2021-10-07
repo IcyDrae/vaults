@@ -42,6 +42,7 @@
 
 <script>
 
+import {api} from "../../services/api";
 import DeletePrompt from "../../components/DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
@@ -99,8 +100,7 @@ export default {
      * @param resetForm
      */
     handleForm(values, { resetForm }) {
-      values = JSON.stringify(values);
-      let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
+      let encryptedValues = api.vault.encryptVault(values);
 
       this.submitForm(encryptedValues, resetForm);
     },

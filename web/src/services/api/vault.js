@@ -123,4 +123,16 @@ export default {
 
         return decryptedVaults;
     },
+
+    /**
+     * Encrypts given vault data; used when creating and updating.
+     *
+     * @param data
+     * @returns {string}
+     */
+    encryptVault(data) {
+        data = JSON.stringify(data);
+
+        return this.encryption.encrypt(data, this.store.getters["user/getEncryptionKey"]);
+    }
 }
