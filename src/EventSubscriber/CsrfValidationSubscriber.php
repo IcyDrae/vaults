@@ -30,7 +30,7 @@ class CsrfValidationSubscriber implements EventSubscriberInterface
         $method = $request->getRealMethod();
 
         if ($method !== Request::METHOD_OPTIONS) {
-            if ($request->headers->get("Content-Type") !== "application/json") {
+            if ($request->headers->get("Content-Type") !== "application/json;charset=utf-8") {
                 $response = new JsonResponse([
                     "message" => "Invalid Content-Type"
                 ], 415);
