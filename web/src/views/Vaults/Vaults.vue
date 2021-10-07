@@ -18,16 +18,15 @@
       </router-link>
     </div>
   </div>
+  <li class="backend-errors" v-for="error in backendErrors" :key="error">
+    {{ error }}
+  </li>
   <router-view></router-view>
 </template>
 
 <script>
 
 import {api} from "../../services/api";
-import Encryption from "../../encryption-flow/Encryption";
-import { createNamespacedHelpers } from 'vuex';
-
-const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Vaults",
@@ -35,70 +34,20 @@ export default {
     return {
       vaults: [],
       backendErrors: [],
-      encryption: new Encryption()
     }
   },
   mounted() {
-    this.fetchVaults();
-  },
-  computed: {
-    ...mapGetters([
-        "getUser",
-        "getEncryptionKey"
-    ])
+    this.fetchVaultsOrFail();
   },
   methods: {
-    /**
-     * Requests the user's encrypted vaults.
-     */
-    fetchVaults() {
-      api.vault.fetchVaults().then(response => {
-        this.successHandler(response);
-      }).catch(error => {
-        this.errorHandler(error);
-      });
-    },
-    successHandler(response) {
-      if(response.status === 200) {
-        this.vaults = this.decryptVaults(response.data);
+    async fetchVaultsOrFail() {
+      let request = await api.vault.fetchAll();
+
+      if(request instanceof Error) {
+        this.backendErrors.push(request.message);
+      } else {
+        this.vaults = request;
       }
-    },
-    errorHandler(error) {
-      console.log(error.message);
-      this.backendErrors.push(error.message);
-    },
-    /**
-     * Decrypts the given vaults & decodes them into an array.
-     *
-     * @param results
-     * @returns {{}}
-     */
-    decryptVaults(results) {
-      let decryptedVaults = {};
-
-      results.forEach((result, index) => {
-        let vault = result.vault;
-
-        vault.data = this.encryption.decrypt(vault.data, this.getEncryptionKey);
-        vault.data = JSON.parse(vault.data);
-
-        decryptedVaults[index] = this.restructureVaultObject(result);
-      });
-
-      return decryptedVaults;
-    },
-    /**
-     * Makes a new vault array with the decrypted data.
-     *
-     * @param object
-     */
-    restructureVaultObject(object) {
-      return {
-        "id": object.vault.id,
-        "vault_name": object.vault.data.vault_name,
-        "vault_description": object.vault.data.vault_description,
-        "logins_amount": object.logins_amount
-        };
     }
   }
 }
