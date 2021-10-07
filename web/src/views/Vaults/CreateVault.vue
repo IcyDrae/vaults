@@ -32,11 +32,11 @@
 
 <script>
 
+import {api} from "../../services/api";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
-import http from "../../services/http";
 
 const { mapGetters } = createNamespacedHelpers("user");
 
@@ -56,7 +56,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-        "getUser",
         "getEncryptionKey",
     ])
   },
@@ -83,28 +82,18 @@ export default {
      * @param values
      * @param resetForm
      */
-    handleForm(values, { resetForm }) {
+    async handleForm(values, { resetForm }) {
       values = JSON.stringify(values);
       let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
 
-      this.submitForm(encryptedValues, resetForm);
+      await this.submitForm(encryptedValues, resetForm);
     },
-    submitForm(values, resetForm) {
-      http.request({
-        method: "post",
-        url: "/vaults/create",
-        data: {
-          userId: this.getUser.id,
-          data: values
-        }
-      }).then(response => {
-        this.successHandler(response, resetForm)
-      }).catch(error => {
-        this.errorHandler(error);
-      });
-    },
-    successHandler(response, resetForm) {
-      if(response.status === 201) {
+    async submitForm(values, resetForm) {
+      let response = await api.vault.create(values);
+
+      if (response instanceof Error) {
+        this.errorHandler(response);
+      } else if (response.status === 201) {
         resetForm();
 
         this.$router.push("/vaults");

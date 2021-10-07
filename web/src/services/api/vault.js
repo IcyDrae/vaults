@@ -4,7 +4,12 @@ import store from "../../store";
 
 export default {
 
-    endpoint: "/vaults",
+    endpoints: {
+        api: "/vaults",
+        get create() {
+            return this.api + "/create";
+        },
+    },
 
     store,
 
@@ -31,7 +36,7 @@ export default {
     async fetchVaults() {
         let vaults = await http.request({
             method: "get",
-            url: this.endpoint,
+            url: this.endpoints.api,
             params: {
                 userId: this.store.getters["user/getUser"].id
             },
@@ -39,6 +44,37 @@ export default {
         });
 
         return this.fetchVaultsSuccessHandler(vaults);
+    },
+
+    /**
+     * Handles the request to create an encrypted vault.
+     *
+     * @param values
+     * @returns {Promise<AxiosResponse<any>|*>}
+     */
+    async create(values) {
+        try {
+            return await this.createVault(values);
+        } catch (error) {
+            return error;
+        }
+    },
+
+    /**
+     * Makes the request to create a vault.
+     *
+     * @param values
+     * @returns {Promise<AxiosResponse<any>>}
+     */
+    async createVault(values) {
+        return await http.request({
+            method: "post",
+            url: this.endpoints.create,
+            data: {
+                userId: this.store.getters["user/getUser"].id,
+                data: values
+            }
+        });
     },
 
     /**
