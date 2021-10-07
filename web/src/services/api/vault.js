@@ -16,6 +16,20 @@ export default {
     encryption: new Encryption(),
 
     /**
+     * Makes a new vault object with the decrypted data. This is the vault model.
+     *
+     * @param object
+     */
+    createVaultObject(object) {
+        return {
+            "id": object.vault.id,
+            "vault_name": object.vault.data.vault_name,
+            "vault_description": object.vault.data.vault_description,
+            "logins_amount": object.logins_amount
+        };
+    },
+
+    /**
      * Handles the request to the user's encrypted vaults.
      *
      * @returns {Promise<void>}
@@ -44,6 +58,18 @@ export default {
         });
 
         return this.fetchVaultsSuccessHandler(vaults);
+    },
+
+    /**
+     * Handler when 'fetchVaults' resolved successfully.
+     *
+     * @param response
+     * @returns {{}}
+     */
+    fetchVaultsSuccessHandler(response) {
+        if(response.status === 200) {
+            return this.decryptVaults(response.data);
+        }
     },
 
     /**
@@ -78,18 +104,6 @@ export default {
     },
 
     /**
-     * Handler when 'fetchVaults' resolved successfully.
-     *
-     * @param response
-     * @returns {{}}
-     */
-    fetchVaultsSuccessHandler(response) {
-        if(response.status === 200) {
-            return this.decryptVaults(response.data);
-        }
-    },
-
-    /**
      * Decrypts the given vaults & decodes them into an array.
      *
      * @param results
@@ -109,18 +123,4 @@ export default {
 
         return decryptedVaults;
     },
-
-    /**
-     * Makes a new vault array with the decrypted data.
-     *
-     * @param object
-     */
-    createVaultObject(object) {
-        return {
-            "id": object.vault.id,
-            "vault_name": object.vault.data.vault_name,
-            "vault_description": object.vault.data.vault_description,
-            "logins_amount": object.logins_amount
-        };
-    }
 }
