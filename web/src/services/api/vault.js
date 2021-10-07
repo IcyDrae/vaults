@@ -11,7 +11,8 @@ export default {
             url: "/vaults",
             params: {
                 userId: store.getters["user/getUser"].id
-            }
+            },
+            data: null
         });
     },
 }

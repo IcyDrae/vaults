@@ -99,7 +99,8 @@ export default {
 
       http.request({
         method: "get",
-        url: url
+        url: url,
+        data: null
       }).then(response => {
         this.successHandler(response);
       }).catch(error => {
