@@ -36,9 +36,6 @@ import {api} from "../../services/api";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import Encryption from "../../encryption-flow/Encryption";
-import { createNamespacedHelpers } from 'vuex';
-
-const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "CreateVault",
@@ -53,11 +50,6 @@ export default {
       backendErrors: [],
       encryption: new Encryption()
     }
-  },
-  computed: {
-    ...mapGetters([
-        "getEncryptionKey",
-    ])
   },
   setup() {
     /**

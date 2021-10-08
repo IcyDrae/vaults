@@ -33,7 +33,7 @@
     <transition name="modal">
       <DeletePrompt v-if="showModal"
                     :prompt-text="deletePromptText"
-                    @deletionConfirmed="deleteVault"
+                    @deletionConfirmed="triggerVaultDelete"
                     @deletionCancelled="showModal = false">
       </DeletePrompt>
     </transition>
@@ -46,11 +46,6 @@ import {api} from "../../services/api";
 import DeletePrompt from "../../components/DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import Encryption from "../../encryption-flow/Encryption";
-import { createNamespacedHelpers } from 'vuex';
-import http from "../../services/http";
-
-const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "CreateVault",
@@ -65,16 +60,9 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      encryption: new Encryption(),
       showModal: false,
       deletePromptText: "You are about to delete this vault & all items inside it. This cannot be undone. Are you absolutely sure?"
     }
-  },
-  computed: {
-    ...mapGetters([
-        "getUser",
-        "getEncryptionKey",
-    ])
   },
   setup() {
     /**
@@ -99,49 +87,34 @@ export default {
      * @param values
      * @param resetForm
      */
-    handleForm(values, { resetForm }) {
+    async handleForm(values, { resetForm }) {
       let encryptedValues = api.vault.encryptVault(values);
 
-      this.submitForm(encryptedValues, resetForm);
+      await this.triggerVaultUpdate(encryptedValues, resetForm);
     },
-    submitForm(values, resetForm) {
-      let url = `/vaults/update/${this.$route.params.id}`;
+    async triggerVaultUpdate(values, resetForm) {
+      let vaultId = this.$route.params.id;
+      let response = await api.vault.update(vaultId, values);
 
-      http.request({
-        method: "put",
-        url: url,
-        data: {
-          userId: this.getUser.id,
-          data: values
-        }
-      }).then(response => {
-        if(response.status === 204) {
-          resetForm();
+      if (response instanceof Error) {
+        this.backendErrors.push(response.response.data.errors);
+      } else if (response.status === 204) {
+        resetForm();
 
-          this.$router.go(-1);
-        }
-      }).catch(error => {
-        this.backendErrors.push(error.response.data.errors);
-      });
+        this.$router.go(-1);
+      }
     },
-    deleteVault() {
-      let url = `/vaults/delete/${this.$route.params.id}`;
+    async triggerVaultDelete() {
+      let vaultId = this.$route.params.id;
+      let response = await api.vault.delete(vaultId);
 
-      http.request({
-        method: "delete",
-        url: url,
-        data: JSON.stringify({
-          userId: this.getUser.id
-        })
-      }).then(response => {
-        if(response.status === 204) {
-          this.showModal = false;
+      if (response instanceof Error) {
+        this.backendErrors.push(response.response.data.errors)
+      } else if (response.status === 204) {
+        this.showModal = false;
 
-          this.$router.go(-1);
-        }
-      }).catch(error => {
-        this.backendErrors.push(error.response.data.errors)
-      });
+        this.$router.go(-1);
+      }
     }
   }
 }

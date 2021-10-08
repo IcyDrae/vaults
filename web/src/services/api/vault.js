@@ -10,6 +10,12 @@ export default {
         get create() {
             return this.api + "/create";
         },
+        get update() {
+            return this.api + "/update";
+        },
+        get delete() {
+            return this.api + "/delete";
+        }
     },
 
     VaultMapper,
@@ -89,6 +95,74 @@ export default {
                 userId: this.store.getters["user/getUser"].id,
                 data: values
             }
+        });
+    },
+
+    /**
+     * Handles the request to update a vault.
+     *
+     * @param id
+     * @param values
+     * @returns {Promise<AxiosResponse<any>|*>}
+     */
+    async update(id, values) {
+        try {
+            return await this.updateVault(id, values);
+        } catch (error) {
+            return error;
+        }
+    },
+
+    /**
+     * Makes the request to update a vault.
+     *
+     * @param id
+     * @param values
+     * @returns {Promise<AxiosResponse<any>>}
+     */
+    async updateVault(id, values) {
+        let url = this.endpoints.update + "/" + id;
+
+        return await http.request({
+            method: "put",
+            url: url,
+            data: {
+                userId: this.store.getters["user/getUser"].id,
+                data: values
+            }
+        });
+    },
+
+    /**
+     * Handles the request to delete a vault.
+     *
+     * @param id
+     * @param values
+     * @returns {Promise<AxiosResponse<*>|*>}
+     */
+    async delete(id) {
+        try {
+            return await this.deleteVault(id);
+        } catch (error) {
+            return error;
+        }
+    },
+
+    /**
+     * Makes the request to delete a vault.
+     *
+     * @param id
+     * @returns {Promise<AxiosResponse<any>>}
+     */
+    async deleteVault(id) {
+        let url = this.endpoints.delete + "/" + id;
+
+        return await http.request({
+            method: "delete",
+            url: url,
+            data: JSON.stringify({
+                userId: this.store.getters["user/getUser"].id
+            })
         });
     },
 
