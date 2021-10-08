@@ -1,4 +1,5 @@
 import http from "../http";
+import {VaultMapper} from "../../mappers/vault";
 import Encryption from "../../encryption-flow/Encryption";
 import store from "../../store";
 
@@ -11,23 +12,11 @@ export default {
         },
     },
 
+    VaultMapper,
+
     store,
 
     encryption: new Encryption(),
-
-    /**
-     * Makes a new vault object with the decrypted data. This is the vault model.
-     *
-     * @param object
-     */
-    createVaultObject(object) {
-        return {
-            "id": object.vault.id,
-            "vault_name": object.vault.data.vault_name,
-            "vault_description": object.vault.data.vault_description,
-            "logins_amount": object.logins_amount
-        };
-    },
 
     /**
      * Handles the request to the user's encrypted vaults.
@@ -118,7 +107,7 @@ export default {
             vault.data = this.encryption.decrypt(vault.data, this.store.getters["user/getEncryptionKey"]);
             vault.data = JSON.parse(vault.data);
 
-            decryptedVaults[index] = this.createVaultObject(result);
+            decryptedVaults[index] = this.VaultMapper.toDTO(result);
         });
 
         return decryptedVaults;
