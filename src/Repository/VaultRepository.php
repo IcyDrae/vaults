@@ -28,13 +28,13 @@ class VaultRepository extends ServiceEntityRepository
     public function findMultipleByUserId(int $id): array
     {
         return $this->createQueryBuilder("v")
-            ->select("v AS vault, COUNT(login.vault) AS logins_amount")
+            ->select("v.id, v.data, COUNT(login.vault) AS logins_amount")
             ->leftJoin("App\Entity\Login", "login", "WITH", "v.id = login.vault")
             ->where("v.user = :user_id")
             ->setParameter("user_id", $id)
             ->groupBy("v.id")
             ->getQuery()
-            ->getResult(Query::HYDRATE_ARRAY);
+            ->getResult(Query::HYDRATE_SCALAR);
     }
 
     /**
