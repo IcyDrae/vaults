@@ -35,7 +35,6 @@
 import {api} from "../../services/api";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import Encryption from "../../encryption-flow/Encryption";
 
 export default {
   name: "CreateVault",
@@ -48,7 +47,6 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      encryption: new Encryption()
     }
   },
   setup() {

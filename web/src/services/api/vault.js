@@ -1,28 +1,92 @@
 import http from "../http";
-import {VaultMapper} from "../../mappers/vault";
+import {api} from "./index";
+import {Factory} from "../../factory";
 import Encryption from "../../encryption-flow/Encryption";
 import store from "../../store";
 
 export default {
 
     endpoints: {
-        api: "/vaults",
-        get create() {
-            return this.api + "/create";
+        API: "/vaults",
+        CREATE() {
+            return this.API + "/create"
         },
-        get update() {
-            return this.api + "/update";
+        UPDATE(vaultId) {
+            return this.API + "/update/" + vaultId
         },
-        get delete() {
-            return this.api + "/delete";
+        DELETE(vaultId) {
+            return this.API + "/delete/" + vaultId
+        },
+        ITEMS(vaultId) {
+            return this.API + "/" + vaultId + "/" + store.getters["user/getUser"].id
         }
     },
-
-    VaultMapper,
 
     store,
 
     encryption: new Encryption(),
+
+    /**
+     * Handles the request to all items for this vault.
+     *
+     * @param vaultId
+     * @returns {Promise<*>}
+     */
+    async getItems(vaultId) {
+        try {
+            return await this.fetchItems(vaultId);
+        } catch (error) {
+            return error;
+        }
+    },
+
+    /**
+     * Requests all items for this vault.
+     *
+     * @param vaultId
+     * @returns {Promise<*|undefined>}
+     */
+    async fetchItems(vaultId) {
+        let url = this.endpoints.ITEMS(vaultId)
+
+        let items = await http.request({
+            method: "get",
+            url: url,
+            data: null
+        });
+
+        return await this.fetchItemSuccessHandler(items);
+    },
+
+    /**
+     * Handler when 'fetchItems' resolved successfully.
+     *
+     * @param response
+     * @returns {Promise<*>}
+     */
+    async fetchItemSuccessHandler(response) {
+        if(response.status === 200) {
+            let decryptedItems = api.decryptResponse(response.data);
+            let items = this.createItemsFromFactory(decryptedItems);
+
+            await this.store.dispatch("user/setItems", items);
+
+            return response;
+        }
+    },
+
+    createItemsFromFactory(items) {
+        let formatted = [];
+
+        items.forEach(item => {
+            let type = item.data.item_type;
+            let itemObject = new Factory(type, item);
+
+            formatted.push(itemObject.dto());
+        });
+
+        return formatted;
+    },
 
     /**
      * Handles the request to the user's encrypted vaults.
@@ -45,7 +109,7 @@ export default {
     async fetchVaults() {
         let vaults = await http.request({
             method: "get",
-            url: this.endpoints.api,
+            url: this.endpoints.API,
             params: {
                 userId: this.store.getters["user/getUser"].id
             },
@@ -63,8 +127,22 @@ export default {
      */
     fetchVaultsSuccessHandler(response) {
         if(response.status === 200) {
-            return this.decryptVaults(response.data);
+            let decryptedVaults = api.decryptResponse(response.data);
+
+            return this.createVaultsFromFactory(decryptedVaults);
         }
+    },
+
+    createVaultsFromFactory(vaults) {
+        let formatted = [];
+
+        vaults.forEach(vault => {
+            let vaultObject = new Factory("vault", vault);
+
+            formatted.push(vaultObject.dto());
+        });
+
+        return formatted;
     },
 
     /**
@@ -90,7 +168,7 @@ export default {
     async createVault(values) {
         return await http.request({
             method: "post",
-            url: this.endpoints.create,
+            url: this.endpoints.CREATE(),
             data: {
                 userId: this.store.getters["user/getUser"].id,
                 data: values
@@ -121,7 +199,7 @@ export default {
      * @returns {Promise<AxiosResponse<any>>}
      */
     async updateVault(id, values) {
-        let url = this.endpoints.update + "/" + id;
+        let url = this.endpoints.UPDATE(id);
 
         return await http.request({
             method: "put",
@@ -155,7 +233,7 @@ export default {
      * @returns {Promise<AxiosResponse<any>>}
      */
     async deleteVault(id) {
-        let url = this.endpoints.delete + "/" + id;
+        let url = this.endpoints.DELETE(id);
 
         return await http.request({
             method: "delete",
@@ -164,27 +242,6 @@ export default {
                 userId: this.store.getters["user/getUser"].id
             })
         });
-    },
-
-    /**
-     * Decrypts the given vaults & decodes them into an array.
-     *
-     * @param results
-     * @returns {{}}
-     */
-    decryptVaults(results) {
-        let decryptedVaults = {};
-
-        results.forEach((result, index) => {
-            let vault = result.vault;
-
-            vault.data = this.encryption.decrypt(vault.data, this.store.getters["user/getEncryptionKey"]);
-            vault.data = JSON.parse(vault.data);
-
-            decryptedVaults[index] = this.VaultMapper.toDTO(result);
-        });
-
-        return decryptedVaults;
     },
 
     /**

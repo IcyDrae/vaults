@@ -51,7 +51,7 @@
 
 <script>
 
-import http from "../../services/http";
+import {api} from "../../services/api";
 import Encryption from "../../encryption-flow/Encryption";
 import { createNamespacedHelpers } from 'vuex';
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
@@ -73,7 +73,8 @@ export default {
   computed: {
     ...mapGetters([
         "getUser",
-        "getEncryptionKey"
+        "getEncryptionKey",
+        "getItems"
     ])
   },
   beforeRouteEnter(to, from, next) {
@@ -94,97 +95,17 @@ export default {
     /**
      * Requests the user's encrypted vaults.
      */
-    fetchVaultItems() {
-      let url = `/vaults/${this.$route.params.id}/${this.getUser.id}`;
+    async fetchVaultItems() {
+      let response = await api.vault.getItems(this.$route.params.id);
 
-      http.request({
-        method: "get",
-        url: url,
-        data: null
-      }).then(response => {
-        this.successHandler(response);
-      }).catch(error => {
-        this.errorHandler(error);
-      });
-    },
-    successHandler(response) {
-      if(response.status === 200) {
-        let decryptedItems = this.decryptItems(response.data);
-
-        Object.values(decryptedItems).forEach((item) => {
+      if (response instanceof Error) {
+        console.log(response);
+        this.backendErrors.push(response.message);
+      } else if(response.status === 200) {
+        Object.values(this.getItems).forEach((item) => {
           this.items.push(item);
         });
-
-        this.setItems(this.items);
       }
-    },
-    errorHandler(error) {
-      console.log(error);
-      this.backendErrors.push(error.message);
-    },
-    /**
-     * Decrypts the given logins & decodes them into an array.
-     *
-     * @param results
-     * @returns {{}}
-     */
-    decryptItems(results) {
-      let decryptedItems = {};
-
-      results.forEach((result, index) => {
-        let item = result.data;
-
-        item = this.encryption.decrypt(item, this.getEncryptionKey);
-        item = JSON.parse(item);
-
-        result.data = item;
-
-        // TODO check type and call a different "restructurer"
-        decryptedItems[index] = this.restructureLoginObject(result);
-      });
-
-      return decryptedItems;
-    },
-    /**
-     * Makes a new login array with the decrypted data.
-     *
-     * @param object
-     */
-    restructureLoginObject(object) {
-      return {
-        "id": object.id,
-        "name": {
-          "label": "Name",
-          "value": object.data.login_name,
-          "type": "text"
-        },
-        "login_username": {
-          "label": "Username",
-          "value": object.data.login_username,
-          "type": "text"
-        },
-        "login_email": {
-          "label": "E-Mail",
-          "value": object.data.login_email ?? "",
-          "type": "text"
-        },
-        "login_website": {
-          "label": "Website",
-          "value": object.data.login_website,
-          "type": "text"
-        },
-        "login_password": {
-          "label": "Password",
-          "value": object.data.login_password,
-          "type": "password"
-        },
-        "login_description": {
-          "label": "Description",
-          "value": object.data.login_description ?? "",
-          "type": "textarea"
-        },
-        "item_type": object.data.item_type
-      };
     }
   }
 }
