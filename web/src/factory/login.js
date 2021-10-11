@@ -1,3 +1,6 @@
+/**
+ * Login entity class.
+ */
 export class Login {
     id = Number;
     data = this;
@@ -7,6 +10,11 @@ export class Login {
         this.data = data;
     }
 
+    /**
+     * Represents a login.
+     *
+     * @returns {{login_description: {label: string, type: string, value: (*|string)}, login_website: {label: string, type: string, value: *}, login_password: {label: string, type: string, value: *}, login_email: {label: string, type: string, value: (*|string)}, item_type: *, name: {label: string, type: string, value: *}, login_username: {label: string, type: string, value: *}, id: NumberConstructor}}
+     */
     dto() {
         return {
             "id": this.id,

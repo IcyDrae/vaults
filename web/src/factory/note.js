@@ -1,3 +1,6 @@
+/**
+ * Note entity class.
+ */
 export class Note {
     id = Number;
     data = Object;
@@ -9,6 +12,11 @@ export class Note {
         this.someNoteField = someNoteField;
     }
 
+    /**
+     * Represents a note.
+     *
+     * @returns {{data: ObjectConstructor, someNoteField: StringConstructor, id: NumberConstructor}}
+     */
     dto() {
         return {
             id: this.id,

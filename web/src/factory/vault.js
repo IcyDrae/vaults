@@ -1,3 +1,6 @@
+/**
+ * Vault entity class.
+ */
 export class Vault {
     id = Number;
     data = Object;
@@ -10,7 +13,9 @@ export class Vault {
     }
 
     /**
-     * Representation of the vault object.
+     * Represents a vault.
+     *
+     * @returns {{logins_amount: NumberConstructor, vault_description: *, id: NumberConstructor, vault_name: *}}
      */
     dto() {
         return {

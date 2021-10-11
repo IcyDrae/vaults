@@ -80,7 +80,7 @@ export default {
 
         items.forEach(item => {
             let type = item.data.item_type;
-            let itemObject = new Factory(type, item);
+            let itemObject = new Factory().create(type, item);
 
             formatted.push(itemObject.dto());
         });
@@ -137,7 +137,7 @@ export default {
         let formatted = [];
 
         vaults.forEach(vault => {
-            let vaultObject = new Factory("vault", vault);
+            let vaultObject = new Factory().create("vault", vault);
 
             formatted.push(vaultObject.dto());
         });
