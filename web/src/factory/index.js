@@ -6,8 +6,6 @@ import {Note} from "./note";
  * Factory class for all entities, used to dynamically create objects.
  */
 export class Factory {
-    type = String;
-
     types = {
         "vault": Vault,
         "login": Login,
@@ -22,8 +20,6 @@ export class Factory {
      * @returns {*}
      */
     create(type, attributes) {
-        this.type = type;
-
         return new this.types[type](attributes);
     }
 
