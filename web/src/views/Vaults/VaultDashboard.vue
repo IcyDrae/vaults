@@ -99,12 +99,13 @@ export default {
       let response = await api.vault.getItems(this.$route.params.id);
 
       if (response instanceof Error) {
-        console.log(response);
         this.backendErrors.push(response.message);
-      } else if(response.status === 200) {
-        Object.values(this.getItems).forEach((item) => {
+      } else {
+        Object.values(response).forEach((item) => {
           this.items.push(item);
         });
+
+        this.setItems(this.items);
       }
     }
   }
