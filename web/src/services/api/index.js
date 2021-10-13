@@ -2,9 +2,9 @@ import vault from "./vault";
 import login from "./login";
 import note from "./note";
 import store from "../../store";
-import Encryption from "../../encryption-flow/Encryption";
+import {Security} from "../../plugins/Security";
 
-let encryption = new Encryption();
+let security = new Security();
 
 export const api = {
 
@@ -20,7 +20,7 @@ export const api = {
         objects.forEach((object, index) => {
             let item = object.data;
 
-            item = encryption.decrypt(item, store.getters["user/getEncryptionKey"]);
+            item = security.decrypt(item, store.getters["user/getEncryptionKey"]);
             item = JSON.parse(item);
 
             object.data = item;

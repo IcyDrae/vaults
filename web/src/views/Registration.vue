@@ -60,7 +60,7 @@
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import http from "../services/http";
-import Encryption from "../encryption-flow/Encryption";
+import {Security} from "../plugins/Security";
 import { createNamespacedHelpers } from "vuex";
 
 const { mapActions, mapGetters } = createNamespacedHelpers("user");
@@ -115,7 +115,7 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      encryption: new Encryption()
+      security: new Security()
     }
   },
   computed: {
@@ -154,8 +154,8 @@ export default {
      * @returns Object
      */
     async deriveFromMasterPassword(values) {
-      let encryptionKey = await this.encryption.hash(values.master_password, values.email, 100100);
-      let authenticationHash = await this.encryption.hash(values.master_password, encryptionKey, 1);
+      let encryptionKey = await this.security.hash(values.master_password, values.email, 100100);
+      let authenticationHash = await this.security.hash(values.master_password, encryptionKey, 1);
 
       return {
         encryptionKey,

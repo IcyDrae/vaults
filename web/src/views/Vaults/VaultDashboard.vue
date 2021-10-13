@@ -52,7 +52,7 @@
 <script>
 
 import {api} from "../../services/api";
-import Encryption from "../../encryption-flow/Encryption";
+import {Security} from "../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
@@ -67,7 +67,7 @@ export default {
     return {
       items: [],
       backendErrors: [],
-      encryption: new Encryption()
+      security: new Security()
     }
   },
   computed: {

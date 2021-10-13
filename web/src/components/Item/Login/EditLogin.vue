@@ -12,7 +12,7 @@
 <script>
 
 import Form from "../../../components/Item/Login/Form";
-import Encryption from "../../../encryption-flow/Encryption";
+import {Security} from "../../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
 import http from "../../../services/http";
 
@@ -28,7 +28,7 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      encryption: new Encryption(),
+      security: new Security(),
       showModal: false
     }
   },
@@ -61,7 +61,7 @@ export default {
     handleForm(values, { resetForm }) {
       values.item_type = "login";
       values = JSON.stringify(values);
-      let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
+      let encryptedValues = this.security.encrypt(values, this.getEncryptionKey);
 
       this.submitForm(encryptedValues, resetForm);
     },
@@ -103,7 +103,7 @@ export default {
 
       let login = response.data;
 
-      login = this.encryption.decrypt(login, this.getEncryptionKey);
+      login = this.security.decrypt(login, this.getEncryptionKey);
       login = JSON.parse(login);
 
       response.data = login;

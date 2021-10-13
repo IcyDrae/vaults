@@ -38,7 +38,7 @@ import {api} from "../../../services/api";
 import DeletePrompt from "../../../components/DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import Encryption from "../../../encryption-flow/Encryption";
+import {Security} from "../../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
 import http from "../../../services/http";
 
@@ -57,7 +57,7 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      encryption: new Encryption(),
+      security: new Security(),
       showModal: false
     }
   },
@@ -112,7 +112,7 @@ export default {
      */
     handleForm(values, { resetForm }) {
       values = JSON.stringify(values);
-      let encryptedValues = this.encryption.encrypt(values, this.getEncryptionKey);
+      let encryptedValues = this.security.encrypt(values, this.getEncryptionKey);
 
       this.submitForm(encryptedValues, resetForm);
     },

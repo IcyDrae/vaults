@@ -1,7 +1,7 @@
 import http from "../http";
 import {api} from "./index";
 import {Factory} from "../../factory";
-import Encryption from "../../encryption-flow/Encryption";
+import {Security} from "../../plugins/Security";
 import store from "../../store";
 
 export default {
@@ -24,7 +24,7 @@ export default {
 
     store,
 
-    encryption: new Encryption(),
+    security: new Security(),
 
     /**
      * Handles the request to all items for this vault.
@@ -250,6 +250,6 @@ export default {
     encryptVault(data) {
         data = JSON.stringify(data);
 
-        return this.encryption.encrypt(data, this.store.getters["user/getEncryptionKey"]);
+        return this.security.encrypt(data, this.store.getters["user/getEncryptionKey"]);
     }
 }
