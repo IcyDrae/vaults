@@ -3,7 +3,7 @@
  */
 export class Login {
     id = Number;
-    data = this;
+    data = Object;
 
     constructor({ id, data }) {
         this.id = id;

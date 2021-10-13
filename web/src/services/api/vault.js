@@ -55,7 +55,7 @@ export default {
             data: null
         });
 
-        return await this.fetchItemSuccessHandler(items);
+        return await this.fetchItemsSuccessHandler(items);
     },
 
     /**
@@ -64,7 +64,7 @@ export default {
      * @param response
      * @returns {Promise<*>}
      */
-    async fetchItemSuccessHandler(response) {
+    async fetchItemsSuccessHandler(response) {
         if(response.status === 200) {
             let decryptedItems = api.decryptResponse(response.data);
 
