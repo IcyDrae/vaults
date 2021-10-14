@@ -56,7 +56,7 @@ import {Security} from "../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
-const { mapActions, mapGetters } = createNamespacedHelpers("user");
+const { mapActions, mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "Dashboard",
@@ -65,18 +65,13 @@ export default {
   },
   data() {
     return {
-      items: [],
       backendErrors: [],
       security: new Security()
     }
   },
-  computed: {
-    ...mapGetters([
-        "getUser",
-        "getEncryptionKey",
-        "getItems"
-    ])
-  },
+  computed: mapState([
+    "items"
+  ]),
   beforeRouteEnter(to, from, next) {
     document.querySelector("#app").classList.add("dashboard-view")
     next();
@@ -100,12 +95,6 @@ export default {
 
       if (response instanceof Error) {
         this.backendErrors.push(response.message);
-      } else {
-        Object.values(response).forEach((item) => {
-          this.items.push(item);
-        });
-
-        this.setItems(this.items);
       }
     }
   }

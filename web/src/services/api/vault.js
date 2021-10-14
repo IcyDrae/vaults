@@ -5,7 +5,6 @@ import {Security} from "../../plugins/Security";
 import store from "../../store";
 
 export default {
-
     endpoints: {
         API: "/vaults",
         CREATE() {
@@ -67,8 +66,11 @@ export default {
     async fetchItemsSuccessHandler(response) {
         if(response.status === 200) {
             let decryptedItems = api.decryptResponse(response.data);
+            let items = this.createItemsFromFactory(decryptedItems);
 
-            return this.createItemsFromFactory(decryptedItems);
+            await this.store.dispatch("user/setItems", items);
+
+            return response;
         }
     },
 
