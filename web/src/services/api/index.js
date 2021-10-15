@@ -9,7 +9,7 @@ let security = new Security();
 export const api = {
 
     /**
-     * Decrypts the given response into an array of objects.
+     * Decrypts a single entity object from the response.
      *
      * @param object
      * @returns {{}}
@@ -29,7 +29,7 @@ export const api = {
     },
 
     /**
-     * Decrypts the given response into an array of objects.
+     * Decrypts multiple entities into an array of objects.
      *
      * @param data
      * @returns {[string, unknown][]}
