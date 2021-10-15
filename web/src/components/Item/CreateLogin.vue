@@ -51,12 +51,9 @@
 
 <script>
 
-import http from "../../services/http";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
-import {Security} from "../../plugins/Security";
-import { createNamespacedHelpers } from 'vuex';
-const { mapActions, mapGetters } = createNamespacedHelpers("user");
+import {api} from "../../services/api";
 
 export default {
   name: "CreateLogin",
@@ -69,15 +66,8 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      security: new Security(),
       login: Object
     }
-  },
-  computed: {
-    ...mapGetters([
-        "getUser",
-        "getEncryptionKey"
-    ])
   },
   setup() {
     /**
@@ -112,114 +102,24 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-      "addItem"
-    ]),
     /**
      *
      * @param values
      * @param resetForm
      */
-    handleForm(values, { resetForm }) {
-      values.item_type = "login";
-      values = JSON.stringify(values);
-      let encryptedValues = this.security.encrypt(values, this.getEncryptionKey);
+    async handleForm(values, { resetForm }) {
+      let response = await api.login.create(values, this.$route.params.id);
 
-      this.submitForm(encryptedValues, resetForm);
-    },
-    submitForm(values, resetForm) {
-      http.request({
-        method: "post",
-        url: "/logins/create",
-        data: {
-          vaultId: this.$route.params.id,
-          userId: this.getUser.id,
-          data: values
-        }
-      }).then(response => {
-        this.successHandler(response, resetForm);
-      }).catch(error => {
-        this.errorHandler(error);
-      });
-    },
-    /**
-     * Decrypts the given logins & decodes them into an array.
-     *
-     * @param response
-     * @returns {{}}
-     */
-    decryptLogin(response) {
-      let decryptedLogins = {};
-
-      let login = response.data;
-
-      login = this.security.decrypt(login, this.getEncryptionKey);
-      login = JSON.parse(login);
-
-      response.data = login;
-
-      decryptedLogins = this.restructureLoginObject(response);
-
-      return decryptedLogins;
-    },
-    /**
-     * Makes a new login array with the decrypted data.
-     *
-     * @param object
-     */
-    restructureLoginObject(object) {
-      return {
-        "id": object.id,
-        "name": {
-          "label": "Name",
-          "value": object.data.login_name,
-          "type": "text"
-        },
-        "login_username": {
-          "label": "Username",
-          "value": object.data.login_username,
-          "type": "text"
-        },
-        "login_email": {
-          "label": "E-Mail",
-          "value": object.data.login_email ?? "",
-          "type": "text"
-        },
-        "login_website": {
-          "label": "Website",
-          "value": object.data.login_website,
-          "type": "text"
-        },
-        "login_password": {
-          "label": "Password",
-          "value": object.data.login_password,
-          "type": "password"
-        },
-        "login_description": {
-          "label": "Description",
-          "value": object.data.login_description ?? "",
-          "type": "textarea"
-        },
-        "item_type": object.data.item_type
-      };
-    },
-    successHandler(response, resetForm) {
-      if(response.status === 201) {
-        this.login = this.decryptLogin(response.data);
-        this.addItem(this.login);
-
+      if (response instanceof Error) {
+        console.log(response)
+        this.backendErrors.push(response);
+      } else {
+        this.login = response;
         resetForm();
 
-        this.$router.push({ name: "item", params: { itemId: this.login.id, itemData: JSON.stringify(this.login) } });
+        await this.$router.push({ name: "item", params: { itemId: this.login.id, itemData: JSON.stringify(this.login) } });
       }
-    },
-    errorHandler(error) {
-      console.log(error)
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

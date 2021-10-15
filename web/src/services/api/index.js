@@ -11,13 +11,33 @@ export const api = {
     /**
      * Decrypts the given response into an array of objects.
      *
-     * @param objects
+     * @param object
+     * @returns {{}}
+     */
+    decryptResponseObject(object) {
+        let decryptedObject = {};
+
+        let item = object.data;
+
+        item = security.decrypt(item, store.getters["user/getEncryptionKey"]);
+        item = JSON.parse(item);
+
+        object.data = item;
+        decryptedObject = object;
+
+        return decryptedObject;
+    },
+
+    /**
+     * Decrypts the given response into an array of objects.
+     *
+     * @param data
      * @returns {[string, unknown][]}
      */
-    decryptResponse(objects) {
+    decryptResponseObjects(data) {
         let decryptedObjects = {};
 
-        objects.forEach((object, index) => {
+        data.forEach((object, index) => {
             let item = object.data;
 
             item = security.decrypt(item, store.getters["user/getEncryptionKey"]);

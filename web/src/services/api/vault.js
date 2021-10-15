@@ -65,7 +65,7 @@ export default {
      */
     async fetchItemsSuccessHandler(response) {
         if(response.status === 200) {
-            let decryptedItems = api.decryptResponse(response.data);
+            let decryptedItems = api.decryptResponseObjects(response.data);
             let items = this.createItemsFromFactory(decryptedItems);
 
             await this.store.dispatch("user/setItems", items);
@@ -126,7 +126,7 @@ export default {
      */
     fetchVaultsSuccessHandler(response) {
         if(response.status === 200) {
-            let decryptedVaults = api.decryptResponse(response.data);
+            let decryptedVaults = api.decryptResponseObjects(response.data);
 
             return this.createVaultsFromFactory(decryptedVaults);
         }

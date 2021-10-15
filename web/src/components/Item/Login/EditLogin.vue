@@ -15,6 +15,7 @@ import Form from "../../../components/Item/Login/Form";
 import {Security} from "../../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
 import http from "../../../services/http";
+import {api} from "../../../services/api";
 
 const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
@@ -58,100 +59,17 @@ export default {
      * @param values
      * @param resetForm
      */
-    handleForm(values, { resetForm }) {
-      values.item_type = "login";
-      values = JSON.stringify(values);
-      let encryptedValues = this.security.encrypt(values, this.getEncryptionKey);
+    async handleForm(values, { resetForm }) {
+      let response = await api.login.update(values, this.loginData.id);
 
-      this.submitForm(encryptedValues, resetForm);
-    },
-    submitForm(values, resetForm) {
-      let url = `/logins/update/${this.loginData.id}`;
-
-      http.request({
-        method: "put",
-        url: url,
-        data: {
-          userId: this.getUser.id,
-          data: values
-        }
-      }).then(response => {
-        this.successHandler(response, resetForm);
-      }).catch(error => {
-        console.log(error)
-        //this.backendErrors.push(error.response.data.errors);
-      });
-    },
-    successHandler(response, resetForm) {
-      if(response.status === 200) {
-        let updatedLogin = this.decryptLogin(response.data);
-        this.updateItem(updatedLogin);
-
+      if (response instanceof Error) {
+        this.backendErrors.push(response);
+      } else {
+        let updatedLogin = response;
         resetForm();
 
-        this.$router.push({ name: "item", params: { itemId: updatedLogin.id, itemData: JSON.stringify(updatedLogin) } });
+        await this.$router.push({ name: "item", params: { itemId: updatedLogin.id, itemData: JSON.stringify(updatedLogin) } });
       }
-    },
-    /**
-     * Decrypts the given logins & decodes them into an array.
-     *
-     * @param response
-     * @returns {{}}
-     */
-    decryptLogin(response) {
-      let decryptedLogins = {};
-
-      let login = response.data;
-
-      login = this.security.decrypt(login, this.getEncryptionKey);
-      login = JSON.parse(login);
-
-      response.data = login;
-
-      decryptedLogins = this.restructureLoginObject(response);
-
-      return decryptedLogins;
-    },
-    /**
-     * Makes a new login array with the decrypted data.
-     *
-     * @param object
-     */
-    restructureLoginObject(object) {
-      return {
-        "id": object.id,
-        "name": {
-          "label": "Name",
-          "value": object.data.login_name,
-          "type": "text"
-        },
-        "login_username": {
-          "label": "Username",
-          "value": object.data.login_username,
-          "type": "text"
-        },
-        "login_email": {
-          "label": "E-Mail",
-          "value": object.data.login_email ?? "",
-          "type": "text"
-        },
-        "login_website": {
-          "label": "Website",
-          "value": object.data.login_website,
-          "type": "text"
-        },
-        "login_password": {
-          "label": "Password",
-          "value": object.data.login_password,
-          "type": "password"
-        },
-        "login_description": {
-          "label": "Description",
-          "value": object.data.login_description ?? "",
-          "type": "textarea"
-        },
-        "item_type": object.data.item_type
-      };
     },
     deleteVault() {
       let url = `/logins/delete/${this.loginData.id}`;
