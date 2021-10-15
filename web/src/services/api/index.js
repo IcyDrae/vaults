@@ -38,12 +38,7 @@ export const api = {
         let decryptedObjects = {};
 
         data.forEach((object, index) => {
-            let item = object.data;
-
-            item = security.decrypt(item, store.getters["user/getEncryptionKey"]);
-            item = JSON.parse(item);
-
-            object.data = item;
+            object = this.decryptResponseObject(object);
 
             decryptedObjects[index] = object;
         });
