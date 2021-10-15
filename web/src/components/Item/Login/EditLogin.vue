@@ -14,7 +14,6 @@
 import Form from "../../../components/Item/Login/Form";
 import {Security} from "../../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
-import http from "../../../services/http";
 import {api} from "../../../services/api";
 
 const { mapActions, mapGetters } = createNamespacedHelpers("user");
@@ -51,8 +50,8 @@ export default {
         "updateItem",
         "deleteItem"
     ]),
-    deleteHandler() {
-      this.deleteVault();
+    async deleteHandler() {
+      await this.deleteVault();
     },
     /**
      *
@@ -71,26 +70,16 @@ export default {
         await this.$router.push({ name: "item", params: { itemId: updatedLogin.id, itemData: JSON.stringify(updatedLogin) } });
       }
     },
-    deleteVault() {
-      let url = `/logins/delete/${this.loginData.id}`;
+    async deleteVault() {
+      let response = await api.login.delete(this.loginData.id);
 
-      http.request({
-        method: "delete",
-        url: url,
-        data: JSON.stringify({
-          userId: this.getUser.id
-        })
-      }).then(response => {
-        if(response.status === 204) {
-          this.showModal = false;
+      if (response instanceof Error) {
+        this.backendErrors.push(response);
+      } else {
+        this.showModal = false;
 
-          this.deleteItem(this.loginData.id);
-
-          this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
-        }
-      }).catch(error => {
-        this.backendErrors.push(error.response.data.errors)
-      });
+        await this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
+      }
     }
   }
 }

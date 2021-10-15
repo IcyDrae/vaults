@@ -19,11 +19,8 @@ export default {
         UPDATE(loginId) {
             return this.API + "/update/" + loginId
         },
-        DELETE(vaultId) {
-            return this.API + "/delete/" + vaultId
-        },
-        ITEMS(vaultId) {
-            return this.API + "/" + vaultId + "/" + store.getters["user/getUser"].id
+        DELETE(loginId) {
+            return this.API + "/delete/" + loginId
         }
     },
 
@@ -158,6 +155,55 @@ export default {
         };
 
         return await this.init(object, id);
+    },
+
+    /**
+     * Main method for deleting a login object.
+     *
+     * @param id
+     * @returns {Promise<*>}
+     */
+    async delete(id) {
+        /**
+         * Initializes the process of deleting a login.
+         *
+         * @param id
+         * @returns {Promise<*>}
+         */
+        this.init = async function(id) {
+            try {
+                return await this.deleteLogin(id);
+            } catch (error) {
+                return error;
+            }
+        };
+
+        /**
+         * Makes the request to delete a login.
+         */
+        this.deleteLogin = async function(id) {
+            let url = this.endpoints.DELETE(id);
+
+            let response = await http.request({
+                method: "delete",
+                url: url,
+                data: JSON.stringify({
+                    userId: this.store.getters["user/getUser"].id,
+                })
+            });
+
+            return this.successHandler(response, id);
+        };
+
+        this.successHandler = async function(response) {
+            if(response.status === 204) {
+                await this.store.dispatch("user/deleteItem", id);
+
+                return response;
+            }
+        };
+
+        return await this.init(id);
     },
 
     /**
