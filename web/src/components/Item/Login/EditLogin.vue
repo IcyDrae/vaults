@@ -12,11 +12,7 @@
 <script>
 
 import Form from "../../../components/Item/Login/Form";
-import {Security} from "../../../plugins/Security";
-import { createNamespacedHelpers } from 'vuex';
 import {api} from "../../../services/api";
-
-const { mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "EditLogin",
@@ -28,15 +24,10 @@ export default {
     return {
       success: "",
       backendErrors: [],
-      security: new Security(),
       showModal: false
     }
   },
   computed: {
-    ...mapGetters([
-      "getUser",
-      "getEncryptionKey",
-    ]),
     /**
      * Watches for changes for the $props.itemData, excludes specific properties.
      */
@@ -45,11 +36,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-        "addItem",
-        "updateItem",
-        "deleteItem"
-    ]),
     async deleteHandler() {
       await this.deleteVault();
     },
