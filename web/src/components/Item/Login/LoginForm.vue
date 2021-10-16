@@ -1,7 +1,7 @@
 <template>
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
     <form @submit="handleSubmit($event, actionHandler)">
-      <h1>Create a login!</h1>
+      <h1>{{ headline }}</h1>
       <label>
         <span>Login Name</span>
         <VeeValidateField name="login_name" type="text" :value="login ? login.name.value : ''" />
@@ -97,6 +97,7 @@ export default {
   data() {
     return {
       ctaLabel: "",
+      headline: "",
       success: "",
       backendErrors: [],
       showModal: false,
@@ -106,8 +107,10 @@ export default {
   mounted() {
     if (this.$props.action === "create") {
       this.ctaLabel = "Create";
+      this.headline = "Create a login!";
     } else if(this.$props.action === "edit") {
       this.ctaLabel = "Save";
+      this.headline = "Edit " + this.login.name.value;
     }
   },
   setup() {
