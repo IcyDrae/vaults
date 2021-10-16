@@ -5,10 +5,6 @@ import {Factory} from "../../factory";
 import {Security} from "../../plugins/Security";
 
 export default {
-    init: async function() {},
-    handler: async function() {},
-    successHandler: async function() {},
-
     ITEM_TYPE: "login",
 
     endpoints: {
@@ -36,6 +32,8 @@ export default {
      * @returns {Promise<*|*|undefined>}
      */
     async create(values, vaultId) {
+        let self = this;
+
         /**
          * Initializes the process of creating a login.
          *
@@ -43,9 +41,9 @@ export default {
          * @param vaultId
          * @returns {Promise<void|*>}
          */
-        this.init = async function(values, vaultId) {
+        const init = async function(values, vaultId) {
             try {
-                return await this.handler(values, vaultId);
+                return await handler(values, vaultId);
             } catch (error) {
                 return error;
             }
@@ -54,43 +52,43 @@ export default {
         /**
          * Handles the request to create a login.
          */
-        this.handler = async function(values, vaultId) {
-            let encryptedObject = this.beforeDispatch(values);
+        const handler = async function(values, vaultId) {
+            let encryptedObject = self.beforeDispatch(values);
 
-            return await this.createLogin(encryptedObject, vaultId);
-        };
+            return await createLogin(encryptedObject, vaultId);
+        }
 
         /**
          * Makes the request to create a login.
          */
-        this.createLogin = async function(values, vaultId) {
-            let url = this.endpoints.CREATE();
+        const createLogin = async function(values, vaultId) {
+            let url = self.endpoints.CREATE();
 
             let response = await http.request({
                 method: "post",
                 url: url,
                 data: {
                     vaultId: vaultId,
-                    userId: this.store.getters["user/getUser"].id,
+                    userId: self.store.getters["user/getUser"].id,
                     data: values
                 }
             });
 
-            return this.successHandler(response);
+            return successHandler(response);
         };
 
-        this.successHandler = async function(response) {
+        const successHandler = async function(response) {
             if(response.status === 201) {
                 let decryptedLogin = api.decryptResponseObject(response.data);
-                let item = this.createLoginFromFactory(decryptedLogin);
+                let item = self.createLoginFromFactory(decryptedLogin);
 
-                await this.store.dispatch("user/addItem", item);
+                await self.store.dispatch("user/addItem", item);
 
                 return item;
             }
         };
 
-        return await this.init(values, vaultId);
+        return await init(values, vaultId);
     },
 
     /**
@@ -101,6 +99,8 @@ export default {
      * @returns {Promise<*>}
      */
     async update(object, id) {
+        let self = this;
+
         /**
          * Initializes the process of updating a login.
          *
@@ -108,9 +108,9 @@ export default {
          * @param id
          * @returns {Promise<*>}
          */
-        this.init = async function(object, id) {
+        const init = async function(object, id) {
             try {
-                return await this.handler(object, id);
+                return await handler(object, id);
             } catch (error) {
                 return error;
             }
@@ -119,42 +119,42 @@ export default {
         /**
          * Handles the request to update a login.
          */
-        this.handler = async function(object, id) {
-            let encryptedObject = this.beforeDispatch(object);
+        const handler = async function(object, id) {
+            let encryptedObject = self.beforeDispatch(object);
 
-            return await this.updateLogin(encryptedObject, id);
+            return await updateLogin(encryptedObject, id);
         };
 
         /**
          * Makes the request to update a login.
          */
-        this.updateLogin = async function(object, id) {
-            let url = this.endpoints.UPDATE(id);
+        const updateLogin = async function(object, id) {
+            let url = self.endpoints.UPDATE(id);
 
             let response = await http.request({
                 method: "put",
                 url: url,
                 data: {
-                    userId: this.store.getters["user/getUser"].id,
+                    userId: self.store.getters["user/getUser"].id,
                     data: object
                 }
             });
 
-            return this.successHandler(response);
+            return successHandler(response);
         };
 
-        this.successHandler = async function(response) {
+        const successHandler = async function(response) {
             if(response.status === 200) {
                 let decryptedLogin = api.decryptResponseObject(response.data);
-                let item = this.createLoginFromFactory(decryptedLogin);
+                let item = self.createLoginFromFactory(decryptedLogin);
 
-                await this.store.dispatch("user/updateItem", item);
+                await self.store.dispatch("user/updateItem", item);
 
                 return item;
             }
         };
 
-        return await this.init(object, id);
+        return await init(object, id);
     },
 
     /**
@@ -164,15 +164,17 @@ export default {
      * @returns {Promise<*>}
      */
     async delete(id) {
+        let self = this;
+
         /**
          * Initializes the process of deleting a login.
          *
          * @param id
          * @returns {Promise<*>}
          */
-        this.init = async function(id) {
+        const init = async function(id) {
             try {
-                return await this.deleteLogin(id);
+                return await deleteLogin(id);
             } catch (error) {
                 return error;
             }
@@ -181,29 +183,29 @@ export default {
         /**
          * Makes the request to delete a login.
          */
-        this.deleteLogin = async function(id) {
-            let url = this.endpoints.DELETE(id);
+        const deleteLogin = async function(id) {
+            let url = self.endpoints.DELETE(id);
 
             let response = await http.request({
                 method: "delete",
                 url: url,
                 data: JSON.stringify({
-                    userId: this.store.getters["user/getUser"].id,
+                    userId: self.store.getters["user/getUser"].id,
                 })
             });
 
-            return this.successHandler(response, id);
+            return successHandler(response, id);
         };
 
-        this.successHandler = async function(response) {
+        const successHandler = async function(response) {
             if(response.status === 204) {
-                await this.store.dispatch("user/deleteItem", id);
+                await self.store.dispatch("user/deleteItem", id);
 
                 return response;
             }
         };
 
-        return await this.init(id);
+        return await init(id);
     },
 
     /**
