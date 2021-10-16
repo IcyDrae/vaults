@@ -7,8 +7,8 @@
 
 <script>
 
-import CreateLogin from "../../../components/Item/CreateLogin";
-import CreateNote from "../../../components/Item/CreateNote";
+import CreateLogin from "../../../components/Item/Login/CreateLogin";
+import CreateNote from "../../../components/Item/Note/CreateNote";
 
 export default {
   name: "CreateItem",

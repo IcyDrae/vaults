@@ -1,23 +1,23 @@
 <template>
   <div class="item-detail edit-login">
-    <Form
-        :edit="true"
+    <LoginForm
+        action="edit"
         :action-handler="handleForm"
         :delete-handler="deleteHandler"
         :login="loginData"
-    ></Form>
+    ></LoginForm>
   </div>
 </template>
 
 <script>
 
-import Form from "../../../components/Item/Login/Form";
+import LoginForm from "./LoginForm";
 import {api} from "../../../services/api";
 
 export default {
   name: "EditLogin",
   components: {
-    Form,
+    LoginForm,
   },
   props: ["login"],
   data() {

@@ -4,42 +4,42 @@
       <h1>Create a login!</h1>
       <label>
         <span>Login Name</span>
-        <VeeValidateField name="login_name" type="text" :value="login.name.value ?? ''" />
+        <VeeValidateField name="login_name" type="text" :value="login ? login.name.value : ''" />
         <p class="form-error">{{ errors.login_name }}</p>
       </label>
 
       <label>
         <span>Username</span>
-        <VeeValidateField name="login_username" type="text" :value="login.login_username.value ?? ''" />
+        <VeeValidateField name="login_username" type="text" :value="login ? login.login_username.value : ''" />
         <p class="form-error">{{ errors.login_username }}</p>
       </label>
 
       <label>
         <span>E-Mail Address</span>
-        <VeeValidateField name="login_email" type="text" :value="login.login_email.value ?? ''" />
+        <VeeValidateField name="login_email" type="text" :value="login ? login.login_email.value : ''" />
         <p class="form-error">{{ errors.login_email }}</p>
       </label>
 
       <label>
         <span>Website</span>
-        <VeeValidateField name="login_website" type="text" :value="login.login_website.value ?? ''" />
+        <VeeValidateField name="login_website" type="text" :value="login ? login.login_website.value : ''" />
         <p class="form-error">{{ errors.login_website }}</p>
       </label>
 
       <label>
         <span>Password</span>
-        <VeeValidateField name="login_password" type="password" :value="login.login_password.value ?? ''" />
+        <VeeValidateField name="login_password" type="password" :value="login ? login.login_password.value : ''" />
         <p class="form-error">{{ errors.login_password }}</p>
       </label>
 
       <label>
         <span>Description</span>
-        <VeeValidateField name="login_description" as="textarea" :value="login.login_description.value ?? ''" />
+        <VeeValidateField name="login_description" as="textarea" :value="login ? login.login_description.value : ''" />
         <p class="form-error">{{ errors.login_description }}</p>
       </label>
 
       <button class="btn">{{ ctaLabel }}</button>
-      <button v-if="edit"
+      <button v-if="action === 'edit'"
               type="button"
               class="btn delete-vault-cta"
               @click="showModal = true">
@@ -53,7 +53,7 @@
       <p class="backend-success">{{ success }}</p>
     </form>
   </VeeValidateForm>
-  <transition name="modal" v-if="edit">
+  <transition name="modal" v-if="action === 'edit'">
     <DeletePrompt v-if="showModal"
                   :prompt-text="deletePromptText"
                   @deletionConfirmed="deleteHandler"
@@ -69,13 +69,24 @@ import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 
 export default {
-  name: "CreateLogin",
+  name: "LoginForm",
   props: {
-    login: Object,
-    create: Boolean,
-    edit: Boolean,
-    actionHandler: Function,
-    deleteHandler: Function
+    action: {
+      type: String,
+      required: true,
+    },
+    login: {
+      type: Object,
+      default: undefined
+    },
+    actionHandler: {
+      type: Function,
+      required: true
+    },
+    deleteHandler: {
+      type: Function,
+      default: undefined
+    }
   },
   components: {
     // Rename the components from VeeValidate so there may be no conflicts with native HTML elements.
@@ -93,9 +104,9 @@ export default {
     }
   },
   mounted() {
-    if (this.$props.create) {
+    if (this.$props.action === "create") {
       this.ctaLabel = "Create";
-    } else if(this.$props.edit) {
+    } else if(this.$props.action === "edit") {
       this.ctaLabel = "Save";
     }
   },
