@@ -40,16 +40,4 @@ class NoteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
-    /*
-    public function findOneBySomeField($value): ?Note
-    {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -18,38 +18,4 @@ class LoginRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Login::class);
     }
-
-    /**
-     * Finds a single login by its id and its user id. Returns only one result.
-     *
-     * @param $id
-     * @param $userId
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function findSingleByUserId($id, $userId): mixed
-    {
-        return $this->createQueryBuilder("l")
-            ->select("l")
-            ->where("l.id = :login_id")
-            ->andWhere("l.user = :user_id")
-            ->setParameters([
-                "login_id" => $id,
-                "user_id" => $userId
-            ])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /*
-    public function findOneBySomeField($value): ?Login
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

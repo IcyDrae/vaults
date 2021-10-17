@@ -62,8 +62,6 @@ class LoginController extends AbstractController
 
     /**
      * Updates a single login with the new encrypted data.
-     *
-     * @throws NonUniqueResultException
      */
     public function update(Request $request, string $id): Response
     {
@@ -71,7 +69,10 @@ class LoginController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $requestBody = json_decode($request->getContent(), true);
 
-        $login = $this->repository->findSingleByUserId($id, $requestBody["userId"]);
+        $login = $this->repository->findOneBy([
+            "id" => $id,
+            "user" => $requestBody["userId"]
+        ]);
 
         if (!empty($login)) {
             $login->setData($requestBody["data"]);
@@ -90,8 +91,6 @@ class LoginController extends AbstractController
 
     /**
      * Deletes a single login by id.
-     *
-     * @throws NonUniqueResultException
      */
     public function delete(Request $request, string $id): Response
     {
@@ -101,7 +100,10 @@ class LoginController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $login = $this->repository->findSingleByUserId($id, $userId);
+        $login = $this->repository->findOneBy([
+            "id" => $id,
+            "user" => $requestBody["userId"]
+        ]);
 
         if (!empty($login)) {
             $entityManager->remove($login);
