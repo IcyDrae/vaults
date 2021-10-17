@@ -1,159 +1,71 @@
 <template>
   <div class="item-detail edit-login">
-    <!--  :initial-values="{ vault_name: vault_name, vault_description: vault_description }"  -->
-    <VeeValidateForm :validation-schema="schema"
-                     v-slot="{ errors, handleSubmit }" as="div">
-      <form @submit="handleSubmit($event, handleForm)">
-        <h1>Edit item!</h1>
-        <div v-for="(property, index) in item" :key="property.id">
-          <label>
-            <span>{{ property.label }}</span>
-            <VeeValidateField :name="index" type="text" />
-            <p class="form-error">{{ errors.vault_name }}</p>
-          </label>
-        </div>
-
-        <button class="btn">Save changes</button>
-        <button type="button" class="btn delete-vault-cta" @click="showModal = true">Delete vault</button>
-
-        <li class="backend-errors" v-for="error in backendErrors" :key="error">
-          {{ error }}
-        </li>
-
-        <p class="backend-success">{{ success }}</p>
-      </form>
-    </VeeValidateForm>
-    <transition name="modal">
-      <DeletePrompt v-if="showModal"
-                    @deletionConfirmed="deleteVault"
-                    @deletionCancelled="showModal = false">
-      </DeletePrompt>
-    </transition>
+    <NoteForm
+        action="edit"
+        :action-handler="handleForm"
+        :delete-handler="deleteHandler"
+        :note="noteData"
+    ></NoteForm>
   </div>
 </template>
 
 <script>
 
+import NoteForm from "./NoteForm";
 import {api} from "../../../services/api";
-import DeletePrompt from "../../../components/DeletePrompt";
-import * as VeeValidate from "vee-validate";
-import * as yup from "yup";
-import {Security} from "../../../plugins/Security";
-import { createNamespacedHelpers } from 'vuex';
-import http from "../../../services/http";
-
-const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
-  name: "EditLogin",
+  name: "EditNote",
   components: {
-    // Rename the components from VeeValidate so there may be no conflicts with native HTML elements.
-    VeeValidateForm: VeeValidate.Form,
-    VeeValidateField: VeeValidate.Field,
-    DeletePrompt
+    NoteForm,
   },
-  props: ["itemId", "itemData"],
+  props: ["note"],
   data() {
     return {
       success: "",
       backendErrors: [],
-      security: new Security(),
       showModal: false
     }
   },
-  mounted() {
-    //let itemType = JSON.parse(this.$props.itemData).item_type;
-
-    console.log(api["note"].schema)
-
-  },
   computed: {
-    ...mapGetters([
-      "getUser",
-      "getEncryptionKey",
-    ]),
     /**
      * Watches for changes for the $props.itemData, excludes specific properties.
      */
-    item() {
-      let data = JSON.parse(this.$props.itemData);
-
-      let dataArray = Object.entries(data);
-
-      let filtered = dataArray.filter((key) => {
-        return key[0] !== "id" && key[0] !== "item_type";
-      });
-
-      return Object.fromEntries(filtered);
+    noteData() {
+      return JSON.parse(this.$props.note);
     }
   },
-  setup() {
-    /**
-     * Validation rules using 'yup'.
-     */
-    const schema = yup.object({
-      vault_name: yup.string()
-          .required()
-          .label("Vault Name"),
-      vault_description: yup.string()
-          .required()
-          .label("Vault Description"),
-    });
-
-    return {
-      schema
-    };
-  },
   methods: {
+    async deleteHandler() {
+      await this.deleteVault();
+    },
     /**
      *
      * @param values
      * @param resetForm
      */
-    handleForm(values, { resetForm }) {
-      values = JSON.stringify(values);
-      let encryptedValues = this.security.encrypt(values, this.getEncryptionKey);
+    async handleForm(values, { resetForm }) {
+      let response = await api.note.update(values, this.noteData.id);
 
-      this.submitForm(encryptedValues, resetForm);
+      if (response instanceof Error) {
+        this.backendErrors.push(response);
+      } else {
+        let updatedNote = response;
+        resetForm();
+
+        await this.$router.push({ name: "item", params: { itemId: updatedNote.id, itemData: JSON.stringify(updatedNote) } });
+      }
     },
-    submitForm(values, resetForm) {
-      let url = `/vaults/update/${this.$route.params.id}`;
+    async deleteVault() {
+      let response = await api.note.delete(this.noteData.id);
 
-      http.request({
-        method: "put",
-        url: url,
-        data: {
-          userId: this.getUser.id,
-          data: values
-        }
-      }).then(response => {
-        if(response.status === 204) {
-          resetForm();
+      if (response instanceof Error) {
+        this.backendErrors.push(response);
+      } else {
+        this.showModal = false;
 
-          this.$router.go(-1);
-        }
-      }).catch(error => {
-        this.backendErrors.push(error.response.data.errors);
-      });
-    },
-    deleteVault() {
-      let url = `/vaults/delete/${this.$route.params.id}`;
-
-      http.request({
-        method: "delete",
-        url: url,
-        data: JSON.stringify({
-          userId: this.getUser.id
-        })
-      }).then(response => {
-        if(response.status === 204) {
-          this.showModal = false;
-
-          this.$router.go(-1);
-        }
-      }).catch(error => {
-        this.backendErrors.push(error.response.data.errors)
-      });
+        await this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
+      }
     }
   }
 }

@@ -58,14 +58,18 @@ export default {
     }
   },
   beforeUpdate() {
-    let password = this.$refs.Password;
-    let toggle = this.$refs.togglePassword;
+    let itemType = JSON.parse(this.$props.itemData).item_type;
 
-    toggle.classList.remove("show-password");
-    toggle.classList.add("hide-password");
+    if (itemType === "login" && this.$refs.Password) {
+      let password = this.$refs.Password;
+      let toggle = this.$refs.togglePassword;
 
-    if (password.getAttribute("type") === "text") {
-      password.setAttribute("type", "password");
+      toggle.classList.remove("show-password");
+      toggle.classList.add("hide-password");
+
+      if (password.getAttribute("type") === "text") {
+        password.setAttribute("type", "password");
+      }
     }
   },
   methods: {
