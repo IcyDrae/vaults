@@ -102,7 +102,7 @@ class LoginController extends AbstractController
 
         $login = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $requestBody["userId"]
+            "user" => $userId
         ]);
 
         if (!empty($login)) {
