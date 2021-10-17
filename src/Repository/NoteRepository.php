@@ -19,22 +19,27 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
-    // /**
-    //  * @return Note[] Returns an array of Note objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Finds a single note by its id and its user id. Returns only one result.
+     *
+     * @param $id
+     * @param $userId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findSingleByUserId($id, $userId): mixed
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder("n")
+            ->select("n")
+            ->where("n.id = :note_id")
+            ->andWhere("n.user = :user_id")
+            ->setParameters([
+                "note_id" => $id,
+                "user_id" => $userId
+            ])
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Note

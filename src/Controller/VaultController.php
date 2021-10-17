@@ -125,24 +125,22 @@ class VaultController extends AbstractController
      * @param string $id
      * @param string $userId
      * @return Response
-     * @throws NonUniqueResultException
      */
     public function listItems(Request $request, string $id, string $userId): Response
     {
         $responseCode = 200;
 
-        $vault = $this->repository->findSingleByUserId($id, $userId);
-        $vaultLogins = $vault->getLogins();
+        $items = $this->repository->fetchRelated($id, $userId);
 
-        if (empty($vault) || empty($vaultLogins)) {
+        if (empty($items)) {
             $responseCode = 404;
         }
 
-        $serialized = $this->serializer->serialize($vaultLogins, "json", ["attributes"  => [
+        $serializedItems = $this->serializer->serialize($items, "json", ["attributes"  => [
             "id",
             "data"
         ]]);
 
-        return new Response($serialized, $responseCode);
+        return new Response($serializedItems, $responseCode);
     }
 }

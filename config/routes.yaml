@@ -58,3 +58,19 @@ logins_delete:
   controller: App\Controller\LoginController::delete
   requirements:
     id: '\d+'
+
+note_create:
+  path: /note/create
+  controller: App\Controller\NoteController::create
+
+note_update:
+  path: /note/update/{id}
+  controller: App\Controller\NoteController::update
+  requirements:
+    id: '\d+'
+
+note_delete:
+  path: /note/delete/{id}
+  controller: App\Controller\NoteController::delete
+  requirements:
+    id: '\d+'
