@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Vault;
 use App\Repository\VaultRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -34,15 +32,20 @@ class VaultController extends AbstractController
     {
         $responseCode = 200;
 
-        $vaults = $this->repository->findMultipleByUserId(
-            $request->get("userId")
-        );
+        $vaults = $this->repository->findBy([
+            "user" => $request->get("userId")
+        ]);
 
         if (empty($vaults)) {
             $responseCode = 404;
         }
 
-        return new JsonResponse($vaults, $responseCode);
+        $serializedVaults = $this->serializer->serialize($vaults, "json", ["attributes"  => [
+            "id",
+            "data"
+        ]]);
+
+        return new Response($serializedVaults, $responseCode);
     }
 
     /**
@@ -72,8 +75,6 @@ class VaultController extends AbstractController
 
     /**
      * Updates a single vault with the new encrypted data.
-     *
-     * @throws NonUniqueResultException
      */
     public function update(Request $request, string $id): Response
     {
@@ -81,7 +82,10 @@ class VaultController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $requestBody = json_decode($request->getContent(), true);
 
-        $vault = $this->repository->findSingleByUserId($id, $requestBody["userId"]);
+        $vault = $this->repository->findOneBy([
+            "id" => $id,
+            "user" => $requestBody["userId"]
+        ]);
 
         if (!empty($vault)) {
             $vault->setData($requestBody["data"]);
@@ -95,8 +99,6 @@ class VaultController extends AbstractController
 
     /**
      * Deletes a single vault by id. Orphaned children will also be deleted.
-     *
-     * @throws NonUniqueResultException
      */
     public function delete(Request $request, string $id): Response
     {
@@ -106,7 +108,10 @@ class VaultController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $vault = $this->repository->findSingleByUserId($id, $userId);
+        $vault = $this->repository->findOneBy([
+            "id" => $id,
+            "user" => $userId
+        ]);
 
         if (!empty($vault)) {
             $entityManager->remove($vault);

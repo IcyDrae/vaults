@@ -21,46 +21,7 @@ class VaultRepository extends ServiceEntityRepository
     }
 
     /**
-     * Queries based on the user id and returns an array.
-     *
-     * @return Vault[] Returns an array of Vault objects.
-     */
-    public function findMultipleByUserId(int $id): array
-    {
-        return $this->createQueryBuilder("v")
-            ->select("v.id, v.data, COUNT(login.vault) AS logins_amount")
-            ->leftJoin("App\Entity\Login", "login", "WITH", "v.id = login.vault")
-            ->where("v.user = :user_id")
-            ->setParameter("user_id", $id)
-            ->groupBy("v.id")
-            ->getQuery()
-            ->getResult(Query::HYDRATE_SCALAR);
-    }
-
-    /**
-     * Finds a single vault by its id and its user id. Returns only one result.
-     *
-     * @param $id
-     * @param $userId
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function findSingleByUserId($id, $userId): mixed
-    {
-        return $this->createQueryBuilder("v")
-            ->select("v")
-            ->where("v.id = :vault_id")
-            ->andWhere("v.user = :user_id")
-            ->setParameters([
-                "vault_id" => $id,
-                "user_id" => $userId
-            ])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * Finds a single vault by its id and its user id, along with all its related entities(logins, notes etc). Returns only one result.
+     * Finds a single vault by its id and its user id, along with all its related entities(logins, notes etc).
      *
      * @param $id
      * @param $userId
@@ -81,16 +42,4 @@ class VaultRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
     }
-
-    /*
-    public function findOneBySomeField($value): ?Vault
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
