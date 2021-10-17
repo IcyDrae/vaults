@@ -26,221 +26,280 @@ export default {
     security: new Security(),
 
     /**
-     * Handles the request to all items for this vault.
+     * The main method to fetch all items for this vault.
      *
      * @param vaultId
      * @returns {Promise<*>}
      */
     async getItems(vaultId) {
-        try {
-            return await this.fetchItems(vaultId);
-        } catch (error) {
-            return error;
-        }
+        let self = this;
+
+        /**
+         * Initializes the process.
+         *
+         * @param vaultId
+         * @returns {Promise<*|undefined>}
+         */
+        const init = async function(vaultId) {
+            try {
+                return await fetchItems(vaultId);
+            } catch (error) {
+                return error;
+            }
+        };
+
+        /**
+         * Requests all items for this vault.
+         *
+         * @param vaultId
+         * @returns {Promise<*|undefined>}
+         */
+        const fetchItems = async function(vaultId) {
+            let url = self.endpoints.ITEMS(vaultId)
+
+            let items = await http.request({
+                method: "get",
+                url: url,
+                data: null
+            });
+
+            return await fetchItemsSuccessHandler(items);
+        };
+
+        /**
+         * Handler when 'fetchItems' resolved successfully.
+         *
+         * @param response
+         * @returns {Promise<*>}
+         */
+        const fetchItemsSuccessHandler = async function(response) {
+            if(response.status === 200) {
+                let decryptedItems = api.decryptResponseObjects(response.data);
+                let items = createItemsFromFactory(decryptedItems);
+
+                await self.store.dispatch("user/setItems", items);
+
+                return response;
+            }
+        };
+
+        const createItemsFromFactory = function(items) {
+            let formatted = [];
+
+            items.forEach(item => {
+                let type = item.data.item_type;
+                let itemObject = new Factory().create(type, item);
+
+                formatted.push(itemObject.dto());
+            });
+
+            return formatted;
+        };
+
+        return await init(vaultId);
     },
 
     /**
-     * Requests all items for this vault.
-     *
-     * @param vaultId
-     * @returns {Promise<*|undefined>}
-     */
-    async fetchItems(vaultId) {
-        let url = this.endpoints.ITEMS(vaultId)
-
-        let items = await http.request({
-            method: "get",
-            url: url,
-            data: null
-        });
-
-        return await this.fetchItemsSuccessHandler(items);
-    },
-
-    /**
-     * Handler when 'fetchItems' resolved successfully.
-     *
-     * @param response
-     * @returns {Promise<*>}
-     */
-    async fetchItemsSuccessHandler(response) {
-        if(response.status === 200) {
-            let decryptedItems = api.decryptResponseObjects(response.data);
-            let items = this.createItemsFromFactory(decryptedItems);
-
-            await this.store.dispatch("user/setItems", items);
-
-            return response;
-        }
-    },
-
-    createItemsFromFactory(items) {
-        let formatted = [];
-
-        items.forEach(item => {
-            let type = item.data.item_type;
-            let itemObject = new Factory().create(type, item);
-
-            formatted.push(itemObject.dto());
-        });
-
-        return formatted;
-    },
-
-    /**
-     * Handles the request to the user's encrypted vaults.
+     * The main method to fetch the user's encrypted vaults.
      *
      * @returns {Promise<void>}
      */
     async fetchAll() {
-        try {
-            return await this.fetchVaults();
-        } catch (error) {
-            return error;
-        }
+        let self = this;
+
+        /**
+         * Initializes the process.
+         *
+         * @returns {Promise<*|*>}
+         */
+        const init = async function() {
+            try {
+                return await fetchVaults();
+            } catch (error) {
+                return error;
+            }
+        };
+
+        /**
+         * Requests the user's encrypted vaults.
+         *
+         * @returns {Promise<*>}
+         */
+        const fetchVaults = async function() {
+            let vaults = await http.request({
+                method: "get",
+                url: self.endpoints.API,
+                params: {
+                    userId: self.store.getters["user/getUser"].id
+                },
+                data: null
+            });
+
+            return fetchVaultsSuccessHandler(vaults);
+        };
+
+        /**
+         * Handler when 'fetchVaults' resolved successfully.
+         *
+         * @param response
+         * @returns {{}}
+         */
+        const fetchVaultsSuccessHandler = function(response) {
+            if(response.status === 200) {
+                let decryptedVaults = api.decryptResponseObjects(response.data);
+
+                return createVaultsFromFactory(decryptedVaults);
+            }
+        };
+
+        const createVaultsFromFactory = function(vaults) {
+            let formatted = [];
+
+            vaults.forEach(vault => {
+                let vaultObject = new Factory().create("vault", vault);
+
+                formatted.push(vaultObject.dto());
+            });
+
+            return formatted;
+        };
+
+        return await init();
     },
 
     /**
-     * Requests the user's encrypted vaults.
-     *
-     * @returns {Promise<*>}
-     */
-    async fetchVaults() {
-        let vaults = await http.request({
-            method: "get",
-            url: this.endpoints.API,
-            params: {
-                userId: this.store.getters["user/getUser"].id
-            },
-            data: null
-        });
-
-        return this.fetchVaultsSuccessHandler(vaults);
-    },
-
-    /**
-     * Handler when 'fetchVaults' resolved successfully.
-     *
-     * @param response
-     * @returns {{}}
-     */
-    fetchVaultsSuccessHandler(response) {
-        if(response.status === 200) {
-            let decryptedVaults = api.decryptResponseObjects(response.data);
-
-            return this.createVaultsFromFactory(decryptedVaults);
-        }
-    },
-
-    createVaultsFromFactory(vaults) {
-        let formatted = [];
-
-        vaults.forEach(vault => {
-            let vaultObject = new Factory().create("vault", vault);
-
-            formatted.push(vaultObject.dto());
-        });
-
-        return formatted;
-    },
-
-    /**
-     * Handles the request to create an encrypted vault.
+     * The main method to create an encrypted vault.
      *
      * @param values
      * @returns {Promise<AxiosResponse<any>|*>}
      */
     async create(values) {
-        try {
-            return await this.createVault(values);
-        } catch (error) {
-            return error;
-        }
-    },
+        let self = this;
 
-    /**
-     * Makes the request to create a vault.
-     *
-     * @param values
-     * @returns {Promise<AxiosResponse<any>>}
-     */
-    async createVault(values) {
-        return await http.request({
-            method: "post",
-            url: this.endpoints.CREATE(),
-            data: {
-                userId: this.store.getters["user/getUser"].id,
-                data: values
+        /**
+         * Initializes the process.
+         *
+         * @param values
+         * @returns {Promise<AxiosResponse<*>|*>}
+         */
+        const init = async function(values) {
+            try {
+                return await createVault(values);
+            } catch (error) {
+                return error;
             }
-        });
+        };
+
+        /**
+         * Makes the request to create a vault.
+         *
+         * @param values
+         * @returns {Promise<AxiosResponse<any>>}
+         */
+        const createVault = async function(values) {
+            return await http.request({
+                method: "post",
+                url: self.endpoints.CREATE(),
+                data: {
+                    userId: self.store.getters["user/getUser"].id,
+                    data: values
+                }
+            });
+        };
+
+        return await init(values);
     },
 
     /**
-     * Handles the request to update a vault.
+     * The main method to update a vault.
      *
      * @param id
      * @param values
      * @returns {Promise<AxiosResponse<any>|*>}
      */
     async update(id, values) {
-        try {
-            return await this.updateVault(id, values);
-        } catch (error) {
-            return error;
-        }
-    },
+        let self = this;
 
-    /**
-     * Makes the request to update a vault.
-     *
-     * @param id
-     * @param values
-     * @returns {Promise<AxiosResponse<any>>}
-     */
-    async updateVault(id, values) {
-        let url = this.endpoints.UPDATE(id);
-
-        return await http.request({
-            method: "put",
-            url: url,
-            data: {
-                userId: this.store.getters["user/getUser"].id,
-                data: values
+        /**
+         * Initializes the process.
+         *
+         * @param id
+         * @param values
+         * @returns {Promise<AxiosResponse<*>|*>}
+         */
+        const init = async function(id, values) {
+            try {
+                return await updateVault(id, values);
+            } catch (error) {
+                return error;
             }
-        });
+        };
+
+        /**
+         * Makes the request to update a vault.
+         *
+         * @param id
+         * @param values
+         * @returns {Promise<AxiosResponse<any>>}
+         */
+        const updateVault = async function(id, values) {
+            let url = self.endpoints.UPDATE(id);
+
+            return await http.request({
+                method: "put",
+                url: url,
+                data: {
+                    userId: self.store.getters["user/getUser"].id,
+                    data: values
+                }
+            });
+        };
+
+        return await init(id, values);
     },
 
     /**
-     * Handles the request to delete a vault.
+     * The main method to delete a vault.
      *
      * @param id
-     * @param values
      * @returns {Promise<AxiosResponse<*>|*>}
      */
     async delete(id) {
-        try {
-            return await this.deleteVault(id);
-        } catch (error) {
-            return error;
-        }
-    },
+        let self = this;
 
-    /**
-     * Makes the request to delete a vault.
-     *
-     * @param id
-     * @returns {Promise<AxiosResponse<any>>}
-     */
-    async deleteVault(id) {
-        let url = this.endpoints.DELETE(id);
+        /**
+         * Initializes the process.
+         *
+         * @param id
+         * @returns {Promise<AxiosResponse<*>|*>}
+         */
+        const init = async function(id) {
+            try {
+                return await deleteVault(id);
+            } catch (error) {
+                return error;
+            }
+        };
 
-        return await http.request({
-            method: "delete",
-            url: url,
-            data: JSON.stringify({
-                userId: this.store.getters["user/getUser"].id
-            })
-        });
+        /**
+         * Makes the request to delete a vault.
+         *
+         * @param id
+         * @returns {Promise<AxiosResponse<any>>}
+         */
+        const deleteVault = async function(id) {
+            let url = self.endpoints.DELETE(id);
+
+            return await http.request({
+                method: "delete",
+                url: url,
+                data: JSON.stringify({
+                    userId: self.store.getters["user/getUser"].id
+                })
+            });
+        };
+
+        return await init(id);
     },
 
     /**
