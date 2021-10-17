@@ -8,7 +8,6 @@ use App\Entity\Vault;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -71,7 +70,10 @@ class NoteController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $requestBody = json_decode($request->getContent(), true);
 
-        $note = $this->repository->findSingleByUserId($id, $requestBody["userId"]);
+        $note = $this->repository->findOneBy([
+            "id" => $id,
+            "user" => $requestBody["userId"]
+        ]);
 
         if (!empty($note)) {
             $note->setData($requestBody["data"]);
@@ -101,7 +103,10 @@ class NoteController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $note = $this->repository->findSingleByUserId($id, $userId);
+        $note = $this->repository->findOneBy([
+            "id" => $id,
+            "user" => $userId
+        ]);
 
         if (!empty($note)) {
             $entityManager->remove($note);
