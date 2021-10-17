@@ -137,6 +137,7 @@ class VaultController extends AbstractController
 
         $items = $this->repository->fetchRelated($id, $userId);
         $items = array_filter($items);
+        $items = array_values($items);
 
         if (empty($items)) {
             $responseCode = 404;
