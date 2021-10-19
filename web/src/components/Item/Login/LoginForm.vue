@@ -27,10 +27,15 @@
       </label>
 
       <label>
-        <span>Password</span>
-        <VeeValidateField name="login_password" type="password" :value="login ? login.login_password.value : ''" />
-        <p class="form-error">{{ errors.login_password }}</p>
+        <VeeValidateField v-model="generatedPassword" name="login_password" v-slot="{ field }">
+          <span>Password</span>
+          <input ref="password" v-bind="field" type="password">
+          <p class="form-error">{{ errors.login_password }}</p>
+        </VeeValidateField>
       </label>
+      <div class="input-cta-container">
+        <span class="input-cta generate" @click="createPassword">Generate</span>
+      </div>
 
       <label>
         <span>Description</span>
@@ -64,6 +69,7 @@
 
 <script>
 
+import password_generator from "../../../services/password_generator";
 import DeletePrompt from "../../DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
@@ -98,6 +104,7 @@ export default {
     return {
       ctaLabel: "",
       headline: "",
+      generatedPassword: this.$props.login ? this.$props.login.login_password.value : '',
       success: "",
       backendErrors: [],
       showModal: false,
@@ -144,6 +151,17 @@ export default {
     return {
       schema
     };
+  },
+  methods: {
+    createPassword() {
+      let passwordElement = this.$refs.password;
+
+      if (passwordElement.getAttribute("type") === "password") {
+        passwordElement.setAttribute("type", "text");
+      }
+
+      this.generatedPassword = password_generator.generate();
+    }
   }
 }
 
