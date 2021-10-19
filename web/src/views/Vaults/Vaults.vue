@@ -35,7 +35,6 @@ export default {
   name: "Vaults",
   data() {
     return {
-      //vaults: [],
       backendErrors: [],
     }
   },

@@ -56,7 +56,7 @@ import {Security} from "../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
-const { mapActions, mapState } = createNamespacedHelpers("user");
+const { mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "Dashboard",
@@ -84,9 +84,6 @@ export default {
     this.fetchVaultItems();
   },
   methods: {
-    ...mapActions([
-        "setItems"
-    ]),
     /**
      * Requests the user's encrypted vaults.
      */
