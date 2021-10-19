@@ -21,20 +21,31 @@ class VaultRepository extends ServiceEntityRepository
     }
 
     /**
-     * Queries based on the user id and includes the logins amount.
+     * Queries using the user id and includes the relations amount.
      *
      * @return Vault[] Returns an array of Vault objects.
      */
-    public function findMultipleByUserId(int $id): array
+    public function findMultipleWithRelationsAmount(int $userId): array
     {
-        return $this->createQueryBuilder("v")
-            ->select("v.id, v.data, COUNT(login.vault) AS logins_amount")
-            ->leftJoin("App\Entity\Login", "login", "WITH", "v.id = login.vault")
-            ->where("v.user = :user_id")
-            ->setParameter("user_id", $id)
-            ->groupBy("v.id")
-            ->getQuery()
-            ->getResult(Query::HYDRATE_SCALAR);
+        $vaults = [];
+
+        $query = $this->findBy([
+            "user" => $userId
+        ]);
+
+        foreach ($query as $result) {
+            $loginsAmount = $result->getLogins()->count();
+            $notesAmount = $result->getNotes()->count();
+            $items = $loginsAmount + $notesAmount;
+
+            array_push($vaults, [
+                "id" => $result->getId(),
+                "data" => $result->getData(),
+                "items_amount" => $items
+            ]);
+        }
+
+        return $vaults;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Vault;
 use App\Repository\VaultRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -32,18 +33,13 @@ class VaultController extends AbstractController
     {
         $responseCode = 200;
 
-        $vaults = $this->repository->findMultipleByUserId($request->get("userId"));
+        $vaults = $this->repository->findMultipleWithRelationsAmount($request->get("userId"));
 
         if (empty($vaults)) {
             $responseCode = 404;
         }
 
-        $serializedVaults = $this->serializer->serialize($vaults, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
-
-        return new Response($serializedVaults, $responseCode);
+        return new JsonResponse($vaults, $responseCode);
     }
 
     /**

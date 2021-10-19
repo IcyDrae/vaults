@@ -4,12 +4,12 @@
 export class Vault {
     id = Number;
     data = Object;
-    logins_amount = Number;
+    items_amount = Number;
 
-    constructor({ id, data, logins_amount }) {
+    constructor({ id, data, items_amount }) {
         this.id = id;
         this.data = data;
-        this.logins_amount = logins_amount;
+        this.items_amount = items_amount;
     }
 
     /**
@@ -22,7 +22,7 @@ export class Vault {
             "id": this.id,
             "vault_name": this.data.vault_name,
             "vault_description": this.data.vault_description,
-            "logins_amount": this.logins_amount
+            "items_amount": this.items_amount
         };
     }
 }

@@ -3,7 +3,7 @@
     <div v-for="vault in vaults" :key="vault" class="vault">
       <div @click="$router.push({name: 'vaultDashboard', params: { id: vault.id }})">
         <p>{{ vault.vault_name }}</p>
-        <p>{{ vault.logins_amount }} Items</p>
+        <p>{{ vault.items_amount }} Items</p>
         <p class="vault-description">{{ vault.vault_description }}</p>
       </div>
       <div class="settings">
