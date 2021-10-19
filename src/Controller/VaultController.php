@@ -32,9 +32,7 @@ class VaultController extends AbstractController
     {
         $responseCode = 200;
 
-        $vaults = $this->repository->findBy([
-            "user" => $request->get("userId")
-        ]);
+        $vaults = $this->repository->findMultipleByUserId($request->get("userId"));
 
         if (empty($vaults)) {
             $responseCode = 404;
