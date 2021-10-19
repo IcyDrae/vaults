@@ -29,12 +29,13 @@
       <label>
         <VeeValidateField v-model="generatedPassword" name="login_password" v-slot="{ field }">
           <span>Password</span>
-          <input ref="password" v-bind="field" type="password">
+          <input ref="password" v-bind="field" type="text">
           <p class="form-error">{{ errors.login_password }}</p>
         </VeeValidateField>
       </label>
-      <div class="input-cta-container">
+      <div class="input-cta-container input-cta-container-form">
         <span class="input-cta generate" @click="createPassword">Generate</span>
+        <span class="input-cta copy" @click="this.copyToClipboard('password')">Copy</span>
       </div>
 
       <label>

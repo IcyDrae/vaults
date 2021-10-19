@@ -154,18 +154,23 @@
       .input-cta-container {
         opacity: 0;
 
+        position: relative;
+        float: right;
+        margin-top: -90px;
+
         &:hover {
           opacity: 1;
         }
 
         .input-cta {
-          position: relative;
+          display: inline-block;
+          width: 5em;
+          text-align: center;
+          margin: 0 2px;
           cursor: pointer;
           padding: 5px;
           border: 1px solid $borderColor;
           transition: all 0.3s;
-          float: right;
-          margin-top: -90px;
           font-size: 16px;
 
           &:hover {
@@ -178,8 +183,6 @@
           }
 
           &#toggle-password {
-            margin-right: 50px;
-
             &.show-password {
               &::after {
                 content: "Hide";
@@ -192,6 +195,11 @@
               }
             }
           }
+        }
+
+        &.input-cta-container-form {
+          opacity: 1;
+          margin-top: -125px;
         }
       }
 

@@ -15,5 +15,20 @@ export default {
         isObjectEmpty(object) {
             return !(Object.keys(object).length);
         },
+        copyToClipboard(referenceName) {
+            let element = this.$refs[referenceName];
+            let typeAttribute = element.getAttribute("type");
+
+            if (typeAttribute === "password") {
+                element.setAttribute("type", "text");
+            }
+
+            element.select();
+            document.execCommand("copy");
+
+            if (typeAttribute === "password") {
+                element.setAttribute("type", "password");
+            }
+        }
     }
 }
