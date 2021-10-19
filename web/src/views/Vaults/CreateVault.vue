@@ -82,7 +82,7 @@ export default {
 
       if (response instanceof Error) {
         this.errorHandler(response);
-      } else if (response.status === 201) {
+      } else {
         resetForm();
 
         this.$router.push("/vaults");

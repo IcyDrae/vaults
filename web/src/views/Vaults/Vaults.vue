@@ -27,26 +27,30 @@
 <script>
 
 import {api} from "../../services/api";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "Vaults",
   data() {
     return {
-      vaults: [],
+      //vaults: [],
       backendErrors: [],
     }
   },
   mounted() {
     this.fetchVaultsOrFail();
   },
+  computed: mapState([
+    "vaults"
+  ]),
   methods: {
     async fetchVaultsOrFail() {
       let request = await api.vault.fetchAll();
 
       if(request instanceof Error) {
         this.backendErrors.push(request.message);
-      } else {
-        this.vaults = request;
       }
     }
   }

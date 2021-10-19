@@ -98,7 +98,7 @@ export default {
 
       if (response instanceof Error) {
         this.backendErrors.push(response.response.data.errors);
-      } else if (response.status === 204) {
+      } else {
         resetForm();
 
         this.$router.go(-1);

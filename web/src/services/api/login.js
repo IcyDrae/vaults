@@ -197,7 +197,7 @@ export default {
             return successHandler(response, id);
         };
 
-        const successHandler = async function(response) {
+        const successHandler = async function(response, id) {
             if(response.status === 204) {
                 await self.store.dispatch("user/deleteItem", id);
 

@@ -7,6 +7,7 @@ export default {
         user: Object,
         encryptionKey: Uint8Array,
         authenticationHash: Uint8Array,
+        vaults: [],
         items: []
     },
     mutations: {
@@ -18,6 +19,22 @@ export default {
         },
         setAuthenticationHash(state, payload) {
             state.authenticationHash = payload;
+        },
+        setVaults(state, payload) {
+            state.vaults = payload;
+        },
+        addVault(state, payload) {
+            state.vaults.push(payload);
+        },
+        updateVault(state, payload) {
+            let foundIndex = state.vaults.findIndex(element => element.id === payload.id);
+
+            state.vaults.splice(foundIndex, 1, payload);
+        },
+        deleteVault(state, payload) {
+            let foundIndex = state.vaults.findIndex(element => element.id === payload);
+
+            state.vaults.splice(foundIndex, 1);
         },
         setItems(state, payload) {
             state.items = payload;
@@ -45,6 +62,18 @@ export default {
         },
         setAuthenticationHash(context, payload) {
             context.commit("setAuthenticationHash", payload);
+        },
+        setVaults(context, payload) {
+            context.commit("setVaults", payload);
+        },
+        addVault(context, payload) {
+            context.commit("addVault", payload);
+        },
+        updateVault(context, payload) {
+            context.commit("updateVault", payload);
+        },
+        deleteVault(context, payload) {
+            context.commit("deleteVault", payload);
         },
         setItems(context, payload) {
             context.commit("setItems", payload);

@@ -135,7 +135,7 @@ export default {
                 data: null
             });
 
-            return fetchVaultsSuccessHandler(vaults);
+            return await successHandler(vaults);
         };
 
         /**
@@ -144,12 +144,16 @@ export default {
          * @param response
          * @returns {{}}
          */
-        const fetchVaultsSuccessHandler = function(response) {
+        const successHandler = async function(response) {
             if(response.status === 200) {
                 let decryptedVaults = api.decryptResponseObjects(response.data);
 
-                return createVaultsFromFactory(decryptedVaults);
+                let vaults = createVaultsFromFactory(decryptedVaults);
+
+                await self.store.dispatch("user/setVaults", vaults);
             }
+
+            return response;
         };
 
         const createVaultsFromFactory = function(vaults) {
@@ -197,7 +201,7 @@ export default {
          * @returns {Promise<AxiosResponse<any>>}
          */
         const createVault = async function(values) {
-            return await http.request({
+            let response = await http.request({
                 method: "post",
                 url: self.endpoints.CREATE(),
                 data: {
@@ -205,6 +209,19 @@ export default {
                     data: values
                 }
             });
+
+            return await successHandler(response);
+        };
+
+        const successHandler = async function(response) {
+            if(response.status === 201) {
+                let decryptedLogin = api.decryptResponseObject(response.data);
+                let vault = self.createVaultFromFactory(decryptedLogin);
+
+                await self.store.dispatch("user/addVault", vault);
+            }
+
+            return response;
         };
 
         return await init(values);
@@ -245,7 +262,7 @@ export default {
         const updateVault = async function(id, values) {
             let url = self.endpoints.UPDATE(id);
 
-            return await http.request({
+            let response = await http.request({
                 method: "put",
                 url: url,
                 data: {
@@ -253,6 +270,19 @@ export default {
                     data: values
                 }
             });
+
+            return await successHandler(response);
+        };
+
+        const successHandler = async function(response) {
+            if(response.status === 200) {
+                let decryptedLogin = api.decryptResponseObject(response.data);
+                let vault = self.createVaultFromFactory(decryptedLogin);
+
+                await self.store.dispatch("user/updateVault", vault);
+            }
+
+            return response;
         };
 
         return await init(id, values);
@@ -290,16 +320,32 @@ export default {
         const deleteVault = async function(id) {
             let url = self.endpoints.DELETE(id);
 
-            return await http.request({
+            let response = await http.request({
                 method: "delete",
                 url: url,
                 data: JSON.stringify({
                     userId: self.store.getters["user/getUser"].id
                 })
             });
+
+            return await successHandler(response, id);
+        };
+
+        const successHandler = async function(response, id) {
+            if(response.status === 204) {
+                await self.store.dispatch("user/deleteVault", id);
+            }
+
+            return response;
         };
 
         return await init(id);
+    },
+
+    createVaultFromFactory(item) {
+        let formatted = new Factory().create("vault", item);
+
+        return formatted.dto();
     },
 
     /**
