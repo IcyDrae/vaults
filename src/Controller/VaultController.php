@@ -68,7 +68,12 @@ class VaultController extends AbstractController
         $entityManager->persist($vault);
         $entityManager->flush();
 
-        return new Response("", 201);
+        $serialized = $this->serializer->serialize($vault, "json", ["attributes"  => [
+            "id",
+            "data"
+        ]]);
+
+        return new Response($serialized, 201);
     }
 
     /**
@@ -89,10 +94,15 @@ class VaultController extends AbstractController
             $vault->setData($requestBody["data"]);
             $entityManager->flush();
 
-            $statusCode = 204;
+            $statusCode = 200;
+
+            $vault = $this->serializer->serialize($vault, "json", ["attributes"  => [
+                "id",
+                "data"
+            ]]);
         }
 
-        return new Response("", $statusCode);
+        return new Response($vault, $statusCode);
     }
 
     /**
