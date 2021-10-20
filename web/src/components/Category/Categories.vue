@@ -1,27 +1,29 @@
 <template>
-  <div class="navigation">
-    <div class="create-category-cta">
-      <button class="btn" @click="creating = true">Create folder</button>
-      <CreateCategory v-if="creating"
+  <div class="categories">
+    <div class="navigation">
+      <div class="create-category-cta">
+        <button class="btn" @click="creating = true">Create folder</button>
+      </div>
+      <CreateCategory v-if="creating === true"
                       @closeOverlay="creating = false">
       </CreateCategory>
+      <ul class="folders">
+        <li v-for="category in categories" :key="category">
+          <a href="#">{{ category.category_name }}</a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a href="#">Favourites</a>
+        </li>
+        <li>
+          <a href="#">Settings</a>
+        </li>
+        <li>
+          <a href="#">Trash</a>
+        </li>
+      </ul>
     </div>
-    <ul class="folders" v-for="category in categories" :key="category">
-      <li>
-        <a href="#">{{ category.category_name }}</a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a href="#">Favourites</a>
-      </li>
-      <li>
-        <a href="#">Settings</a>
-      </li>
-      <li>
-        <a href="#">Trash</a>
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -43,7 +45,7 @@ export default {
     return {
       backendErrors: [],
       security: new Security(),
-      creating: false
+      creating: Boolean
     }
   },
   computed: mapState([

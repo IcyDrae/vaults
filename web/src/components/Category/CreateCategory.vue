@@ -1,11 +1,11 @@
 <template>
-  <div class="create-vault vault-overlay">
+  <div class="overlay create-category-overlay">
     <button class="exit-overlay" @click="$emit('closeOverlay')">
       &#10006;
     </button>
     <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="form">
       <form @submit="handleSubmit($event, handleForm)">
-        <h1>Create a Folder to organize your items!</h1>
+        <h2>Create a Folder to organize your items!</h2>
         <label>
           <span>Folder Name</span>
           <VeeValidateField name="category_name" type="text" />
@@ -50,7 +50,7 @@ export default {
     const schema = yup.object({
       category_name: yup.string()
           .required()
-          .label("Category Name")
+          .label("Folder Name")
     });
 
     return {

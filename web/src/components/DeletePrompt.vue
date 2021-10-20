@@ -1,5 +1,5 @@
 <template>
-  <div class="delete-vault-overlay vault-overlay">
+  <div class="overlay delete-vault-overlay">
     <div class="prompt">
       <div class="prompt-message">
         {{ promptText }}

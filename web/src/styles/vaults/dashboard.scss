@@ -12,35 +12,38 @@
     flex-wrap: nowrap;
   }
 
-  .navigation {
+  .categories {
     flex-grow: 3;
     flex-basis: 0;
     border-right: 1px solid $borderColor;
 
     align-items: center;
 
-    ul {
-      list-style-type: none;
-      margin-top: 15px;
-      padding: 0;
+    .navigation {
       width: 100%;
-    }
 
-    li {
-      text-align: center;
+      ul {
+        list-style-type: none;
+        margin-top: 15px;
+        padding: 0;
 
-      a {
-        display: block;
-        color: $white;
-        padding: 16px 16px;
-        text-decoration: none;
+        li {
+          text-align: center;
+
+          a {
+            display: block;
+            color: $white;
+            padding: 16px 16px;
+            text-decoration: none;
+
+            &:hover {
+              background-color: $hoverBackgroundColor;
+              color: $hoverColor;
+              font-weight: 600;
+            }
+          }
+        }
       }
-    }
-
-    li a:hover {
-      background-color: $hoverBackgroundColor;
-      color: $hoverColor;
-      font-weight: 600;
     }
   }
 
