@@ -8,6 +8,7 @@ export default {
         encryptionKey: Uint8Array,
         authenticationHash: Uint8Array,
         vaults: [],
+        categories: [],
         items: []
     },
     mutations: {
@@ -35,6 +36,22 @@ export default {
             let foundIndex = state.vaults.findIndex(element => element.id === payload);
 
             state.vaults.splice(foundIndex, 1);
+        },
+        setCategories(state, payload) {
+            state.categories = payload;
+        },
+        addCategory(state, payload) {
+            state.categories.push(payload);
+        },
+        updateCategory(state, payload) {
+            let foundIndex = state.categories.findIndex(element => element.id === payload.id);
+
+            state.categories.splice(foundIndex, 1, payload);
+        },
+        deleteCategory(state, payload) {
+            let foundIndex = state.categories.findIndex(element => element.id === payload);
+
+            state.categories.splice(foundIndex, 1);
         },
         setItems(state, payload) {
             state.items = payload;
@@ -75,6 +92,18 @@ export default {
         deleteVault(context, payload) {
             context.commit("deleteVault", payload);
         },
+        setCategories(context, payload) {
+            context.commit("setCategories", payload);
+        },
+        addCategory(context, payload) {
+            context.commit("addCategory", payload);
+        },
+        updateCategory(context, payload) {
+            context.commit("updateCategory", payload);
+        },
+        deleteCategory(context, payload) {
+            context.commit("deleteCategory", payload);
+        },
         setItems(context, payload) {
             context.commit("setItems", payload);
         },
@@ -100,6 +129,9 @@ export default {
         },
         getItems(state) {
             return state.items;
+        },
+        getCategories(state) {
+            return state.categories;
         }
     },
 }

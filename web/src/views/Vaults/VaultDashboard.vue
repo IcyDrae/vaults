@@ -1,29 +1,6 @@
 <template>
   <div class="dashboard">
-    <div class="navigation">
-      <ul class="folders">
-        <li>
-          <a href="#">Social Networks</a>
-        </li>
-        <li>
-          <a href="#">Online Banking</a>
-        </li>
-        <li>
-          <a href="#">Shopping</a>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <a href="#">Favourites</a>
-        </li>
-        <li>
-          <a href="#">Settings</a>
-        </li>
-        <li>
-          <a href="#">Trash</a>
-        </li>
-      </ul>
-    </div>
+    <Categories></Categories>
     <div class="logins">
       <CreationTypeSelector></CreationTypeSelector>
       <div class="logins-container">
@@ -54,6 +31,7 @@
 import {api} from "../../services/api";
 import {Security} from "../../plugins/Security";
 import { createNamespacedHelpers } from 'vuex';
+import Categories from "../../components/Category/Categories";
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
 const { mapState } = createNamespacedHelpers("user");
@@ -61,6 +39,7 @@ const { mapState } = createNamespacedHelpers("user");
 export default {
   name: "Dashboard",
   components: {
+    Categories,
     CreationTypeSelector
   },
   data() {

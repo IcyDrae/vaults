@@ -1,17 +1,14 @@
 <template>
   <div class="navigation">
     <div class="create-category-cta">
-      <button class="btn" @click="$router.push('/category/create')">Create folder</button>
+      <button class="btn" @click="creating = true">Create folder</button>
+      <CreateCategory v-if="creating"
+                      @closeOverlay="creating = false">
+      </CreateCategory>
     </div>
-    <ul class="folders">
+    <ul class="folders" v-for="category in categories" :key="category">
       <li>
-        <a href="#">Social Networks</a>
-      </li>
-      <li>
-        <a href="#">Online Banking</a>
-      </li>
-      <li>
-        <a href="#">Shopping</a>
+        <a href="#">{{ category.category_name }}</a>
       </li>
     </ul>
     <ul>
@@ -30,22 +27,27 @@
 
 <script>
 
+import CreateCategory from "./CreateCategory";
 import { createNamespacedHelpers } from 'vuex';
-import {Security} from "../plugins/Security";
-import {api} from "../services/api";
+import {Security} from "../../plugins/Security";
+import {api} from "../../services/api";
 
 const { mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "Categories",
+  components: {
+    CreateCategory
+  },
   data() {
     return {
       backendErrors: [],
-      security: new Security()
+      security: new Security(),
+      creating: false
     }
   },
   computed: mapState([
-    "items"
+    "categories"
   ]),
   mounted() {
     this.fetchCategories();

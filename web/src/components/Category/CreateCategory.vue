@@ -1,21 +1,15 @@
 <template>
   <div class="create-vault vault-overlay">
-    <button class="exit-overlay" v-on:click="$router.go(-1)">
+    <button class="exit-overlay" @click="$emit('closeOverlay')">
       &#10006;
     </button>
     <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="form">
       <form @submit="handleSubmit($event, handleForm)">
-        <h1>Create a custom vault!</h1>
+        <h1>Create a Folder to organize your items!</h1>
         <label>
-          <span>Vault Name</span>
-          <VeeValidateField name="vault_name" type="text" />
-          <p class="form-error">{{ errors.vault_name }}</p>
-        </label>
-
-        <label>
-          <span>Description</span>
-          <VeeValidateField name="vault_description" as="textarea" />
-          <p class="form-error">{{ errors.vault_description }}</p>
+          <span>Folder Name</span>
+          <VeeValidateField name="category_name" type="text" />
+          <p class="form-error">{{ errors.category_name }}</p>
         </label>
 
         <button class="btn">Create</button>
@@ -37,7 +31,7 @@ import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 
 export default {
-  name: "CreateVault",
+  name: "CreateCategory",
   components: {
     // Rename the components from VeeValidate so there may be no conflicts with native HTML elements.
     VeeValidateForm: VeeValidate.Form,
@@ -54,12 +48,9 @@ export default {
      * Validation rules using 'yup'.
      */
     const schema = yup.object({
-      vault_name: yup.string()
+      category_name: yup.string()
           .required()
-          .label("Vault Name"),
-      vault_description: yup.string()
-          .required()
-          .label("Vault Description"),
+          .label("Category Name")
     });
 
     return {
@@ -73,22 +64,23 @@ export default {
      * @param resetForm
      */
     async handleForm(values, { resetForm }) {
-      let encryptedValues = api.vault.encryptVault(values);
+      let encryptedValues = api.category.encryptCategory(values);
 
       await this.submitForm(encryptedValues, resetForm);
     },
     async submitForm(values, resetForm) {
-      let response = await api.vault.create(values);
+      let response = await api.category.create(values);
 
       if (response instanceof Error) {
         this.errorHandler(response);
       } else {
         resetForm();
 
-        this.$router.push("/vaults");
+        this.$emit("closeOverlay");
       }
     },
     errorHandler(error) {
+      console.log(error)
       if (error.response.data.registration === false) {
         this.backendErrors.push(error.response.data.errors)
       }

@@ -6,18 +6,18 @@ import store from "../../store";
 
 export default {
     endpoints: {
-        API: "/vaults",
+        API: "/category",
         CREATE() {
-            return this.API + "/create"
+            return this.API
         },
-        UPDATE(vaultId) {
-            return this.API + "/update/" + vaultId
+        UPDATE(categoryId) {
+            return this.API + "/update/" + categoryId
         },
-        DELETE(vaultId) {
-            return this.API + "/delete/" + vaultId
+        DELETE(categoryId) {
+            return this.API + "/delete/" + categoryId
         },
-        ITEMS(vaultId) {
-            return this.API + "/" + vaultId + "/" + store.getters["user/getUser"].id
+        ITEMS(categoryId) {
+            return this.API + "/" + categoryId + "/items"
         }
     },
 
@@ -26,7 +26,7 @@ export default {
     security: new Security(),
 
     /**
-     * The main method to fetch all items for this vault.
+     * The main method to fetch all items for this category.
      *
      * @param vaultId
      * @returns {Promise<*>}
@@ -49,7 +49,7 @@ export default {
         };
 
         /**
-         * Requests all items for this vault.
+         * Requests all items for this category.
          *
          * @param vaultId
          * @returns {Promise<*|undefined>}
@@ -100,7 +100,7 @@ export default {
     },
 
     /**
-     * The main method to fetch the user's encrypted vaults.
+     * The main method to fetch the user's encrypted categories.
      *
      * @returns {Promise<void>}
      */
@@ -114,19 +114,19 @@ export default {
          */
         const init = async function() {
             try {
-                return await fetchVaults();
+                return await fetchCategories();
             } catch (error) {
                 return error;
             }
         };
 
         /**
-         * Requests the user's encrypted vaults.
+         * Requests the user's encrypted categories.
          *
          * @returns {Promise<*>}
          */
-        const fetchVaults = async function() {
-            let vaults = await http.request({
+        const fetchCategories = async function() {
+            let categories = await http.request({
                 method: "get",
                 url: self.endpoints.API,
                 params: {
@@ -135,34 +135,34 @@ export default {
                 data: null
             });
 
-            return await successHandler(vaults);
+            return await successHandler(categories);
         };
 
         /**
-         * Handler when 'fetchVaults' resolved successfully.
+         * Handler when 'fetchCategories' resolved successfully.
          *
          * @param response
          * @returns {{}}
          */
         const successHandler = async function(response) {
             if(response.status === 200) {
-                let decryptedVaults = api.decryptResponseObjects(response.data);
+                let decryptedCategories = api.decryptResponseObjects(response.data);
 
-                let vaults = createVaultsFromFactory(decryptedVaults);
+                let categories = createCategoriesFromFactory(decryptedCategories);
 
-                await self.store.dispatch("user/setVaults", vaults);
+                await self.store.dispatch("user/setCategories", categories);
             }
 
             return response;
         };
 
-        const createVaultsFromFactory = function(vaults) {
+        const createCategoriesFromFactory = function(categories) {
             let formatted = [];
 
-            vaults.forEach(vault => {
-                let vaultObject = new Factory().create("vault", vault);
+            categories.forEach(category => {
+                let categoryObject = new Factory().create("category", category);
 
-                formatted.push(vaultObject.dto());
+                formatted.push(categoryObject.dto());
             });
 
             return formatted;
@@ -172,7 +172,7 @@ export default {
     },
 
     /**
-     * The main method to create an encrypted vault.
+     * The main method to create an encrypted category.
      *
      * @param values
      * @returns {Promise<AxiosResponse<any>|*>}
@@ -188,19 +188,19 @@ export default {
          */
         const init = async function(values) {
             try {
-                return await createVault(values);
+                return await createCategory(values);
             } catch (error) {
                 return error;
             }
         };
 
         /**
-         * Makes the request to create a vault.
+         * Makes the request to create a category.
          *
          * @param values
          * @returns {Promise<AxiosResponse<any>>}
          */
-        const createVault = async function(values) {
+        const createCategory = async function(values) {
             let response = await http.request({
                 method: "post",
                 url: self.endpoints.CREATE(),
@@ -215,10 +215,10 @@ export default {
 
         const successHandler = async function(response) {
             if(response.status === 201) {
-                let decryptedLogin = api.decryptResponseObject(response.data);
-                let vault = self.createVaultFromFactory(decryptedLogin);
+                let decryptedCategory = api.decryptResponseObject(response.data);
+                let category = self.createCategoryFromFactory(decryptedCategory);
 
-                await self.store.dispatch("user/addVault", vault);
+                await self.store.dispatch("user/addCategory", category);
             }
 
             return response;
@@ -228,7 +228,7 @@ export default {
     },
 
     /**
-     * The main method to update a vault.
+     * The main method to update a category.
      *
      * @param id
      * @param values
@@ -246,20 +246,20 @@ export default {
          */
         const init = async function(id, values) {
             try {
-                return await updateVault(id, values);
+                return await updateCategory(id, values);
             } catch (error) {
                 return error;
             }
         };
 
         /**
-         * Makes the request to update a vault.
+         * Makes the request to update a category.
          *
          * @param id
          * @param values
          * @returns {Promise<AxiosResponse<any>>}
          */
-        const updateVault = async function(id, values) {
+        const updateCategory = async function(id, values) {
             let url = self.endpoints.UPDATE(id);
 
             let response = await http.request({
@@ -277,9 +277,9 @@ export default {
         const successHandler = async function(response) {
             if(response.status === 200) {
                 let decryptedLogin = api.decryptResponseObject(response.data);
-                let vault = self.createVaultFromFactory(decryptedLogin);
+                let vault = self.createCategoryFromFactory(decryptedLogin);
 
-                await self.store.dispatch("user/updateVault", vault);
+                await self.store.dispatch("user/updateCategory", vault);
             }
 
             return response;
@@ -289,7 +289,7 @@ export default {
     },
 
     /**
-     * The main method to delete a vault.
+     * The main method to delete a category.
      *
      * @param id
      * @returns {Promise<AxiosResponse<*>|*>}
@@ -305,19 +305,19 @@ export default {
          */
         const init = async function(id) {
             try {
-                return await deleteVault(id);
+                return await deleteCategory(id);
             } catch (error) {
                 return error;
             }
         };
 
         /**
-         * Makes the request to delete a vault.
+         * Makes the request to delete a category.
          *
          * @param id
          * @returns {Promise<AxiosResponse<any>>}
          */
-        const deleteVault = async function(id) {
+        const deleteCategory = async function(id) {
             let url = self.endpoints.DELETE(id);
 
             let response = await http.request({
@@ -333,7 +333,7 @@ export default {
 
         const successHandler = async function(response, id) {
             if(response.status === 204) {
-                await self.store.dispatch("user/deleteVault", id);
+                await self.store.dispatch("user/deleteCategory", id);
             }
 
             return response;
@@ -342,8 +342,8 @@ export default {
         return await init(id);
     },
 
-    createVaultFromFactory(item) {
-        let formatted = new Factory().create("vault", item);
+    createCategoryFromFactory(item) {
+        let formatted = new Factory().create("category", item);
 
         return formatted.dto();
     },
@@ -354,7 +354,7 @@ export default {
      * @param data
      * @returns {string}
      */
-    encryptVault(data) {
+    encryptCategory(data) {
         data = JSON.stringify(data);
 
         return this.security.encrypt(data, this.store.getters["user/getEncryptionKey"]);

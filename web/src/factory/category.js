@@ -1,7 +1,7 @@
 /**
- * Vault entity class.
+ * Category entity class.
  */
-export class Vault {
+export class Category {
     id = Number;
     data = Object;
     items_amount = Number;
@@ -13,15 +13,14 @@ export class Vault {
     }
 
     /**
-     * Represents a vault.
+     * Represents a category.
      *
-     * @returns {{logins_amount: NumberConstructor, vault_description: *, id: NumberConstructor, vault_name: *}}
+     * @returns {{category_name: *, id: NumberConstructor, items_amount: NumberConstructor}}
      */
     dto() {
         return {
             "id": this.id,
-            "vault_name": this.data.vault_name,
-            "vault_description": this.data.vault_description,
+            "category_name": this.data.category_name,
             "items_amount": this.items_amount
         };
     }

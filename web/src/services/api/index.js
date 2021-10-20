@@ -1,4 +1,5 @@
 import vault from "./vault";
+import category from "./category";
 import login from "./login";
 import note from "./note";
 import store from "../../store";
@@ -46,6 +47,7 @@ export const api = {
         return Object.values(decryptedObjects);
     },
 
+    category,
     vault,
     login,
     note

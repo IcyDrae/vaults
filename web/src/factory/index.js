@@ -1,4 +1,5 @@
 import {Vault} from "./vault";
+import {Category} from "./category";
 import {Login} from "./login";
 import {Note} from "./note";
 
@@ -8,6 +9,7 @@ import {Note} from "./note";
 export class Factory {
     types = {
         "vault": Vault,
+        "category": Category,
         "login": Login,
         "note": Note
     };
