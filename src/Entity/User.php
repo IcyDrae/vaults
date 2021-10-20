@@ -75,12 +75,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $notes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $categories;
+
     #[Pure]
     public function __construct()
     {
         $this->vaults = new ArrayCollection();
         $this->logins = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,6 +300,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($note->getUserId() === $this) {
                 $note->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getUser() === $this) {
+                $category->setUser(null);
             }
         }
 

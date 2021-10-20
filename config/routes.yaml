@@ -74,3 +74,34 @@ note_delete:
   controller: App\Controller\NoteController::delete
   requirements:
     id: '\d+'
+
+category:
+  path: /category
+  controller: App\Controller\CategoryController:list
+  methods: ["GET"]
+
+category_create:
+  path: /category
+  controller: App\Controller\CategoryController::create
+  methods: ["POST"]
+
+category_update:
+  path: /category/{id}
+  controller: App\Controller\CategoryController::update
+  requirements:
+    id: '\d+'
+  methods: ["PUT"]
+
+category_delete:
+  path: /category/{id}
+  controller: App\Controller\CategoryController::delete
+  requirements:
+    id: '\d+'
+  methods: ["DELETE"]
+
+category_items:
+  path: /category/{id}/items
+  controller: App\Controller\CategoryController::listItems
+  requirements:
+    id: '\d+'
+  methods: ["GET"]

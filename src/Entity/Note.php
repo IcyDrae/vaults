@@ -34,6 +34,11 @@ class Note
      */
     private $data;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="notes")
+     */
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +76,18 @@ class Note
     public function setData(string $data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
