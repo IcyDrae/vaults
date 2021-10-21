@@ -36,12 +36,12 @@ class VaultRepository extends ServiceEntityRepository
         foreach ($query as $result) {
             $loginsAmount = $result->getLogins()->count();
             $notesAmount = $result->getNotes()->count();
-            $items = $loginsAmount + $notesAmount;
+            $itemsAmount = $loginsAmount + $notesAmount;
 
             array_push($vaults, [
                 "id" => $result->getId(),
                 "data" => $result->getData(),
-                "items_amount" => $items
+                "items_amount" => $itemsAmount
             ]);
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Login;
 use App\Entity\User;
 use App\Entity\Vault;
@@ -76,6 +77,14 @@ class LoginController extends AbstractController
 
         if (!empty($login)) {
             $login->setData($requestBody["data"]);
+
+            if (!empty($requestBody["categoryId"])) {
+                $category = $this->getDoctrine()
+                    ->getRepository(Category::class)
+                    ->find($requestBody["categoryId"]);
+                $login->setCategory($category);
+            }
+
             $entityManager->flush();
 
             $statusCode = 200;
