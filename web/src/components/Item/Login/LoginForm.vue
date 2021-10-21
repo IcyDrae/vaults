@@ -2,6 +2,20 @@
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
     <form @submit="handleSubmit($event, actionHandler)">
       <h1>{{ headline }}</h1>
+
+      <label>
+        <VeeValidateField v-slot="value" name="login_category" as="select">
+          <option value="" disabled>Set to folder</option>
+          <option value="0">none</option>
+          <option v-for="category in categories"
+                  :key="category.id"
+                  :value="category.id"
+                  :selected="value">
+            {{ category.category_name }}
+          </option>
+        </VeeValidateField>
+      </label>
+
       <label>
         <span>Login Name</span>
         <VeeValidateField name="login_name" type="text" :value="login ? login.name.value : ''" />
@@ -74,6 +88,9 @@ import password_generator from "../../../services/password_generator";
 import DeletePrompt from "../../DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "LoginForm",
@@ -112,6 +129,9 @@ export default {
       deletePromptText: "You are about to delete this login. This cannot be undone. Are you sure?"
     }
   },
+  computed: mapState([
+      "categories"
+  ]),
   mounted() {
     if (this.$props.action === "create") {
       this.ctaLabel = "Create";
@@ -142,7 +162,7 @@ export default {
           .required()
           .matches(
               /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{16,}$/,
-              "The password must Contain at least 16 characters, one uppercase, one lowercase, one number and one special case character."
+              "The password must contain at least 16 characters, one uppercase, one lowercase, one number and one special case character."
           )
           .label("Password"),
       login_description: yup.string()

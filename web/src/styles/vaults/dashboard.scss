@@ -132,11 +132,11 @@
           opacity: 1;
         }
 
-        span, input, textarea {
+        span, input, textarea, select {
           color: $accountWhite;
         }
 
-        input, textarea {
+        input, textarea, select {
           display: block;
           margin: 5px 0;
           padding: 4px;
@@ -148,7 +148,11 @@
           border-bottom: 1px solid $borderColor;
         }
 
-        input, textarea {
+        select {
+          width: 20%;
+        }
+
+        input, textarea, select {
           font-size: 18px;
           font-family: $fontFamily;
         }

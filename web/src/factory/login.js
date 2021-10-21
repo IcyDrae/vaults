@@ -48,6 +48,10 @@ export class Login {
                 "value": this.data.login_description ?? "",
                 "type": "textarea"
             },
+            "login_category": {
+                "label": "Folder",
+                "value": this.data.login_category ?? ""
+            },
             "item_type": this.data.item_type
         }
     }
