@@ -35,6 +35,7 @@ class LoginController extends AbstractController
     public function create(Request $request): Response
     {
         $requestBody = json_decode($request->getContent(), true);
+        $categoryId = $requestBody["categoryId"];
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = $this->getDoctrine()
@@ -49,6 +50,14 @@ class LoginController extends AbstractController
         $login->setData($requestBody["data"]);
         $login->setUser($user);
         $login->setVault($vault);
+
+        if (!empty($categoryId) || $categoryId == 0) {
+            $category = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->find($categoryId);
+
+            $login->setCategory($category);
+        }
 
         $entityManager->persist($login);
         $entityManager->flush();
