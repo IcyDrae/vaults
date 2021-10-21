@@ -69,6 +69,7 @@ class LoginController extends AbstractController
         $statusCode = 404;
         $entityManager = $this->getDoctrine()->getManager();
         $requestBody = json_decode($request->getContent(), true);
+        $categoryId = $requestBody["categoryId"];
 
         $login = $this->repository->findOneBy([
             "id" => $id,
@@ -78,10 +79,11 @@ class LoginController extends AbstractController
         if (!empty($login)) {
             $login->setData($requestBody["data"]);
 
-            if (!empty($requestBody["categoryId"])) {
+            if (!empty($categoryId) || $categoryId == 0) {
                 $category = $this->getDoctrine()
                     ->getRepository(Category::class)
-                    ->find($requestBody["categoryId"]);
+                    ->find($categoryId);
+
                 $login->setCategory($category);
             }
 
