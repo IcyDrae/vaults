@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <Categories></Categories>
+    <Categories @folder-clicked="folderItemsHandler"></Categories>
     <div class="logins">
       <CreationTypeSelector></CreationTypeSelector>
       <div class="logins-container">
@@ -37,20 +37,34 @@ import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 const { mapState } = createNamespacedHelpers("user");
 
 export default {
-  name: "Dashboard",
+  name: "VaultDashboard",
   components: {
     Categories,
     CreationTypeSelector
   },
   data() {
     return {
+      folderId: "",
       backendErrors: [],
       security: new Security()
     }
   },
-  computed: mapState([
-    "items"
-  ]),
+  computed: {
+    ...mapState({
+      items(state) {
+        let self = this,
+            items = {};
+
+        if (self.folderId) {
+          items = state.items.filter(item => item.login_category.value === self.folderId);
+        } else {
+          items = state.items;
+        }
+
+        return items;
+      }
+    }),
+  },
   beforeRouteEnter(to, from, next) {
     document.querySelector("#app").classList.add("dashboard-view")
     next();
@@ -63,6 +77,10 @@ export default {
     this.fetchVaultItems();
   },
   methods: {
+    folderItemsHandler(id) {
+      this.folderId = id;
+      this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
+    },
     /**
      * Requests the user's encrypted vaults.
      */
@@ -76,7 +94,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

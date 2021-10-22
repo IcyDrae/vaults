@@ -8,7 +8,10 @@
                       @closeOverlay="creating = false">
       </CreateCategory>
       <ul class="folders">
-        <li v-for="category in categories" :key="category">
+        <li v-for="category in categories"
+            :key="category"
+            @click="$emit('folderClicked', category.id); this.setActiveCategory(category.id)"
+            :class="{ active: category.active }">
           <a href="#">{{ category.category_name }}</a>
         </li>
       </ul>
@@ -34,7 +37,7 @@ import { createNamespacedHelpers } from 'vuex';
 import {Security} from "../../plugins/Security";
 import {api} from "../../services/api";
 
-const { mapState } = createNamespacedHelpers("user");
+const { mapState, mapActions } = createNamespacedHelpers("user");
 
 export default {
   name: "Categories",
@@ -43,9 +46,9 @@ export default {
   },
   data() {
     return {
+      creating: Boolean,
       backendErrors: [],
-      security: new Security(),
-      creating: Boolean
+      security: new Security()
     }
   },
   computed: mapState([
@@ -55,6 +58,9 @@ export default {
     this.fetchCategories();
   },
   methods: {
+    ...mapActions([
+        "setActiveCategory"
+    ]),
     /**
      * Requests the user's encrypted vaults.
      */
@@ -68,7 +74,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

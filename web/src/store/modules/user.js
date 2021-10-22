@@ -53,6 +53,16 @@ export default {
 
             state.categories.splice(foundIndex, 1);
         },
+        setActiveCategory(state, payload) {
+            let category = state.categories.find(category => category.id === payload);
+
+            let activeCategory = state.categories.find(category => category.active === true);
+            if (activeCategory) {
+                activeCategory.active = false;
+            }
+
+            category.active = true;
+        },
         setItems(state, payload) {
             state.items = payload;
         },
@@ -103,6 +113,9 @@ export default {
         },
         deleteCategory(context, payload) {
             context.commit("deleteCategory", payload);
+        },
+        setActiveCategory(context, payload) {
+            context.commit("setActiveCategory", payload);
         },
         setItems(context, payload) {
             context.commit("setItems", payload);

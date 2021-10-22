@@ -21,7 +21,8 @@ export class Category {
         return {
             "id": this.id,
             "category_name": this.data.category_name,
-            "items_amount": this.items_amount
+            "items_amount": this.items_amount,
+            "active": false
         };
     }
 }

@@ -55,6 +55,7 @@ const routes = [
     path: "/vaults/:id/items",
     name: "vaultDashboard",
     component: VaultDashboard,
+    props: true,
     children: [
       {
         path: ":itemId",
