@@ -1,6 +1,9 @@
 <template>
   <div class="dashboard">
-    <Categories @folder-clicked="folderItemsHandler"></Categories>
+    <Categories
+        @folder-clicked="folderItemsHandler"
+        @all-clicked="allItemsHandler">
+    </Categories>
     <div class="logins">
       <CreationTypeSelector></CreationTypeSelector>
       <div class="logins-container">
@@ -79,6 +82,10 @@ export default {
   methods: {
     folderItemsHandler(id) {
       this.folderId = id;
+      this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
+    },
+    allItemsHandler() {
+      this.folderId = "";
       this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
     },
     /**

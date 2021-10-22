@@ -16,6 +16,11 @@
         </li>
       </ul>
       <ul>
+        <li @click="$emit('allClicked'); this.removeActiveCategory()">
+          <a href="#">
+            All items
+          </a>
+        </li>
         <li>
           <a href="#">Favourites</a>
         </li>
@@ -59,7 +64,8 @@ export default {
   },
   methods: {
     ...mapActions([
-        "setActiveCategory"
+        "setActiveCategory",
+        "removeActiveCategory"
     ]),
     /**
      * Requests the user's encrypted vaults.

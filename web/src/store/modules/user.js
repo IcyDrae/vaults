@@ -63,6 +63,11 @@ export default {
 
             category.active = true;
         },
+        removeActiveCategory(state) {
+            let activeCategory = state.categories.find(category => category.active === true);
+
+            activeCategory.active = false;
+        },
         setItems(state, payload) {
             state.items = payload;
         },
@@ -116,6 +121,9 @@ export default {
         },
         setActiveCategory(context, payload) {
             context.commit("setActiveCategory", payload);
+        },
+        removeActiveCategory(context) {
+            context.commit("removeActiveCategory");
         },
         setItems(context, payload) {
             context.commit("setItems", payload);
