@@ -124,6 +124,18 @@
         }
       }
 
+      .category-label {
+        height: 30px;
+        margin: 20px 0;
+
+        p {
+          display: inline-block;
+          font-style: italic;
+          color: $black;
+          background-color: $white;
+        }
+      }
+
       label {
         display: block;
         margin: 50px 0;

@@ -11,6 +11,12 @@
         })">Edit</p>
       </div>
 
+      <div class="category-label">
+        <p v-if="parsedItem.login_category.value != 0">
+          {{ category.category_name }}
+        </p>
+      </div>
+
       <div v-for="(property, index) in item" :key="property.id">
         <label>
           <span>{{ property.label }}</span>
@@ -34,6 +40,10 @@
 
 <script>
 
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapState } = createNamespacedHelpers("user");
+
 export default {
   name: "Item",
   props: ["itemData"],
@@ -42,16 +52,25 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      "categories"
+    ]),
+    category() {
+      return this.categories.find(category => category.id === this.parsedItem.login_category.value);
+    },
+    parsedItem() {
+      return JSON.parse(this.$props.itemData)
+    },
     /**
      * Watches for changes for the $props.itemData, excludes specific properties.
      */
     item() {
-      let data = JSON.parse(this.$props.itemData);
-
-      let dataArray = Object.entries(data);
+      let dataArray = Object.entries(this.parsedItem);
 
       let filtered = dataArray.filter((key) => {
-        return key[0] !== "id" && key[0] !== "item_type";
+        return key[0] !== "id"
+            && key[0] !== "item_type"
+            && key[0] !== "login_category";
       });
 
       return Object.fromEntries(filtered);
