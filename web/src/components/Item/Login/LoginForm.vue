@@ -4,13 +4,12 @@
       <h1>{{ headline }}</h1>
 
       <label>
-        <VeeValidateField v-slot="value" name="login_category" as="select">
+        <VeeValidateField v-model="categoryValue" name="login_category" as="select">
           <option value="" disabled>Set to folder</option>
           <option value="0">none</option>
           <option v-for="category in categories"
                   :key="category.id"
-                  :value="category.id"
-                  :selected="value">
+                  :value="category.id">
             {{ category.category_name }}
           </option>
         </VeeValidateField>
@@ -122,6 +121,7 @@ export default {
     return {
       ctaLabel: "",
       headline: "",
+      categoryValue: this.$props.login ? this.$props.login.login_category.value : "",
       generatedPassword: this.$props.login ? this.$props.login.login_password.value : '',
       success: "",
       backendErrors: [],
