@@ -66,7 +66,9 @@ export default {
         removeActiveCategory(state) {
             let activeCategory = state.categories.find(category => category.active === true);
 
-            activeCategory.active = false;
+            if (activeCategory) {
+                activeCategory.active = false;
+            }
         },
         setItems(state, payload) {
             state.items = payload;
