@@ -28,22 +28,32 @@
         padding: 0;
 
         li {
-          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: $white;
+          cursor: pointer;
 
-          a {
+          p {
             display: block;
-            color: $white;
             padding: 16px 16px;
             text-decoration: none;
+          }
 
-            &:hover {
-              background-color: $hoverBackgroundColor;
-              color: $hoverColor;
-              font-weight: 600;
+          span {
+            display: none;
+
+            &.active {
+              display: block;
             }
           }
 
-          &.active a {
+          &:hover {
+            background-color: $hoverBackgroundColor;
+            color: $hoverColor;
+          }
+
+          &.active {
             background-color: $hoverColor;
             color: $black;
           }

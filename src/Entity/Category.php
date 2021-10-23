@@ -31,12 +31,12 @@ class Category
     private $data;
 
     /**
-     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Login::class, mappedBy="category", orphanRemoval=true)
      */
     private $logins;
 
     /**
-     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="category", orphanRemoval=true)
      */
     private $notes;
 

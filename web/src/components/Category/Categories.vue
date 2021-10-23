@@ -8,30 +8,29 @@
                       @closeOverlay="creating = false">
       </CreateCategory>
       <ul class="folders">
+        <li @click="$emit('allClicked'); this.removeActiveCategory()">
+          <p>All items</p>
+        </li>
         <li v-for="category in categories"
             :key="category"
             @click="$emit('folderClicked', category.id); this.setActiveCategory(category.id)"
             :class="{ active: category.active }">
-          <a href="#">{{ category.category_name }}</a>
-        </li>
-      </ul>
-      <ul>
-        <li @click="$emit('allClicked'); this.removeActiveCategory()">
-          <a href="#">
-            All items
-          </a>
-        </li>
-        <li>
-          <a href="#">Favourites</a>
-        </li>
-        <li>
-          <a href="#">Settings</a>
-        </li>
-        <li>
-          <a href="#">Trash</a>
+          <p>{{ category.category_name }}</p>
+          <span title="Delete folder"
+                :class="{ active: category.active }"
+                @click="showModal = true; selectedCategory = category.id">
+            &#10005;
+          </span>
         </li>
       </ul>
     </div>
+    <transition name="modal">
+      <DeletePrompt v-if="showModal"
+                    :prompt-text="deletePromptText"
+                    @deletionConfirmed="deleteCategory(selectedCategory)"
+                    @deletionCancelled="showModal = false">
+      </DeletePrompt>
+    </transition>
   </div>
 </template>
 
@@ -41,19 +40,24 @@ import CreateCategory from "./CreateCategory";
 import { createNamespacedHelpers } from 'vuex';
 import {Security} from "../../plugins/Security";
 import {api} from "../../services/api";
+import DeletePrompt from "../DeletePrompt";
 
 const { mapState, mapActions } = createNamespacedHelpers("user");
 
 export default {
   name: "Categories",
   components: {
-    CreateCategory
+    CreateCategory,
+    DeletePrompt
   },
   data() {
     return {
       creating: Boolean,
+      showModal: false,
+      selectedCategory: "",
       backendErrors: [],
-      security: new Security()
+      security: new Security(),
+      deletePromptText: "You are about to delete this folder and all the items it contains. This cannot be undone. Are you sure?"
     }
   },
   computed: mapState([
@@ -75,6 +79,15 @@ export default {
 
       if (response instanceof Error) {
         this.backendErrors.push(response.message);
+      }
+    },
+    async deleteCategory(id) {
+      let response = await api.category.delete(id);
+
+      if (response instanceof Error) {
+        this.backendErrors.push(response.message);
+      } else {
+        this.showModal = false;
       }
     }
   }

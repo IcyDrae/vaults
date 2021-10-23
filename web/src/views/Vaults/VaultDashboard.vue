@@ -66,7 +66,7 @@ export default {
 
         return items;
       }
-    }),
+    })
   },
   beforeRouteEnter(to, from, next) {
     document.querySelector("#app").classList.add("dashboard-view")

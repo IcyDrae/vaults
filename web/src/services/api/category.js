@@ -14,7 +14,7 @@ export default {
             return this.API + "/update/" + categoryId
         },
         DELETE(categoryId) {
-            return this.API + "/delete/" + categoryId
+            return this.API + "/" + categoryId
         },
         ITEMS(categoryId) {
             return this.API + "/" + categoryId + "/items"
@@ -334,6 +334,12 @@ export default {
         const successHandler = async function(response, id) {
             if(response.status === 204) {
                 await self.store.dispatch("user/deleteCategory", id);
+
+                let items = self.store.getters["user/getItems"].filter(item => item.login_category.value == id);
+
+                for (const item of items) {
+                    await self.store.dispatch("user/deleteItem", item.id);
+                }
             }
 
             return response;
