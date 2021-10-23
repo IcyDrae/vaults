@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Category;
+use App\Entity\Vault;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,12 +62,16 @@ class CategoryController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = $this->getDoctrine()
-                        ->getRepository(User::class)
-                        ->find($requestBody["userId"]);
+            ->getRepository(User::class)
+            ->find($requestBody["userId"]);
+        $vault = $this->getDoctrine()
+            ->getRepository(Vault::class)
+            ->find($requestBody["vaultId"]);
 
         $category = new Category();
         $category->setData($requestBody["data"]);
         $category->setUser($user);
+        $category->setVault($vault);
 
         $entityManager->persist($category);
         $entityManager->flush();

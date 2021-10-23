@@ -40,6 +40,12 @@ class Category
      */
     private $notes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Vault::class, inversedBy="categories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $vault;
+
     public function __construct()
     {
         $this->logins = new ArrayCollection();
@@ -131,6 +137,18 @@ class Category
                 $note->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVault(): ?Vault
+    {
+        return $this->vault;
+    }
+
+    public function setVault(?Vault $vault): self
+    {
+        $this->vault = $vault;
 
         return $this;
     }
