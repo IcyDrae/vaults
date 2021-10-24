@@ -152,7 +152,8 @@ class VaultController extends AbstractController
             array_push($itemsResponse, [
                 "id" => $item->getId(),
                 "data" => $item->getData(),
-                "vault_id" => $item->getVault()->getId()
+                "vault_id" => $item->getVault()->getId(),
+                "category_id" => $item->getCategory()?->getId()
             ]);
         }
 

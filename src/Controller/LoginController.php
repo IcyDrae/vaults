@@ -7,7 +7,6 @@ use App\Entity\Login;
 use App\Entity\User;
 use App\Entity\Vault;
 use App\Repository\LoginRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,12 +61,14 @@ class LoginController extends AbstractController
         $entityManager->persist($login);
         $entityManager->flush();
 
-        $serialized = $this->serializer->serialize($login, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
+        $login = array(
+            "id" => $login->getId(),
+            "data" => $login->getData(),
+            "vault_id" => $login->getVault()->getId(),
+            "category_id" => $login->getCategory()?->getId()
+        );
 
-        return new Response($serialized, 201);
+        return new JsonResponse($login, 201);
     }
 
     /**
@@ -99,14 +100,15 @@ class LoginController extends AbstractController
             $entityManager->flush();
 
             $statusCode = 200;
+            $login = array(
+                "id" => $login->getId(),
+                "data" => $login->getData(),
+                "vault_id" => $login->getVault()->getId(),
+                "category_id" => $login->getCategory()?->getId()
+            );
         }
 
-        $serialized = $this->serializer->serialize($login, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
-
-        return new Response($serialized, $statusCode);
+        return new JsonResponse($login, $statusCode);
     }
 
     /**

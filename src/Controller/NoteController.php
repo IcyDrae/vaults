@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Note;
 use App\Entity\User;
 use App\Entity\Vault;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -33,6 +35,7 @@ class NoteController extends AbstractController
     public function create(Request $request): Response
     {
         $requestBody = json_decode($request->getContent(), true);
+        $categoryId = $requestBody["categoryId"];
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = $this->getDoctrine()
@@ -48,15 +51,25 @@ class NoteController extends AbstractController
         $note->setUser($user);
         $note->setVault($vault);
 
+        if (!empty($categoryId) || $categoryId == 0) {
+            $category = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->find($categoryId);
+
+            $note->setCategory($category);
+        }
+
         $entityManager->persist($note);
         $entityManager->flush();
 
-        $serialized = $this->serializer->serialize($note, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
+        $note = array(
+            "id" => $note->getId(),
+            "data" => $note->getData(),
+            "vault_id" => $note->getVault()->getId(),
+            "category_id" => $note->getCategory()?->getId()
+        );
 
-        return new Response($serialized, 201);
+        return new JsonResponse($note, 201);
     }
 
     /**
@@ -69,6 +82,7 @@ class NoteController extends AbstractController
         $statusCode = 404;
         $entityManager = $this->getDoctrine()->getManager();
         $requestBody = json_decode($request->getContent(), true);
+        $categoryId = $requestBody["categoryId"];
 
         $note = $this->repository->findOneBy([
             "id" => $id,
@@ -77,17 +91,27 @@ class NoteController extends AbstractController
 
         if (!empty($note)) {
             $note->setData($requestBody["data"]);
+
+            if (!empty($categoryId) || $categoryId == 0) {
+                $category = $this->getDoctrine()
+                    ->getRepository(Category::class)
+                    ->find($categoryId);
+
+                $note->setCategory($category);
+            }
+
             $entityManager->flush();
 
             $statusCode = 200;
+            $note = array(
+                "id" => $note->getId(),
+                "data" => $note->getData(),
+                "vault_id" => $note->getVault()->getId(),
+                "category_id" => $note->getCategory()?->getId()
+            );
         }
 
-        $serialized = $this->serializer->serialize($note, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
-
-        return new Response($serialized, $statusCode);
+        return new JsonResponse($note, $statusCode);
     }
 
     /**
