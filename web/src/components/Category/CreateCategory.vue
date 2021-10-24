@@ -69,7 +69,8 @@ export default {
       await this.submitForm(encryptedValues, resetForm);
     },
     async submitForm(values, resetForm) {
-      let response = await api.category.create(values);
+      let vaultId = this.$route.params.id;
+      let response = await api.category.create(values, vaultId);
 
       if (response instanceof Error) {
         this.errorHandler(response);
@@ -88,7 +89,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

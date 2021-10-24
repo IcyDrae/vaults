@@ -2,14 +2,10 @@
  * Category entity class.
  */
 export class Category {
-    id = Number;
-    data = Object;
-    items_amount = Number;
+    object = Object;
 
-    constructor({ id, data, items_amount }) {
-        this.id = id;
-        this.data = data;
-        this.items_amount = items_amount;
+    constructor(object) {
+        this.object = object;
     }
 
     /**
@@ -19,9 +15,9 @@ export class Category {
      */
     dto() {
         return {
-            "id": this.id,
-            "category_name": this.data.category_name,
-            "items_amount": this.items_amount,
+            "id": this.object.id,
+            "category_name": this.object.data.category_name,
+            "vault_id": this.object.vault_id,
             "active": false
         };
     }

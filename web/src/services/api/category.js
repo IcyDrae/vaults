@@ -160,7 +160,13 @@ export default {
             let formatted = [];
 
             categories.forEach(category => {
-                let categoryObject = new Factory().create("category", category);
+                let categoryObject = {
+                    id: category.id,
+                    data: category.data,
+                    vault_id: category.vault_id
+                };
+
+                categoryObject = new Factory().create("category", categoryObject);
 
                 formatted.push(categoryObject.dto());
             });
@@ -175,20 +181,22 @@ export default {
      * The main method to create an encrypted category.
      *
      * @param values
+     * @param vaultId
      * @returns {Promise<AxiosResponse<any>|*>}
      */
-    async create(values) {
+    async create(values, vaultId) {
         let self = this;
 
         /**
          * Initializes the process.
          *
          * @param values
+         * @param vaultId
          * @returns {Promise<AxiosResponse<*>|*>}
          */
-        const init = async function(values) {
+        const init = async function(values, vaultId) {
             try {
-                return await createCategory(values);
+                return await createCategory(values, vaultId);
             } catch (error) {
                 return error;
             }
@@ -198,14 +206,16 @@ export default {
          * Makes the request to create a category.
          *
          * @param values
+         * @param vaultId
          * @returns {Promise<AxiosResponse<any>>}
          */
-        const createCategory = async function(values) {
+        const createCategory = async function(values, vaultId) {
             let response = await http.request({
                 method: "post",
                 url: self.endpoints.CREATE(),
                 data: {
                     userId: self.store.getters["user/getUser"].id,
+                    vaultId: vaultId,
                     data: values
                 }
             });
@@ -216,7 +226,13 @@ export default {
         const successHandler = async function(response) {
             if(response.status === 201) {
                 let decryptedCategory = api.decryptResponseObject(response.data);
-                let category = self.createCategoryFromFactory(decryptedCategory);
+                let categoryObject = {
+                    id: decryptedCategory.id,
+                    data: decryptedCategory.data,
+                    vault_id: response.data.vault_id
+                };
+
+                let category = self.createCategoryFromFactory(categoryObject);
 
                 await self.store.dispatch("user/addCategory", category);
             }
@@ -224,7 +240,7 @@ export default {
             return response;
         };
 
-        return await init(values);
+        return await init(values, vaultId);
     },
 
     /**
