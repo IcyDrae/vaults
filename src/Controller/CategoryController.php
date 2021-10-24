@@ -42,12 +42,19 @@ class CategoryController extends AbstractController
             $responseCode = 404;
         }
 
-        $categories = $this->serializer->serialize($categories, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
+        $categoriesResponse = array();
 
-        return new Response($categories, $responseCode);
+        foreach ($categories as $category) {
+             array_push($categoriesResponse,
+                 [
+                     "id" => $category->getId(),
+                     "data" => $category->getData(),
+                     "vault_id" => $category->getVault()->getId()
+                 ]
+            );
+        }
+
+        return new JsonResponse($categoriesResponse, $responseCode);
     }
 
     /**
@@ -76,12 +83,13 @@ class CategoryController extends AbstractController
         $entityManager->persist($category);
         $entityManager->flush();
 
-        $serialized = $this->serializer->serialize($category, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
+        $category = array(
+            "id" => $category->getId(),
+            "data" => $category->getData(),
+            "vault_id" => $category->getVault()->getId()
+        );
 
-        return new Response($serialized, 201);
+        return new JsonResponse($category, 201);
     }
 
     /**
