@@ -68,6 +68,6 @@ class VaultRepository extends ServiceEntityRepository
                 "user_id" => $userId
             ])
             ->getQuery()
-            ->getResult(Query::HYDRATE_ARRAY);
+            ->getResult();
     }
 }

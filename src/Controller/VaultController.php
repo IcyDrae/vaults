@@ -147,11 +147,15 @@ class VaultController extends AbstractController
             $responseCode = 404;
         }
 
-        $serializedItems = $this->serializer->serialize($items, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
+        $itemsResponse = array();
+        foreach ($items as $item) {
+            array_push($itemsResponse, [
+                "id" => $item->getId(),
+                "data" => $item->getData(),
+                "vault_id" => $item->getVault()->getId()
+            ]);
+        }
 
-        return new Response($serializedItems, $responseCode);
+        return new JsonResponse($itemsResponse, $responseCode);
     }
 }
