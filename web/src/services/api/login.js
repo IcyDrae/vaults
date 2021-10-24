@@ -54,7 +54,7 @@ export default {
          */
         const handler = async function(object, vaultId) {
             let encryptedData = self.beforeDispatch(object);
-            let categoryId = object.login_category ?? "";
+            let categoryId = object.category ?? "";
 
             object = {
                 encryptedData,
@@ -128,7 +128,7 @@ export default {
          */
         const handler = async function(object, id) {
             let encryptedData = self.beforeDispatch(object);
-            let categoryId = object.login_category ?? "";
+            let categoryId = object.category ?? "";
 
             object = {
                 encryptedData,

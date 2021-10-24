@@ -17,6 +17,7 @@ export class Note {
         return {
             "id": this.object.id,
             "vault_id": this.object.vault_id,
+            "category": this.object.category_id ?? "",
             "name": {
                 "label": "Name",
                 "value": this.object.data.note_name,

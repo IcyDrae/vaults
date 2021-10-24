@@ -2,6 +2,19 @@
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
     <form @submit="handleSubmit($event, actionHandler)">
       <h1>{{ headline }}</h1>
+
+      <label>
+        <VeeValidateField v-model="categoryValue" name="category" as="select">
+          <option value="" disabled>Set to folder</option>
+          <option value="0">none</option>
+          <option v-for="category in categories"
+                  :key="category.id"
+                  :value="category.id">
+            {{ category.category_name }}
+          </option>
+        </VeeValidateField>
+      </label>
+
       <label>
         <span>Note Name</span>
         <VeeValidateField name="note_name" type="text" :value="note ? note.name.value : ''" />
@@ -43,6 +56,9 @@
 import DeletePrompt from "../../DeletePrompt";
 import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "NoteForm",
@@ -74,12 +90,18 @@ export default {
     return {
       ctaLabel: "",
       headline: "",
+      categoryValue: this.$props.note ? this.$props.note.category : "",
       success: "",
       backendErrors: [],
       showModal: false,
       deletePromptText: "You are about to delete this note. This cannot be undone. Are you sure?"
     }
   },
+  computed: mapState({
+    categories(state) {
+      return state.categories.filter(category => category.vault_id == this.$route.params.id);
+    }
+  }),
   mounted() {
     if (this.$props.action === "create") {
       this.ctaLabel = "Create";

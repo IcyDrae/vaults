@@ -12,7 +12,7 @@
       </div>
 
       <div class="category-label">
-        <p v-if="parsedItem.login_category.value != 0">
+        <p v-if="parsedItem.category != 0">
           {{ category.category_name }}
         </p>
       </div>
@@ -56,7 +56,7 @@ export default {
       "categories"
     ]),
     category() {
-      return this.categories.find(category => category.id === this.parsedItem.login_category.value);
+      return this.categories.find(category => category.id === this.parsedItem.category);
     },
     parsedItem() {
       return JSON.parse(this.$props.itemData)
@@ -70,7 +70,8 @@ export default {
       let filtered = dataArray.filter((key) => {
         return key[0] !== "id"
             && key[0] !== "item_type"
-            && key[0] !== "login_category";
+            && key[0] !== "category"
+            && key[0] !== "vault_id";
       });
 
       return Object.fromEntries(filtered);

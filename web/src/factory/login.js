@@ -17,6 +17,7 @@ export class Login {
         return {
             "id": this.object.id,
             "vault_id": this.object.vault_id,
+            "category": this.object.category_id ?? "",
             "name": {
                 "label": "Name",
                 "value": this.object.data.login_name,
@@ -46,10 +47,6 @@ export class Login {
                 "label": "Description",
                 "value": this.object.data.login_description ?? "",
                 "type": "textarea"
-            },
-            "login_category": {
-                "label": "Folder",
-                "value": this.object.data.login_category ?? ""
             },
             "item_type": this.object.data.item_type
         }

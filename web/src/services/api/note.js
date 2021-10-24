@@ -52,16 +52,22 @@ export default {
         /**
          * Handles the request to create a note.
          */
-        const handler = async function(values, vaultId) {
-            let encryptedObject = self.beforeDispatch(values);
+        const handler = async function(object, vaultId) {
+            let encryptedData = self.beforeDispatch(object);
+            let categoryId = object.category ?? "";
 
-            return await createNote(encryptedObject, vaultId);
+            object = {
+                encryptedData,
+                categoryId
+            };
+
+            return await createNote(object, vaultId);
         }
 
         /**
          * Makes the request to create a note.
          */
-        const createNote = async function(values, vaultId) {
+        const createNote = async function(object, vaultId) {
             let url = self.endpoints.CREATE();
 
             let response = await http.request({
@@ -70,7 +76,8 @@ export default {
                 data: {
                     vaultId: vaultId,
                     userId: self.store.getters["user/getUser"].id,
-                    data: values
+                    data: object.encryptedData,
+                    categoryId: object.categoryId
                 }
             });
 
@@ -120,9 +127,15 @@ export default {
          * Handles the request to update a note.
          */
         const handler = async function(object, id) {
-            let encryptedObject = self.beforeDispatch(object);
+            let encryptedData = self.beforeDispatch(object);
+            let categoryId = object.category ?? "";
 
-            return await updateNote(encryptedObject, id);
+            object = {
+                encryptedData,
+                categoryId
+            };
+
+            return await updateNote(object, id);
         };
 
         /**
@@ -136,7 +149,8 @@ export default {
                 url: url,
                 data: {
                     userId: self.store.getters["user/getUser"].id,
-                    data: object
+                    data: object.encryptedData,
+                    categoryId: object.categoryId
                 }
             });
 

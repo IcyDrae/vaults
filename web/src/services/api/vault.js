@@ -91,7 +91,8 @@ export default {
                 let itemObject = {
                     id: item.id,
                     data: item.data,
-                    vault_id: item.vault_id
+                    vault_id: item.vault_id,
+                    category_id: item.category_id
                 };
 
                 itemObject = new Factory().create(type, itemObject);
