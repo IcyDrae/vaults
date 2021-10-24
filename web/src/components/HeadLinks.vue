@@ -4,7 +4,7 @@ These links are rendered based on the user state.
 -->
 <template>
   <div :class="containerClass" v-if="!this.isObjectEmpty(this.getUser)">
-    <router-link to="/profile">Profile</router-link>
+    <router-link to="/vaults">Vaults</router-link>
     <router-link to="/logout">Logout</router-link>
   </div>
   <div :class="containerClass" v-if="this.isObjectEmpty(this.getUser)">

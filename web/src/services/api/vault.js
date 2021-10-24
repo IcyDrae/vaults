@@ -88,7 +88,13 @@ export default {
 
             items.forEach(item => {
                 let type = item.data.item_type;
-                let itemObject = new Factory().create(type, item);
+                let itemObject = {
+                    id: item.id,
+                    data: item.data,
+                    vault_id: item.vault_id
+                };
+
+                itemObject = new Factory().create(type, itemObject);
 
                 formatted.push(itemObject.dto());
             });

@@ -2,33 +2,32 @@
  * Note entity class.
  */
 export class Note {
-    id = Number;
-    data = Object;
+    object = Object;
 
-    constructor({ id, data }) {
-        this.id = id;
-        this.data = data;
+    constructor(object) {
+        this.object = object;
     }
 
     /**
      * Represents a note.
      *
-     * @returns {{item_type: *, name: {label: string, type: string, value: *}, id: NumberConstructor, note_description: {label: string, type: string, value: (*|string)}}}
+     * @returns {{item_type: *, name: {label: string, type: string, value}, id: *, note_description: {label: string, type: string, value: ({label: string, type: string, value}|*|string)}, vault_id: *}}
      */
     dto() {
         return {
-            "id": this.id,
+            "id": this.object.id,
+            "vault_id": this.object.vault_id,
             "name": {
                 "label": "Name",
-                "value": this.data.note_name,
+                "value": this.object.data.note_name,
                 "type": "text"
             },
             "note_description": {
                 "label": "Description",
-                "value": this.data.note_description ?? "",
+                "value": this.object.data.note_description ?? "",
                 "type": "textarea"
             },
-            "item_type": this.data.item_type
+            "item_type": this.object.data.item_type
         }
     }
 }

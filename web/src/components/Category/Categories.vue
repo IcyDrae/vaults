@@ -60,9 +60,13 @@ export default {
       deletePromptText: "You are about to delete this folder and all the items it contains. This cannot be undone. Are you sure?"
     }
   },
-  computed: mapState([
-    "categories"
-  ]),
+  computed: {
+    ...mapState({
+      categories(state) {
+        return state.categories.filter(category => category.vault_id == this.$route.params.id);
+      }
+    })
+  },
   mounted() {
     this.fetchCategories();
   },

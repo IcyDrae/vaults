@@ -2,57 +2,56 @@
  * Login entity class.
  */
 export class Login {
-    id = Number;
-    data = Object;
+    object = Object;
 
-    constructor({ id, data }) {
-        this.id = id;
-        this.data = data;
+    constructor(object) {
+        this.object = object;
     }
 
     /**
      * Represents a login.
      *
-     * @returns {{login_description: {label: string, type: string, value: (*|string)}, login_website: {label: string, type: string, value: *}, login_password: {label: string, type: string, value: *}, login_email: {label: string, type: string, value: (*|string)}, item_type: *, name: {label: string, type: string, value: *}, login_username: {label: string, type: string, value: *}, id: NumberConstructor}}
+     * @returns {any}
      */
     dto() {
         return {
-            "id": this.id,
+            "id": this.object.id,
+            "vault_id": this.object.vault_id,
             "name": {
                 "label": "Name",
-                "value": this.data.login_name,
+                "value": this.object.data.login_name,
                 "type": "text"
             },
             "login_username": {
                 "label": "Username",
-                "value": this.data.login_username,
+                "value": this.object.data.login_username,
                 "type": "text"
             },
             "login_email": {
                 "label": "E-Mail",
-                "value": this.data.login_email ?? "",
+                "value": this.object.data.login_email ?? "",
                 "type": "text"
             },
             "login_website": {
                 "label": "Website",
-                "value": this.data.login_website,
+                "value": this.object.data.login_website,
                 "type": "text"
             },
             "login_password": {
                 "label": "Password",
-                "value": this.data.login_password,
+                "value": this.object.data.login_password,
                 "type": "password"
             },
             "login_description": {
                 "label": "Description",
-                "value": this.data.login_description ?? "",
+                "value": this.object.data.login_description ?? "",
                 "type": "textarea"
             },
             "login_category": {
                 "label": "Folder",
-                "value": this.data.login_category ?? ""
+                "value": this.object.data.login_category ?? ""
             },
-            "item_type": this.data.item_type
+            "item_type": this.object.data.item_type
         }
     }
 }

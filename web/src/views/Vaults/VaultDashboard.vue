@@ -61,7 +61,7 @@ export default {
         if (self.folderId) {
           items = state.items.filter(item => item.login_category.value === self.folderId);
         } else {
-          items = state.items;
+          items = state.items.filter(item => item.vault_id == self.$route.params.id);
         }
 
         return items;
