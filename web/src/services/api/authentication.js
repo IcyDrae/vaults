@@ -5,18 +5,15 @@ import mixins from "../../plugins/mixins";
 
 export default {
     endpoints: {
-        API: "/category",
-        CREATE() {
-            return this.API
+        API: "/authentication",
+        REGISTER() {
+            return this.API + "/register"
         },
-        UPDATE(categoryId) {
-            return this.API + "/update/" + categoryId
+        LOGIN() {
+            return this.API + "/login"
         },
-        DELETE(categoryId) {
-            return this.API + "/" + categoryId
-        },
-        ITEMS(categoryId) {
-            return this.API + "/" + categoryId + "/items"
+        LOGOUT() {
+            return this.API + "/logout"
         }
     },
 
@@ -101,9 +98,11 @@ export default {
          * Makes the request to register an end-user.
          */
         const register = async function(values) {
+            let url = self.endpoints.REGISTER();
+
             return await http.request({
                 method: "post",
-                url: "/register",
+                url: url,
                 data: {
                     form: values
                 }
@@ -156,9 +155,11 @@ export default {
          * Makes the request to login an end-user.
          */
         const login = async function(values) {
+            let url = self.endpoints.LOGIN();
+
             let response = await http.request({
                 method: "post",
-                url: "/login",
+                url: url,
                 data: {
                     form: values
                 }
@@ -215,9 +216,11 @@ export default {
          * @returns {Promise<void>}
          */
         const logout = async function() {
+            let url = self.endpoints.LOGOUT();
+
             let response = await http.request({
                 method: "get",
-                url: "/logout"
+                url: url
             });
 
             return await successHandler(response);
