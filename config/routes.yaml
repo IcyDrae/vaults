@@ -45,20 +45,23 @@ vaults_items:
   methods: ["GET"]
 
 logins_create:
-  path: /logins/create
+  path: /logins
   controller: App\Controller\LoginController::create
+  methods: ["POST"]
 
 logins_update:
-  path: /logins/update/{id}
+  path: /logins/{id}
   controller: App\Controller\LoginController::update
   requirements:
     id: '\d+'
+  methods: ["PUT"]
 
 logins_delete:
-  path: /logins/delete/{id}
+  path: /logins/{id}
   controller: App\Controller\LoginController::delete
   requirements:
     id: '\d+'
+  methods: ["DELETE"]
 
 note_create:
   path: /note/create

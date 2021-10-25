@@ -10,13 +10,13 @@ export default {
     endpoints: {
         API: "/logins",
         CREATE() {
-            return this.API + "/create"
+            return this.API;
         },
         UPDATE(loginId) {
-            return this.API + "/update/" + loginId
+            return this.API + "/" + loginId;
         },
         DELETE(loginId) {
-            return this.API + "/delete/" + loginId
+            return this.API + "/" + loginId;
         }
     },
 
@@ -74,9 +74,8 @@ export default {
                 method: "post",
                 url: url,
                 data: {
-                    vaultId: vaultId,
-                    userId: self.store.getters["user/getUser"].id,
                     data: object.encryptedData,
+                    vaultId: vaultId,
                     categoryId: object.categoryId
                 }
             });
@@ -148,7 +147,6 @@ export default {
                 method: "put",
                 url: url,
                 data: {
-                    userId: self.store.getters["user/getUser"].id,
                     data: object.encryptedData,
                     categoryId: object.categoryId
                 }
@@ -203,9 +201,7 @@ export default {
             let response = await http.request({
                 method: "delete",
                 url: url,
-                data: JSON.stringify({
-                    userId: self.store.getters["user/getUser"].id,
-                })
+                data: JSON.stringify({})
             });
 
             return successHandler(response, id);

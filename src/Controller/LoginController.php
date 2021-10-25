@@ -39,7 +39,7 @@ class LoginController extends AbstractController
 
         $user = $this->getDoctrine()
                         ->getRepository(User::class)
-                        ->find($requestBody["userId"]);
+                        ->find($this->getUser()?->getId());
 
         $vault = $this->getDoctrine()
                         ->getRepository(Vault::class)
@@ -83,7 +83,7 @@ class LoginController extends AbstractController
 
         $login = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $requestBody["userId"]
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($login)) {
@@ -114,17 +114,15 @@ class LoginController extends AbstractController
     /**
      * Deletes a single login by id.
      */
-    public function delete(Request $request, string $id): Response
+    public function delete(string $id): Response
     {
         $statusCode = 404;
-        $requestBody = json_decode($request->getContent(), true);
-        $userId = $requestBody["userId"];
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $login = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $userId
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($login)) {
