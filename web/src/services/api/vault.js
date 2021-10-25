@@ -8,16 +8,16 @@ export default {
     endpoints: {
         API: "/vaults",
         CREATE() {
-            return this.API + "/create"
+            return this.API;
         },
         UPDATE(vaultId) {
-            return this.API + "/update/" + vaultId
+            return this.API + "/" + vaultId;
         },
         DELETE(vaultId) {
-            return this.API + "/delete/" + vaultId
+            return this.API + "/" + vaultId;
         },
         ITEMS(vaultId) {
-            return this.API + "/" + vaultId + "/" + store.getters["user/getUser"].id
+            return this.API + "/" + vaultId + "/items";
         }
     },
 
@@ -136,9 +136,6 @@ export default {
             let vaults = await http.request({
                 method: "get",
                 url: self.endpoints.API,
-                params: {
-                    userId: self.store.getters["user/getUser"].id
-                },
                 data: null
             });
 
@@ -212,7 +209,6 @@ export default {
                 method: "post",
                 url: self.endpoints.CREATE(),
                 data: {
-                    userId: self.store.getters["user/getUser"].id,
                     data: values
                 }
             });
@@ -273,7 +269,6 @@ export default {
                 method: "put",
                 url: url,
                 data: {
-                    userId: self.store.getters["user/getUser"].id,
                     data: values
                 }
             });
@@ -330,9 +325,7 @@ export default {
             let response = await http.request({
                 method: "delete",
                 url: url,
-                data: JSON.stringify({
-                    userId: self.store.getters["user/getUser"].id
-                })
+                data: JSON.stringify({})
             });
 
             return await successHandler(response, id);

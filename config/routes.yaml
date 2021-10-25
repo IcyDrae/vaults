@@ -15,29 +15,34 @@ authentication_logout:
 vaults:
   path: /vaults
   controller: App\Controller\VaultController:list
+  methods: ["GET"]
 
 vaults_create:
-  path: /vaults/create
+  path: /vaults
   controller: App\Controller\VaultController::create
+  methods: ["POST"]
 
 vaults_update:
-  path: /vaults/update/{id}
+  path: /vaults/{id}
   controller: App\Controller\VaultController::update
   requirements:
     id: '\d+'
+  methods: ["PUT"]
 
 vaults_delete:
-  path: /vaults/delete/{id}
+  path: /vaults/{id}
   controller: App\Controller\VaultController::delete
   requirements:
     id: '\d+'
+  methods: ["DELETE"]
 
 vaults_items:
-  path: /vaults/{id}/{userId}
+  path: /vaults/{id}/items
   controller: App\Controller\VaultController::listItems
   requirements:
     id: '\d+'
     userId: '\d+'
+  methods: ["GET"]
 
 logins_create:
   path: /logins/create

@@ -26,14 +26,13 @@ class VaultController extends AbstractController
     /**
      * Queries the database by the given user id and returns all(if any) found vaults.
      *
-     * @param Request $request
      * @return Response
      */
-    public function list(Request $request): Response
+    public function list(): Response
     {
         $responseCode = 200;
 
-        $vaults = $this->repository->findMultipleWithRelationsAmount($request->get("userId"));
+        $vaults = $this->repository->findMultipleWithRelationsAmount($this->getUser()?->getId());
 
         if (empty($vaults)) {
             $responseCode = 404;
@@ -55,7 +54,7 @@ class VaultController extends AbstractController
 
         $user = $this->getDoctrine()
                         ->getRepository(User::class)
-                        ->find($requestBody["userId"]);
+                        ->find($this->getUser()?->getId());
 
         $vault = new Vault();
         $vault->setData($requestBody["data"]);
@@ -83,7 +82,7 @@ class VaultController extends AbstractController
 
         $vault = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $requestBody["userId"]
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($vault)) {
@@ -104,17 +103,15 @@ class VaultController extends AbstractController
     /**
      * Deletes a single vault by id. Orphaned children will also be deleted.
      */
-    public function delete(Request $request, string $id): Response
+    public function delete(string $id): Response
     {
         $statusCode = 404;
-        $requestBody = json_decode($request->getContent(), true);
-        $userId = $requestBody["userId"];
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $vault = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $userId
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($vault)) {
@@ -130,16 +127,14 @@ class VaultController extends AbstractController
     /**
      * Queries the database by the given user id & vault id and returns all(if any) found logins for that vault.
      *
-     * @param Request $request
      * @param string $id
-     * @param string $userId
      * @return Response
      */
-    public function listItems(Request $request, string $id, string $userId): Response
+    public function listItems(string $id): Response
     {
         $responseCode = 200;
 
-        $items = $this->repository->fetchRelated($id, $userId);
+        $items = $this->repository->fetchRelated($id, $this->getUser()?->getId());
         $items = array_filter($items);
         $items = array_values($items);
 
