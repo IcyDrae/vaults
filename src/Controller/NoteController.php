@@ -40,7 +40,7 @@ class NoteController extends AbstractController
 
         $user = $this->getDoctrine()
                         ->getRepository(User::class)
-                        ->find($requestBody["userId"]);
+                        ->find($this->getUser()?->getId());
 
         $vault = $this->getDoctrine()
                         ->getRepository(Vault::class)
@@ -86,7 +86,7 @@ class NoteController extends AbstractController
 
         $note = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $requestBody["userId"]
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($note)) {
@@ -122,14 +122,12 @@ class NoteController extends AbstractController
     public function delete(Request $request, string $id): Response
     {
         $statusCode = 404;
-        $requestBody = json_decode($request->getContent(), true);
-        $userId = $requestBody["userId"];
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $note = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $userId
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($note)) {

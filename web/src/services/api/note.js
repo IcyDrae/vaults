@@ -8,15 +8,15 @@ export default {
     ITEM_TYPE: "note",
 
     endpoints: {
-        API: "/note",
+        API: "/notes",
         CREATE() {
-            return this.API + "/create"
+            return this.API;
         },
         UPDATE(noteId) {
-            return this.API + "/update/" + noteId
+            return this.API + "/" + noteId;
         },
         DELETE(noteId) {
-            return this.API + "/delete/" + noteId
+            return this.API + "/" + noteId;
         }
     },
 
@@ -74,9 +74,8 @@ export default {
                 method: "post",
                 url: url,
                 data: {
-                    vaultId: vaultId,
-                    userId: self.store.getters["user/getUser"].id,
                     data: object.encryptedData,
+                    vaultId: vaultId,
                     categoryId: object.categoryId
                 }
             });
@@ -148,7 +147,6 @@ export default {
                 method: "put",
                 url: url,
                 data: {
-                    userId: self.store.getters["user/getUser"].id,
                     data: object.encryptedData,
                     categoryId: object.categoryId
                 }
@@ -203,9 +201,7 @@ export default {
             let response = await http.request({
                 method: "delete",
                 url: url,
-                data: JSON.stringify({
-                    userId: self.store.getters["user/getUser"].id,
-                })
+                data: JSON.stringify({})
             });
 
             return successHandler(response, id);

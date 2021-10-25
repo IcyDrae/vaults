@@ -63,21 +63,24 @@ logins_delete:
     id: '\d+'
   methods: ["DELETE"]
 
-note_create:
-  path: /note/create
+notes_create:
+  path: /notes
   controller: App\Controller\NoteController::create
+  methods: ["POST"]
 
-note_update:
-  path: /note/update/{id}
+notes_update:
+  path: /notes/{id}
   controller: App\Controller\NoteController::update
   requirements:
     id: '\d+'
+  methods: ["PUT"]
 
-note_delete:
-  path: /note/delete/{id}
+notes_delete:
+  path: /notes/{id}
   controller: App\Controller\NoteController::delete
   requirements:
     id: '\d+'
+  methods: ["DELETE"]
 
 category:
   path: /category
