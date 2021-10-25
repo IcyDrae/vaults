@@ -3,7 +3,7 @@
                    v-slot="{ errors, handleSubmit }"
                    as="div"
                    class="login-form form">
-    <form @submit="handleSubmit($event, handleForm)">
+    <form @submit="handleSubmit($event, submitForm)">
       <h1>Login</h1>
       <label>
         <span>E-Mail</span>
@@ -22,8 +22,6 @@
       <li class="backend-errors" v-for="error in backendErrors" :key="error">
         {{ error }}
       </li>
-
-      <p class="backend-success">{{ success }}</p>
     </form>
   </VeeValidateForm>
 </template>
@@ -32,11 +30,7 @@
 
 import * as VeeValidate from 'vee-validate';
 import * as yup from 'yup';
-import http from "../services/http";
-import { createNamespacedHelpers } from 'vuex';
-import {Security} from "../plugins/Security";
-
-const { mapActions, mapGetters } = createNamespacedHelpers("user");
+import {api} from "../services/api";
 
 export default {
   name: "Login",
@@ -47,16 +41,8 @@ export default {
   },
   data() {
     return {
-      success: "",
       backendErrors: [],
-      security: new Security()
     }
-  },
-  computed: {
-    ...mapGetters([
-        "getUser",
-        "getEncryptionKey",
-    ])
   },
   setup() {
     /**
@@ -81,87 +67,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-        "setUser",
-        "setEncryptionKey",
-    ]),
-    /**
-     * The main submit handler.
-     *
-     * @param values
-     * @param resetForm
-     */
-    async handleForm(values, { resetForm }) {
-      let hashes = await this.deriveFromMasterPassword(values)
+    async submitForm(values, { resetForm }) {
+      let response = await api.authentication.login(values);
 
-      this.setEncryptionKey(hashes.encryptionKey);
-
-      values.login_master_password = hashes.authenticationHash.toString("hex");
-
-      this.submitForm(values, resetForm);
-    },
-    /**
-     * Hash the master password into an encryption key and an authentication hash.
-     *
-     * @param values
-     * @returns Object
-     */
-    async deriveFromMasterPassword(values) {
-      let encryptionKey = await this.security.hash(values.login_master_password, values.login_email, 100100);
-      let authenticationHash = await this.security.hash(values.login_master_password, encryptionKey, 1);
-
-      return {
-        encryptionKey,
-        authenticationHash
-      };
-    },
-    submitForm(values, resetForm) {
-      http.request({
-        method: "post",
-        url: "/login",
-        data: {
-          form: values
-        }
-      }).then(response => {
-        this.successHandler(response, resetForm);
-      }).catch(error => {
-        this.errorHandler(error);
-      });
-    },
-    successHandler(response, resetForm) {
-      if(response.data.authenticated === true) {
-        this.success = "You are now logged in!";
-
-        this.persistUser(response.data.user);
-
+      if (response instanceof Error) {
+        this.backendErrors.push(response.response.data.errors)
+      } else {
         resetForm();
 
-        this.$router.push("/vaults");
-      }
-    },
-    errorHandler(error) {
-      if (error.response.data.login === false) {
-        this.backendErrors.push(error.response.data.errors)
-      }
-    },
-    /**
-     * Set the global user object.
-     *
-     * @param data
-     */
-    persistUser(data) {
-      let user = JSON.parse(data);
-
-      if (this.isObjectEmpty(this.getUser)) {
-        this.setUser({
-          "id": user.id,
-          "firstName": user.firstName,
-          "lastName": user.lastName,
-          "email": user.email,
-          "username": user.username,
-          "roles": user.roles,
-          "registeredAt": user.registeredAt
-        })
+        await this.$router.push("/vaults");
       }
     }
   }

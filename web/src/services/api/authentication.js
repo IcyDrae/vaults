@@ -1,6 +1,7 @@
 import http from "../http";
 import {Security} from "../../plugins/Security";
 import store from "../../store";
+import mixins from "../../plugins/mixins";
 
 export default {
     endpoints: {
@@ -23,9 +24,23 @@ export default {
 
     security: new Security(),
 
+    isObjectEmpty: mixins.methods.isObjectEmpty,
+
+    /**
+     * The main registration method.
+     *
+     * @param values
+     * @returns {Promise<AxiosResponse<any>|*|undefined>}
+     */
     async register(values) {
         let self = this;
 
+        /**
+         * Initializes the process.
+         *
+         * @param values
+         * @returns {Promise<AxiosResponse<any>|*>}
+         */
         const init = async function(values) {
             try {
                 return await handler(values);
@@ -34,8 +49,14 @@ export default {
             }
         };
 
+        /**
+         * Creates the encryption key and authentication hash, persists the key, sets the password to the new value and triggers the request.
+         *
+         * @param values
+         * @returns {Promise<AxiosResponse<any>>}
+         */
         const handler = async function(values) {
-            let derived = await deriveFromMasterPassword(values);
+            let derived = await self.deriveFromMasterPassword(values.master_password, values.email);
 
             await self.store.dispatch("user/setEncryptionKey", derived.encryptionKey);
 
@@ -44,22 +65,6 @@ export default {
             values = createMasterPasswordArray(values);
 
             return await register(values);
-        };
-
-        /**
-         * Hash the master password into an encryption key and an authentication hash.
-         *
-         * @param values
-         * @returns Object
-         */
-        const deriveFromMasterPassword = async function(values) {
-            let encryptionKey = await self.security.hash(values.master_password, values.email, 100100);
-            let authenticationHash = await self.security.hash(values.master_password, encryptionKey, 1);
-
-            return {
-                encryptionKey,
-                authenticationHash
-            };
         };
 
         /**
@@ -93,7 +98,7 @@ export default {
         };
 
         /**
-         * Makes the request to update a login.
+         * Makes the request to register an end-user.
          */
         const register = async function(values) {
             return await http.request({
@@ -108,12 +113,99 @@ export default {
         return await init(values);
     },
 
-    login() {
+    /**
+     * The main login method.
+     *
+     * @param values
+     * @returns {Promise<void|*|undefined>}
+     */
+    async login(values) {
+        let self = this;
+
+        /**
+         * Initializes the process.
+         *
+         * @param values
+         * @returns {Promise<void|*>}
+         */
+        const init = async function(values) {
+            try {
+                return await handler(values);
+            } catch (error) {
+                return error;
+            }
+        };
+
+        /**
+         * Creates the encryption key and authentication hash, persists the key, sets the password to the new value and triggers the request.
+         *
+         * @param values
+         * @returns {Promise<void>}
+         */
+        const handler = async function(values) {
+            let hashes = await self.deriveFromMasterPassword(values.login_master_password, values.login_email);
+
+            await self.store.dispatch("user/setEncryptionKey", hashes.encryptionKey);
+
+            values.login_master_password = hashes.authenticationHash.toString("hex");
+
+            return await login(values);
+        };
+
+        /**
+         * Makes the request to login an end-user.
+         */
+        const login = async function(values) {
+            let response = await http.request({
+                method: "post",
+                url: "/login",
+                data: {
+                    form: values
+                }
+            });
+
+            return successHandler(response);
+        };
+
+        const successHandler = async function(response) {
+            let user = response.data.user;
+            user = JSON.parse(user);
+
+            if (self.isObjectEmpty(self.store.getters["user/getUser"])) {
+                await self.store.dispatch("user/setUser", {
+                    "id": user.id,
+                    "firstName": user.firstName,
+                    "lastName": user.lastName,
+                    "email": user.email,
+                    "username": user.username,
+                    "roles": user.roles,
+                    "registeredAt": user.registeredAt
+                })
+            }
+        }
+
+        return await init(values);
 
     },
 
     logout() {
 
-    }
+    },
 
+    /**
+     * Hash the master password into an encryption key and an authentication hash.
+     *
+     * @param masterPassword
+     * @param email
+     * @returns Object
+     */
+    async deriveFromMasterPassword(masterPassword, email) {
+        let encryptionKey = await this.security.hash(masterPassword, email, 100100);
+        let authenticationHash = await this.security.hash(masterPassword, encryptionKey, 1);
+
+        return {
+            encryptionKey,
+            authenticationHash
+        };
+    }
 }

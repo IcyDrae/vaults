@@ -6,7 +6,6 @@ export default {
     state: {
         user: Object,
         encryptionKey: Uint8Array,
-        authenticationHash: Uint8Array,
         vaults: [],
         categories: [],
         items: []
@@ -17,9 +16,6 @@ export default {
         },
         setEncryptionKey(state, payload) {
             state.encryptionKey = payload;
-        },
-        setAuthenticationHash(state, payload) {
-            state.authenticationHash = payload;
         },
         setVaults(state, payload) {
             state.vaults = payload;
@@ -94,9 +90,6 @@ export default {
         setEncryptionKey(context, payload) {
             context.commit("setEncryptionKey", payload);
         },
-        setAuthenticationHash(context, payload) {
-            context.commit("setAuthenticationHash", payload);
-        },
         setVaults(context, payload) {
             context.commit("setVaults", payload);
         },
@@ -146,9 +139,6 @@ export default {
         },
         getEncryptionKey(state) {
             return state.encryptionKey;
-        },
-        getAuthenticationHash(state) {
-            return state.authenticationHash;
         },
         getItems(state) {
             return state.items;
