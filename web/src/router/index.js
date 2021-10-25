@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from "../views/Home.vue"
 import Registration from "../views/Registration";
 import Login from "../views/Login";
-import Logout from "../views/Logout";
 import Vaults from "../views/Vaults/Vaults";
 import CreateVault from "../views/Vaults/CreateVault";
 import EditVault from "../views/Vaults/EditVault";
@@ -27,11 +26,6 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login
-  },
-  {
-    path: "/logout",
-    name: "logout",
-    component: Logout
   },
   {
     path: "/vaults",
