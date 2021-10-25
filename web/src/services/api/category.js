@@ -6,98 +6,18 @@ import store from "../../store";
 
 export default {
     endpoints: {
-        API: "/category",
+        API: "/categories",
         CREATE() {
-            return this.API
-        },
-        UPDATE(categoryId) {
-            return this.API + "/update/" + categoryId
+            return this.API;
         },
         DELETE(categoryId) {
-            return this.API + "/" + categoryId
-        },
-        ITEMS(categoryId) {
-            return this.API + "/" + categoryId + "/items"
+            return this.API + "/" + categoryId;
         }
     },
 
     store,
 
     security: new Security(),
-
-    /**
-     * The main method to fetch all items for this category.
-     *
-     * @param vaultId
-     * @returns {Promise<*>}
-     */
-    async getItems(vaultId) {
-        let self = this;
-
-        /**
-         * Initializes the process.
-         *
-         * @param vaultId
-         * @returns {Promise<*|undefined>}
-         */
-        const init = async function(vaultId) {
-            try {
-                return await fetchItems(vaultId);
-            } catch (error) {
-                return error;
-            }
-        };
-
-        /**
-         * Requests all items for this category.
-         *
-         * @param vaultId
-         * @returns {Promise<*|undefined>}
-         */
-        const fetchItems = async function(vaultId) {
-            let url = self.endpoints.ITEMS(vaultId)
-
-            let items = await http.request({
-                method: "get",
-                url: url,
-                data: null
-            });
-
-            return await fetchItemsSuccessHandler(items);
-        };
-
-        /**
-         * Handler when 'fetchItems' resolved successfully.
-         *
-         * @param response
-         * @returns {Promise<*>}
-         */
-        const fetchItemsSuccessHandler = async function(response) {
-            if(response.status === 200) {
-                let decryptedItems = api.decryptResponseObjects(response.data);
-                let items = createItemsFromFactory(decryptedItems);
-
-                await self.store.dispatch("user/setItems", items);
-
-                return response;
-            }
-        };
-
-        const createItemsFromFactory = function(items) {
-            let formatted = [];
-
-            items.forEach(item => {
-                let type = item.data.item_type;
-                let itemObject = new Factory().create(type, item);
-
-                formatted.push(itemObject.dto());
-            });
-
-            return formatted;
-        };
-
-        return await init(vaultId);
-    },
 
     /**
      * The main method to fetch the user's encrypted categories.
@@ -129,9 +49,6 @@ export default {
             let categories = await http.request({
                 method: "get",
                 url: self.endpoints.API,
-                params: {
-                    userId: self.store.getters["user/getUser"].id
-                },
                 data: null
             });
 
@@ -214,9 +131,8 @@ export default {
                 method: "post",
                 url: self.endpoints.CREATE(),
                 data: {
-                    userId: self.store.getters["user/getUser"].id,
-                    vaultId: vaultId,
-                    data: values
+                    data: values,
+                    vaultId: vaultId
                 }
             });
 
@@ -241,67 +157,6 @@ export default {
         };
 
         return await init(values, vaultId);
-    },
-
-    /**
-     * The main method to update a category.
-     *
-     * @param id
-     * @param values
-     * @returns {Promise<AxiosResponse<any>|*>}
-     */
-    async update(id, values) {
-        let self = this;
-
-        /**
-         * Initializes the process.
-         *
-         * @param id
-         * @param values
-         * @returns {Promise<AxiosResponse<*>|*>}
-         */
-        const init = async function(id, values) {
-            try {
-                return await updateCategory(id, values);
-            } catch (error) {
-                return error;
-            }
-        };
-
-        /**
-         * Makes the request to update a category.
-         *
-         * @param id
-         * @param values
-         * @returns {Promise<AxiosResponse<any>>}
-         */
-        const updateCategory = async function(id, values) {
-            let url = self.endpoints.UPDATE(id);
-
-            let response = await http.request({
-                method: "put",
-                url: url,
-                data: {
-                    userId: self.store.getters["user/getUser"].id,
-                    data: values
-                }
-            });
-
-            return await successHandler(response);
-        };
-
-        const successHandler = async function(response) {
-            if(response.status === 200) {
-                let decryptedLogin = api.decryptResponseObject(response.data);
-                let vault = self.createCategoryFromFactory(decryptedLogin);
-
-                await self.store.dispatch("user/updateCategory", vault);
-            }
-
-            return response;
-        };
-
-        return await init(id, values);
     },
 
     /**
@@ -339,9 +194,7 @@ export default {
             let response = await http.request({
                 method: "delete",
                 url: url,
-                data: JSON.stringify({
-                    userId: self.store.getters["user/getUser"].id
-                })
+                data: JSON.stringify({})
             });
 
             return await successHandler(response, id);

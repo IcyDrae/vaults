@@ -27,15 +27,14 @@ class CategoryController extends AbstractController
     /**
      * Queries the database by the given user id and returns all(if any) found categories.
      *
-     * @param Request $request
      * @return Response
      */
-    public function list(Request $request): Response
+    public function list(): Response
     {
         $responseCode = 200;
 
         $categories = $this->repository->findBy([
-            "user" => $request->get("userId")
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (empty($categories)) {
@@ -70,7 +69,7 @@ class CategoryController extends AbstractController
 
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find($requestBody["userId"]);
+            ->find($this->getUser()?->getId());
         $vault = $this->getDoctrine()
             ->getRepository(Vault::class)
             ->find($requestBody["vaultId"]);
@@ -93,48 +92,17 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Updates a single category with the new encrypted data.
-     */
-    public function update(Request $request, string $id): Response
-    {
-        $statusCode = 404;
-        $entityManager = $this->getDoctrine()->getManager();
-        $requestBody = json_decode($request->getContent(), true);
-
-        $category = $this->repository->findOneBy([
-            "id" => $id,
-            "user" => $requestBody["userId"]
-        ]);
-
-        if (!empty($category)) {
-            $category->setData($requestBody["data"]);
-            $entityManager->flush();
-
-            $statusCode = 200;
-
-            $category = $this->serializer->serialize($category, "json", ["attributes"  => [
-                "id",
-                "data"
-            ]]);
-        }
-
-        return new Response($category, $statusCode);
-    }
-
-    /**
      * Deletes a single vault by id. Orphaned children will also be deleted.
      */
-    public function delete(Request $request, string $id): Response
+    public function delete(string $id): Response
     {
         $statusCode = 404;
-        $requestBody = json_decode($request->getContent(), true);
-        $userId = $requestBody["userId"];
 
         $entityManager = $this->getDoctrine()->getManager();
 
         $category = $this->repository->findOneBy([
             "id" => $id,
-            "user" => $userId
+            "user" => $this->getUser()?->getId()
         ]);
 
         if (!empty($category)) {
@@ -145,35 +113,5 @@ class CategoryController extends AbstractController
         }
 
         return new Response("", $statusCode);
-    }
-
-    /**
-     * Queries the database by the given user id & vault id and returns all(if any) found logins for that vault.
-     *
-     * @param Request $request
-     * @param string $id
-     * @param string $userId
-     * @return Response
-     */
-    public function listItems(Request $request, string $id): Response
-    {
-        $responseCode = 200;
-        $requestBody = json_decode($request->getContent(), true);
-        $userId = $requestBody["userId"];
-
-        $items = $this->repository->fetchRelated($id, $userId);
-        $items = array_filter($items);
-        $items = array_values($items);
-
-        if (empty($items)) {
-            $responseCode = 404;
-        }
-
-        $serializedItems = $this->serializer->serialize($items, "json", ["attributes"  => [
-            "id",
-            "data"
-        ]]);
-
-        return new Response($serializedItems, $responseCode);
     }
 }
