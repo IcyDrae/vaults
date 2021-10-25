@@ -15,10 +15,10 @@ These links are rendered based on the user state.
 
 <script>
 
-import http from "../services/http";
 import { createNamespacedHelpers } from 'vuex';
+import {api} from "../services/api";
 
-const { mapActions, mapGetters } = createNamespacedHelpers("user");
+const { mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: 'HeadLinks',
@@ -33,35 +33,14 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
-      "setUser",
-      "setEncryptionKey"
-    ]),
-    logout() {
-      http.request({
-        method: "get",
-        url: "/logout"
-      }).then(response => {
-        this.successHandler(response);
-      }).catch(error => {
-        this.errorHandler(error);
-      });
-    },
-    successHandler(response) {
-      if (response.status === 204) {
-        this.setEncryptionKey({});
+    async logout() {
+      let response = await api.authentication.logout();
 
-        if (!this.isObjectEmpty(this.getUser)) {
-          this.setUser({})
-        }
-
-        this.$router.push("/login");
+      if (response instanceof Error) {
+        console.log(response.message)
+      } else {
+        await this.$router.push("/login");
       }
-    },
-    errorHandler(error) {
-      console.log(
-          error.message
-      )
     }
   }
 }

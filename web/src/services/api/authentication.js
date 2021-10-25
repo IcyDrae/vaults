@@ -164,7 +164,7 @@ export default {
                 }
             });
 
-            return successHandler(response);
+            return await successHandler(response);
         };
 
         const successHandler = async function(response) {
@@ -188,8 +188,58 @@ export default {
 
     },
 
-    logout() {
+    /**
+     * The main logout method.
+     *
+     * @returns {Promise<void|*|undefined>}
+     */
+    async logout() {
+        let self = this;
 
+        /**
+         * Initializes the process.
+         *
+         * @returns {Promise<void|*>}
+         */
+        const init = async function() {
+            try {
+                return await logout();
+            } catch (error) {
+                return error;
+            }
+        };
+
+        /**
+         * Makes the request to logout an end-user.
+         *
+         * @returns {Promise<void>}
+         */
+        const logout = async function() {
+            let response = await http.request({
+                method: "get",
+                url: "/logout"
+            });
+
+            return await successHandler(response);
+        };
+
+        /**
+         * Deletes the user data from the store.
+         *
+         * @param response
+         * @returns {Promise<void>}
+         */
+        const successHandler = async function(response) {
+            if (response.status === 204) {
+                await self.store.dispatch("user/setEncryptionKey", {});
+
+                if (!self.isObjectEmpty(self.store.getters["user/getUser"])) {
+                    await self.store.dispatch("user/setUser", {});
+                }
+            }
+        };
+
+        return await init();
     },
 
     /**
