@@ -2,19 +2,15 @@ index:
   path: /
   controller: App\Controller\DefaultController::index
 
-register:
-  path: /register
+authentication_register:
+  path: /authentication/register
   controller: App\Controller\RegistrationController:register
 
-login:
-  path: /login
+authentication_login:
+  path: /authentication/login
 
-logout:
-  path: /logout
-
-profile:
-  path: /user/profile
-  controller: App\Controller\UserController:profile
+authentication_logout:
+  path: /authentication/logout
 
 vaults:
   path: /vaults
