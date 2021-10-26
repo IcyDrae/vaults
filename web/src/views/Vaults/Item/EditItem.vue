@@ -1,7 +1,7 @@
 <template>
   <div>
-    <EditLogin v-if="itemType === 'login'" v-bind:login="item"></EditLogin>
-    <EditNote v-if="itemType === 'note'" v-bind:note="item"></EditNote>
+    <EditLogin v-if="this.$props.itemType === 'login'"></EditLogin>
+    <EditNote v-if="this.$props.itemType === 'note'"></EditNote>
   </div>
 </template>
 
@@ -16,12 +16,6 @@ export default {
     EditLogin,
     EditNote
   },
-  props: ["item"],
-  computed: {
-    itemType() {
-      let parsedItem = JSON.parse(this.$props.item);
-      return parsedItem.item_type;
-    }
-  }
+  props: ["itemType"]
 }
 </script>

@@ -67,10 +67,6 @@ export default {
       type: String,
       required: true,
     },
-    note: {
-      type: Object,
-      default: undefined
-    },
     actionHandler: {
       type: Function,
       required: true
@@ -90,18 +86,27 @@ export default {
     return {
       ctaLabel: "",
       headline: "",
-      categoryValue: this.$props.note ? this.$props.note.category : "",
       success: "",
       backendErrors: [],
       showModal: false,
       deletePromptText: "You are about to delete this note. This cannot be undone. Are you sure?"
     }
   },
-  computed: mapState({
-    categories(state) {
-      return state.categories.filter(category => category.vault_id == this.$route.params.id);
+  computed: {
+    ...mapState({
+      categories(state) {
+        return state.categories.filter(category => category.vault_id == this.$route.params.id);
+      },
+      note(state) {
+        let self = this;
+
+        return state.items.find(item => item.id == self.$route.params.itemId);
+      }
+    }),
+    categoryValue() {
+      return this.note ? this.note.category : "";
     }
-  }),
+  },
   mounted() {
     if (this.$props.action === "create") {
       this.ctaLabel = "Create";

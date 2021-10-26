@@ -6,18 +6,18 @@
         <p @click="this.$router.push({
         name: 'editItem',
         params: {
-          item: this.$props.itemData
+          itemType: this.item.item_type,
         }
         })">Edit</p>
       </div>
 
       <div class="category-label">
-        <p v-if="parsedItem.category != 0">
+        <p v-if="item.category != 0">
           {{ category.category_name }}
         </p>
       </div>
 
-      <div v-for="(property, index) in item" :key="property.id">
+      <div v-for="(property, index) in itemFiltered" :key="property.id">
         <label>
           <span>{{ property.label }}</span>
           <input :ref="property.label"
@@ -46,26 +46,28 @@ const { mapState } = createNamespacedHelpers("user");
 
 export default {
   name: "Item",
-  props: ["itemData"],
   data() {
     return {
     }
   },
   computed: {
-    ...mapState([
-      "categories"
-    ]),
-    category() {
-      return this.categories.find(category => category.id === this.parsedItem.category);
-    },
-    parsedItem() {
-      return JSON.parse(this.$props.itemData)
-    },
+    ...mapState({
+      category: function(state) {
+        let self = this;
+
+        return state.categories.find(category => category.id === self.item.category);
+      },
+      item: function(state) {
+        let self = this;
+
+        return state.items.find(item => item.id == self.$route.params.itemId);
+      }
+    }),
     /**
      * Watches for changes for the $props.itemData, excludes specific properties.
      */
-    item() {
-      let dataArray = Object.entries(this.parsedItem);
+    itemFiltered() {
+      let dataArray = Object.entries(this.item);
 
       let filtered = dataArray.filter((key) => {
         return key[0] !== "id"
@@ -78,7 +80,7 @@ export default {
     }
   },
   beforeUpdate() {
-    let itemType = JSON.parse(this.$props.itemData).item_type;
+    let itemType = this.item.item_type;
 
     if (itemType === "login" && this.$refs.Password) {
       let password = this.$refs.Password;

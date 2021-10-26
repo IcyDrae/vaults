@@ -4,7 +4,6 @@
         action="edit"
         :action-handler="handleForm"
         :delete-handler="deleteHandler"
-        :note="noteData"
     ></NoteForm>
   </div>
 </template>
@@ -19,20 +18,11 @@ export default {
   components: {
     NoteForm,
   },
-  props: ["note"],
   data() {
     return {
       success: "",
       backendErrors: [],
       showModal: false
-    }
-  },
-  computed: {
-    /**
-     * Watches for changes for the $props.itemData, excludes specific properties.
-     */
-    noteData() {
-      return JSON.parse(this.$props.note);
     }
   },
   methods: {
@@ -45,7 +35,7 @@ export default {
      * @param resetForm
      */
     async handleForm(values, { resetForm }) {
-      let response = await api.note.update(values, this.noteData.id);
+      let response = await api.note.update(values, this.$route.params.itemId);
 
       if (response instanceof Error) {
         this.backendErrors.push(response);
@@ -57,7 +47,7 @@ export default {
       }
     },
     async deleteVault() {
-      let response = await api.note.delete(this.noteData.id);
+      let response = await api.note.delete(this.$route.params.itemId);
 
       if (response instanceof Error) {
         this.backendErrors.push(response);

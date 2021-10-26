@@ -12,8 +12,7 @@
              @click="this.$router.push({
              name: 'item',
              params: {
-               itemId: item.id,
-               itemData: JSON.stringify(item)
+               itemId: item.id
              }
              })">
           <div>

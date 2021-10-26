@@ -4,7 +4,6 @@
         action="edit"
         :action-handler="handleForm"
         :delete-handler="deleteHandler"
-        :login="loginData"
     ></LoginForm>
   </div>
 </template>
@@ -19,20 +18,11 @@ export default {
   components: {
     LoginForm,
   },
-  props: ["login"],
   data() {
     return {
       success: "",
       backendErrors: [],
       showModal: false
-    }
-  },
-  computed: {
-    /**
-     * Watches for changes for the $props.itemData, excludes specific properties.
-     */
-    loginData() {
-      return JSON.parse(this.$props.login);
     }
   },
   methods: {
@@ -45,7 +35,7 @@ export default {
      * @param resetForm
      */
     async handleForm(values, { resetForm }) {
-      let response = await api.login.update(values, this.loginData.id);
+      let response = await api.login.update(values, this.$route.params.itemId);
 
       if (response instanceof Error) {
         this.backendErrors.push(response);
@@ -57,7 +47,7 @@ export default {
       }
     },
     async deleteVault() {
-      let response = await api.login.delete(this.loginData.id);
+      let response = await api.login.delete(this.$route.params.itemId);
 
       if (response instanceof Error) {
         this.backendErrors.push(response);

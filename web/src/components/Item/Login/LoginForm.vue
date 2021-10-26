@@ -40,7 +40,7 @@
       </label>
 
       <label>
-        <VeeValidateField v-model="generatedPassword" name="login_password" v-slot="{ field }">
+        <VeeValidateField v-model="this.getGeneratedPassword" name="login_password" v-slot="{ field }">
           <span>Password</span>
           <input ref="password" v-bind="field" type="text">
           <p class="form-error">{{ errors.login_password }}</p>
@@ -89,7 +89,7 @@ import * as VeeValidate from "vee-validate";
 import * as yup from "yup";
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapState } = createNamespacedHelpers("user");
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "LoginForm",
@@ -97,10 +97,6 @@ export default {
     action: {
       type: String,
       required: true,
-    },
-    login: {
-      type: Object,
-      default: undefined
     },
     actionHandler: {
       type: Function,
@@ -121,8 +117,6 @@ export default {
     return {
       ctaLabel: "",
       headline: "",
-      categoryValue: this.$props.login ? this.$props.login.category : "",
-      generatedPassword: this.$props.login ? this.$props.login.login_password.value : '',
       success: "",
       backendErrors: [],
       showModal: false,
@@ -130,13 +124,26 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      "getGeneratedPassword"
+    ]),
     ...mapState({
       categories(state) {
         return state.categories.filter(category => category.vault_id == this.$route.params.id);
+      },
+      login: function(state) {
+        let self = this;
+
+        return state.items.find(item => item.id == self.$route.params.itemId);
       }
-    })
+    }),
+    categoryValue() {
+      return this.login ? this.login.category : "";
+    }
   },
   mounted() {
+    this.login ? this.setGeneratedPassword(this.login.login_password.value) : this.setGeneratedPassword("");
+
     if (this.$props.action === "create") {
       this.ctaLabel = "Create";
       this.headline = "Create a login!";
@@ -162,13 +169,6 @@ export default {
       login_website: yup.string()
           .required()
           .label("Website"),
-      login_password: yup.string()
-          .required()
-          .matches(
-              /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{16,}$/,
-              "The password must contain at least 16 characters, one uppercase, one lowercase, one number and one special case character."
-          )
-          .label("Password"),
       login_description: yup.string()
           .label("Description"),
     });
@@ -178,6 +178,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+        "setGeneratedPassword"
+    ]),
     createPassword() {
       let passwordElement = this.$refs.password;
 
@@ -185,7 +188,7 @@ export default {
         passwordElement.setAttribute("type", "text");
       }
 
-      this.generatedPassword = password_generator.generate();
+      this.setGeneratedPassword(password_generator.generate());
     }
   }
 }

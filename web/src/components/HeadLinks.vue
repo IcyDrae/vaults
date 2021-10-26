@@ -38,9 +38,9 @@ export default {
 
       if (response instanceof Error) {
         console.log(response.message)
-      } else {
+      } /*else {
         await this.$router.push("/login");
-      }
+      }*/
     }
   }
 }

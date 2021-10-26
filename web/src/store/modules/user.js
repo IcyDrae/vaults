@@ -8,7 +8,8 @@ export default {
         encryptionKey: Uint8Array,
         vaults: [],
         categories: [],
-        items: []
+        items: [],
+        generatedPassword: String
     },
     mutations: {
         setUser(state, payload) {
@@ -82,6 +83,9 @@ export default {
 
             state.items.splice(foundIndex, 1);
         },
+        setGeneratedPassword(state, payload) {
+            state.generatedPassword = payload;
+        }
     },
     actions: {
         setUser(context, payload) {
@@ -131,6 +135,9 @@ export default {
         },
         deleteItem(context, payload) {
             context.commit("deleteItem", payload);
+        },
+        setGeneratedPassword(context, payload) {
+            context.commit("setGeneratedPassword", payload);
         }
     },
     getters: {
@@ -148,6 +155,9 @@ export default {
         },
         getCategories(state) {
             return state.categories;
+        },
+        getGeneratedPassword(state) {
+            return state.generatedPassword;
         }
     },
 }

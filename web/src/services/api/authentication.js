@@ -1,5 +1,6 @@
 import http from "../http";
 import {Security} from "../../plugins/Security";
+import router from "../../router";
 import store from "../../store";
 import mixins from "../../plugins/mixins";
 
@@ -18,6 +19,8 @@ export default {
     },
 
     store,
+
+    router,
 
     security: new Security(),
 
@@ -234,6 +237,7 @@ export default {
          */
         const successHandler = async function(response) {
             if (response.status === 204) {
+                await self.router.push("/login");
                 await eraseLocalData();
             }
         };
@@ -256,7 +260,7 @@ export default {
             if (!self.isObjectEmpty(self.store.getters["user/getCategories"])) {
                 await self.store.dispatch("user/setCategories", []);
             }
-        }
+        };
 
         return await init();
     },
