@@ -239,6 +239,18 @@ export default {
                 if (!self.isObjectEmpty(self.store.getters["user/getUser"])) {
                     await self.store.dispatch("user/setUser", {});
                 }
+
+                if (!self.isObjectEmpty(self.store.getters["user/getVaults"])) {
+                    await self.store.dispatch("user/setVaults", []);
+                }
+
+                if (!self.isObjectEmpty(self.store.getters["user/getItems"])) {
+                    await self.store.dispatch("user/setItems", []);
+                }
+
+                if (!self.isObjectEmpty(self.store.getters["user/getCategories"])) {
+                    await self.store.dispatch("user/setCategories", []);
+                }
             }
         };
 

@@ -140,6 +140,9 @@ export default {
         getEncryptionKey(state) {
             return state.encryptionKey;
         },
+        getVaults(state) {
+            return state.vaults;
+        },
         getItems(state) {
             return state.items;
         },
