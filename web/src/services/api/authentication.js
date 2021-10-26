@@ -234,25 +234,29 @@ export default {
          */
         const successHandler = async function(response) {
             if (response.status === 204) {
-                await self.store.dispatch("user/setEncryptionKey", {});
-
-                if (!self.isObjectEmpty(self.store.getters["user/getUser"])) {
-                    await self.store.dispatch("user/setUser", {});
-                }
-
-                if (!self.isObjectEmpty(self.store.getters["user/getVaults"])) {
-                    await self.store.dispatch("user/setVaults", []);
-                }
-
-                if (!self.isObjectEmpty(self.store.getters["user/getItems"])) {
-                    await self.store.dispatch("user/setItems", []);
-                }
-
-                if (!self.isObjectEmpty(self.store.getters["user/getCategories"])) {
-                    await self.store.dispatch("user/setCategories", []);
-                }
+                await eraseLocalData();
             }
         };
+
+        const eraseLocalData = async function() {
+            await self.store.dispatch("user/setEncryptionKey", {});
+
+            if (!self.isObjectEmpty(self.store.getters["user/getUser"])) {
+                await self.store.dispatch("user/setUser", {});
+            }
+
+            if (!self.isObjectEmpty(self.store.getters["user/getVaults"])) {
+                await self.store.dispatch("user/setVaults", []);
+            }
+
+            if (!self.isObjectEmpty(self.store.getters["user/getItems"])) {
+                await self.store.dispatch("user/setItems", []);
+            }
+
+            if (!self.isObjectEmpty(self.store.getters["user/getCategories"])) {
+                await self.store.dispatch("user/setCategories", []);
+            }
+        }
 
         return await init();
     },
