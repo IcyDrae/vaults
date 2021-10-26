@@ -211,6 +211,8 @@ export default {
             if(response.status === 204) {
                 await self.store.dispatch("user/deleteItem", id);
 
+                await self.store.dispatch("user/setGeneratedPassword", "");
+
                 return response;
             }
         };

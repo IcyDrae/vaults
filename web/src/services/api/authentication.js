@@ -245,6 +245,8 @@ export default {
         const eraseLocalData = async function() {
             await self.store.dispatch("user/setEncryptionKey", {});
 
+            await self.store.dispatch("user/setGeneratedPassword", "");
+
             if (!self.isObjectEmpty(self.store.getters["user/getUser"])) {
                 await self.store.dispatch("user/setUser", {});
             }
