@@ -6,6 +6,7 @@ use App\Entity\Vault;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @method Vault|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,7 +26,7 @@ class VaultRepository extends ServiceEntityRepository
      *
      * @return Vault[] Returns an array of Vault objects.
      */
-    public function findMultipleWithRelationsAmount(int $userId): array
+    public function findMultipleWithRelationsAmount(Uuid $userId): array
     {
         $vaults = [];
 
@@ -63,10 +64,8 @@ class VaultRepository extends ServiceEntityRepository
             ->leftJoin("App\Entity\Login", "login", Query\Expr\Join::WITH, "login.vault = v.id")
             ->leftJoin("App\Entity\Note", "note", Query\Expr\Join::WITH, "note.vault = v.id")
             ->andWhere("v.user = :user_id")
-            ->setParameters([
-                "vault_id" => $id,
-                "user_id" => $userId
-            ])
+            ->setParameter("vault_id", $id, "uuid")
+            ->setParameter("user_id", $userId, "uuid")
             ->getQuery()
             ->getResult();
     }

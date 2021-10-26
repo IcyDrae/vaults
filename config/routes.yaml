@@ -26,21 +26,21 @@ vaults_update:
   path: /vaults/{id}
   controller: App\Controller\VaultController::update
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["PUT"]
 
 vaults_delete:
   path: /vaults/{id}
   controller: App\Controller\VaultController::delete
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["DELETE"]
 
 vaults_items:
   path: /vaults/{id}/items
   controller: App\Controller\VaultController::listItems
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     userId: '\d+'
   methods: ["GET"]
 
@@ -53,14 +53,14 @@ logins_update:
   path: /logins/{id}
   controller: App\Controller\LoginController::update
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["PUT"]
 
 logins_delete:
   path: /logins/{id}
   controller: App\Controller\LoginController::delete
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["DELETE"]
 
 notes_create:
@@ -72,14 +72,14 @@ notes_update:
   path: /notes/{id}
   controller: App\Controller\NoteController::update
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["PUT"]
 
 notes_delete:
   path: /notes/{id}
   controller: App\Controller\NoteController::delete
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["DELETE"]
 
 categories:
@@ -96,5 +96,5 @@ categories_delete:
   path: /categories/{id}
   controller: App\Controller\CategoryController::delete
   requirements:
-    id: '\d+'
+    id: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
   methods: ["DELETE"]

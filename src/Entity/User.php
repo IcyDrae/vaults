@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JetBrains\PhpStorm\Pure;
@@ -19,8 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid", unique=true)
      */
     private $id;
 
@@ -80,16 +80,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $categories;
 
-    #[Pure]
     public function __construct()
     {
+        $this->id = Uuid::v4();
         $this->vaults = new ArrayCollection();
         $this->logins = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }

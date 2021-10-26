@@ -50,12 +50,16 @@ class LoginController extends AbstractController
         $login->setUser($user);
         $login->setVault($vault);
 
-        if (!empty($categoryId) || $categoryId == 0) {
+        if (!empty($categoryId)) {
             $category = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->find($categoryId);
 
             $login->setCategory($category);
+        }
+
+        if ($categoryId == 0) {
+            $login->setCategory(null);
         }
 
         $entityManager->persist($login);
@@ -89,12 +93,16 @@ class LoginController extends AbstractController
         if (!empty($login)) {
             $login->setData($requestBody["data"]);
 
-            if (!empty($categoryId) || $categoryId == 0) {
+            if (!empty($categoryId)) {
                 $category = $this->getDoctrine()
                     ->getRepository(Category::class)
                     ->find($categoryId);
 
                 $login->setCategory($category);
+            }
+
+            if ($categoryId == 0) {
+                $login->setCategory(null);
             }
 
             $entityManager->flush();

@@ -51,12 +51,16 @@ class NoteController extends AbstractController
         $note->setUser($user);
         $note->setVault($vault);
 
-        if (!empty($categoryId) || $categoryId == 0) {
+        if (!empty($categoryId)) {
             $category = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->find($categoryId);
 
             $note->setCategory($category);
+        }
+
+        if ($categoryId == 0) {
+            $note->setCategory(null);
         }
 
         $entityManager->persist($note);
@@ -92,12 +96,16 @@ class NoteController extends AbstractController
         if (!empty($note)) {
             $note->setData($requestBody["data"]);
 
-            if (!empty($categoryId) || $categoryId == 0) {
+            if (!empty($categoryId)) {
                 $category = $this->getDoctrine()
                     ->getRepository(Category::class)
                     ->find($categoryId);
 
                 $note->setCategory($category);
+            }
+
+            if ($categoryId == 0) {
+                $note->setCategory(null);
             }
 
             $entityManager->flush();
