@@ -40,7 +40,7 @@ export default {
         this.note = response;
         resetForm();
 
-        await this.$router.push({ name: "item", params: { itemId: this.note.id, itemData: JSON.stringify(this.note) } });
+        await this.$router.push({ name: "item", params: { itemId: this.note.id } });
       }
     }
   }

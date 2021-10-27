@@ -15,11 +15,14 @@
             :key="category"
             @click="$emit('folderClicked', category.id); this.setActiveCategory(category.id)"
             :class="{ active: category.active }">
-          <p>{{ category.category_name }}</p>
           <span title="Delete folder"
                 :class="{ active: category.active }"
                 @click="showModal = true; selectedCategory = category.id">
             &#10005;
+          </span>
+          <p>{{ category.category_name }}</p>
+          <span class="category-item-count">
+            {{ categoryItemsCount(category.id) }}
           </span>
         </li>
       </ul>
@@ -42,7 +45,7 @@ import {Security} from "../../plugins/Security";
 import {api} from "../../services/api";
 import DeletePrompt from "../DeletePrompt";
 
-const { mapState, mapActions } = createNamespacedHelpers("user");
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers("user");
 
 export default {
   name: "Categories",
@@ -65,7 +68,10 @@ export default {
       categories(state) {
         return state.categories.filter(category => category.vault_id == this.$route.params.id);
       }
-    })
+    }),
+    ...mapGetters([
+        "getItems"
+    ])
   },
   mounted() {
     this.fetchCategories();
@@ -75,6 +81,9 @@ export default {
         "setActiveCategory",
         "removeActiveCategory"
     ]),
+    categoryItemsCount(id) {
+      return this.getItems.filter(item => item.category == id).length;
+    },
     /**
      * Requests the user's encrypted vaults.
      */

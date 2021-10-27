@@ -40,7 +40,7 @@ export default {
         this.login = response;
         resetForm();
 
-        await this.$router.push({ name: "item", params: { itemId: this.login.id, itemData: JSON.stringify(this.login) } });
+        await this.$router.push({ name: "item", params: { itemId: this.login.id } });
       }
     }
   }

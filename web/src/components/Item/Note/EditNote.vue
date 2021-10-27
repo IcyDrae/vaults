@@ -43,7 +43,7 @@ export default {
         let updatedNote = response;
         resetForm();
 
-        await this.$router.push({ name: "item", params: { itemId: updatedNote.id, itemData: JSON.stringify(updatedNote) } });
+        await this.$router.push({ name: "item", params: { itemId: updatedNote.id } });
       }
     },
     async deleteVault() {

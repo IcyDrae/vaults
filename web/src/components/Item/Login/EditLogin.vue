@@ -43,7 +43,7 @@ export default {
         let updatedLogin = response;
         resetForm();
 
-        await this.$router.push({ name: "item", params: { itemId: updatedLogin.id, itemData: JSON.stringify(updatedLogin) } });
+        await this.$router.push({ name: "item", params: { itemId: updatedLogin.id } });
       }
     },
     async deleteVault() {
