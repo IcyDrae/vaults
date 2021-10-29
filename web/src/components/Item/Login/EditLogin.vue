@@ -3,7 +3,7 @@
     <LoginForm
         action="edit"
         :action-handler="handleForm"
-        :delete-handler="deleteHandler"
+        :delete-handler="deleteLogin"
     ></LoginForm>
   </div>
 </template>
@@ -12,6 +12,9 @@
 
 import LoginForm from "./LoginForm";
 import {api} from "../../../services/api";
+import { createNamespacedHelpers } from 'vuex';
+
+const { mapActions } = createNamespacedHelpers("app_state");
 
 export default {
   name: "EditLogin",
@@ -26,9 +29,9 @@ export default {
     }
   },
   methods: {
-    async deleteHandler() {
-      await this.deleteVault();
-    },
+    ...mapActions([
+        "setItemView"
+    ]),
     /**
      *
      * @param values
@@ -46,13 +49,14 @@ export default {
         await this.$router.push({ name: "item", params: { itemId: updatedLogin.id } });
       }
     },
-    async deleteVault() {
+    async deleteLogin() {
       let response = await api.login.delete(this.$route.params.itemId);
 
       if (response instanceof Error) {
         this.backendErrors.push(response);
       } else {
         this.showModal = false;
+        this.setItemView(false);
 
         await this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
       }
