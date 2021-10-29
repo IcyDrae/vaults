@@ -1,6 +1,7 @@
 <template>
   <div class="item-detail">
     <form>
+      <p class="back" @click="$router.push({ name: 'vaultDashboard', params: { id: this.$route.params.id } }); this.setItemView(false)">Back</p>
       <div class="detail-head">
         <h1>{{ item.name.value }}</h1>
         <p @click="this.$router.push({
@@ -43,6 +44,7 @@
 import { createNamespacedHelpers } from 'vuex';
 
 const { mapState } = createNamespacedHelpers("user");
+const { mapActions : mapActionsApp } = createNamespacedHelpers("app_state");
 
 export default {
   name: "Item",
@@ -79,6 +81,9 @@ export default {
       return Object.fromEntries(filtered);
     }
   },
+  beforeMount() {
+    this.setItemView(true);
+  },
   beforeUpdate() {
     let itemType = this.item.item_type;
 
@@ -95,6 +100,9 @@ export default {
     }
   },
   methods: {
+    ...mapActionsApp([
+        "setItemView"
+    ]),
     togglePasswordVisibility() {
       let password = this.$refs.Password;
 

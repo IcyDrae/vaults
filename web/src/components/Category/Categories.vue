@@ -1,19 +1,25 @@
 <template>
   <div class="categories">
     <div class="navigation">
-      <div class="create-category-cta">
-        <button class="btn" @click="creating = true">Create folder</button>
-      </div>
       <CreateCategory v-if="creating === true"
                       @closeOverlay="creating = false">
       </CreateCategory>
+      <a class="burger-icon"
+         @click="this.triggerBurgerMenu">
+        <i class="fa fa-bars"></i>
+      </a>
       <ul class="folders">
-        <li @click="$emit('allClicked'); this.removeActiveCategory()">
+        <li @click="creating = true">
+          <p>Create folder</p>
+        </li>
+        <li @click="$emit('allClicked');
+                    this.removeActiveCategory()">
           <p>All items</p>
         </li>
         <li v-for="category in categories"
             :key="category"
-            @click="$emit('folderClicked', category.id); this.setActiveCategory(category.id)"
+            @click="$emit('folderClicked', category.id);
+                    this.setActiveCategory(category.id)"
             :class="{ active: category.active }">
           <span title="Delete folder"
                 :class="{ active: category.active }"
@@ -46,6 +52,7 @@ import {api} from "../../services/api";
 import DeletePrompt from "../DeletePrompt";
 
 const { mapState, mapActions, mapGetters } = createNamespacedHelpers("user");
+const { mapActions: mapActionsApp } = createNamespacedHelpers("app_state");
 
 export default {
   name: "Categories",
@@ -80,6 +87,9 @@ export default {
     ...mapActions([
         "setActiveCategory",
         "removeActiveCategory"
+    ]),
+    ...mapActionsApp([
+        "triggerBurgerMenu"
     ]),
     categoryItemsCount(id) {
       return this.getItems.filter(item => item.category == id).length;

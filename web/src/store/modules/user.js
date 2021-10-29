@@ -159,5 +159,5 @@ export default {
         getGeneratedPassword(state) {
             return state.generatedPassword;
         }
-    },
+    }
 }

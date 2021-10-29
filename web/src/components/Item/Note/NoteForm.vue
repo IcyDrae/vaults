@@ -1,6 +1,7 @@
 <template>
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
     <form @submit="handleSubmit($event, actionHandler)">
+      <p class="back" @click="$router.push({ name: 'vaultDashboard', params: { id: this.$route.params.id } }); this.setItemView(false)">Back</p>
       <h1>{{ headline }}</h1>
 
       <label>
@@ -59,6 +60,7 @@ import * as yup from "yup";
 import { createNamespacedHelpers } from 'vuex';
 
 const { mapState } = createNamespacedHelpers("user");
+const { mapActions: mapActionsApp } = createNamespacedHelpers("app_state");
 
 export default {
   name: "NoteForm",
@@ -107,6 +109,9 @@ export default {
       return this.note ? this.note.category : "";
     }
   },
+  beforeMount() {
+    this.setItemView(true);
+  },
   mounted() {
     if (this.$props.action === "create") {
       this.ctaLabel = "Create";
@@ -131,6 +136,11 @@ export default {
     return {
       schema
     };
+  },
+  methods: {
+    ...mapActionsApp([
+      "setItemView"
+    ])
   }
 }
 

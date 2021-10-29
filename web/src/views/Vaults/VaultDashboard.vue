@@ -4,7 +4,7 @@
         @folder-clicked="folderItemsHandler"
         @all-clicked="allItemsHandler">
     </Categories>
-    <div class="logins">
+    <div class="logins" :class="{ active: this.getItemView === true }">
       <CreationTypeSelector></CreationTypeSelector>
       <div class="logins-container">
         <div v-for="item in items" :key="item"
@@ -37,6 +37,7 @@ import Categories from "../../components/Category/Categories";
 import CreationTypeSelector from "../../components/Item/CreationTypeSelector";
 
 const { mapState } = createNamespacedHelpers("user");
+const { mapActions, mapGetters } = createNamespacedHelpers("app_state");
 
 export default {
   name: "VaultDashboard",
@@ -52,6 +53,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+        "getItemView"
+    ]),
     ...mapState({
       items(state) {
         let self = this,
@@ -79,13 +83,23 @@ export default {
     this.fetchVaultItems();
   },
   methods: {
+    ...mapActions([
+        "triggerBurgerMenu",
+        "setItemView"
+    ]),
     folderItemsHandler(id) {
       this.folderId = id;
-      this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
+      this.folderHandler();
     },
     allItemsHandler() {
       this.folderId = "";
+      this.folderHandler();
+    },
+    folderHandler() {
       this.$router.push({ name: "vaultDashboard", params: { id: this.$route.params.id } });
+
+      this.triggerBurgerMenu();
+      this.setItemView(false);
     },
     /**
      * Requests the user's encrypted vaults.

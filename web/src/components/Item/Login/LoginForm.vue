@@ -1,6 +1,7 @@
 <template>
   <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div">
     <form @submit="handleSubmit($event, actionHandler)">
+      <p class="back" @click="$router.push({ name: 'vaultDashboard', params: { id: this.$route.params.id } }); this.setItemView(false)">Back</p>
       <h1>{{ headline }}</h1>
 
       <label>
@@ -90,6 +91,7 @@ import * as yup from "yup";
 import { createNamespacedHelpers } from 'vuex';
 
 const { mapState, mapActions, mapGetters } = createNamespacedHelpers("user");
+const { mapActions: mapActionsApp } = createNamespacedHelpers("app_state");
 
 export default {
   name: "LoginForm",
@@ -141,6 +143,9 @@ export default {
       return this.login ? this.login.category : "";
     }
   },
+  beforeMount() {
+    this.setItemView(true);
+  },
   mounted() {
     this.login ? this.setGeneratedPassword(this.login.login_password.value) : this.setGeneratedPassword("");
 
@@ -180,6 +185,9 @@ export default {
   methods: {
     ...mapActions([
         "setGeneratedPassword"
+    ]),
+    ...mapActionsApp([
+        "setItemView"
     ]),
     createPassword() {
       let passwordElement = this.$refs.password;
