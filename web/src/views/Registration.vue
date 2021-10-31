@@ -1,5 +1,5 @@
 <template>
-  <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="registration-form form">
+  <VeeValidateForm :validation-schema="schema" v-slot="{ errors, handleSubmit }" as="div" class="register-form form">
     <form @submit="handleSubmit($event, submitForm)">
       <h1>Register an account!</h1>
       <label>

@@ -4,11 +4,12 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
+  margin-top: 65px;
 
   > div {
-    width: 300px;
-    height: 300px;
-    margin: 50px;
+    width: 200px;
+    height: 200px;
+    margin: 30px;
   }
 
   .vault {
@@ -25,8 +26,10 @@
     div {
       display: inherit;
       flex-direction: inherit;
+      justify-content: inherit;
       align-items: center;
       width: 100%;
+      height: 100%;
 
       p {
         margin: 10px;
@@ -39,7 +42,6 @@
 
     .settings {
       position: relative;
-      top: 60px;
       width: 100%;
       height: 40px;
       background-color: white;
@@ -58,7 +60,7 @@
       }
     }
 
-    transition: all 2s;
+    transition: all 0.5s;
 
     &:hover {
       border-color: $white;
@@ -75,6 +77,16 @@
     img {
       width: 75px;
       cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .vaults {
+    > div {
+      width: 300px;
+      height: 300px;
+      margin: 30px;
     }
   }
 }

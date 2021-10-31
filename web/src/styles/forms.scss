@@ -9,7 +9,7 @@
       margin-left: auto;
       margin-right: auto;
       text-align: left;
-      width: 35%;
+      width: 75%;
 
       h1 {
         margin-bottom: 50px;
@@ -36,7 +36,7 @@
         }
 
         input, textarea {
-          font-size: 18px;
+          font-size: 16px;
           font-family: $fontFamily;
         }
       }
@@ -80,6 +80,22 @@
       .backend-success {
         margin-top: 50px;
         color: green;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #app {
+    .form {
+      form {
+        width: 35%;
+
+        label:not([for="terms_and_conditions"]) {
+          input, textarea {
+            font-size: 18px;
+          }
+        }
       }
     }
   }

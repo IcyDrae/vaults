@@ -1,6 +1,8 @@
 .type-select {
   position: fixed;
   z-index: 100;
+  bottom: 30px;
+  right: 20px;
 
   select {
     margin: 10px;

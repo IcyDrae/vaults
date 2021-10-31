@@ -1,3 +1,5 @@
+import mixins from "../../plugins/mixins";
+
 /**
  * This module is used to manage the app state, such as burger menu state, item active state etc.
  */
@@ -18,10 +20,12 @@ export default {
         triggerBurgerMenu() {
             let folders = document.querySelector(".folders");
 
-            if (folders.style.display === "block") {
-                folders.style.display = "none";
-            } else {
-                folders.style.display = "block";
+            if (mixins.methods.isMobile()) {
+                if (folders.style.display === "block") {
+                    folders.style.display = "none";
+                } else {
+                    folders.style.display = "block";
+                }
             }
         }
     },

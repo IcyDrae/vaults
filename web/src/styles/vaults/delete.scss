@@ -1,7 +1,9 @@
 .delete-vault-overlay {
-  width: 40%;
+  width: 90%;
   height: 30%;
   border: 1px solid white;
+
+  margin: auto;
 
   .prompt {
     width: 100%;
@@ -16,5 +18,11 @@
       padding: 10px;
       text-transform: uppercase;
     }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .delete-vault-overlay {
+    width: 40%;
   }
 }

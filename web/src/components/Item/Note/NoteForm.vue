@@ -5,7 +5,7 @@
       <h1>{{ headline }}</h1>
 
       <label>
-        <VeeValidateField v-model="categoryValue" name="category" as="select">
+        <VeeValidateField class="categories-select" v-model="categoryValue" name="category" as="select">
           <option value="" disabled>Set to folder</option>
           <option value="0">none</option>
           <option v-for="category in categories"

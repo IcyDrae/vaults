@@ -29,6 +29,9 @@ export default {
             if (typeAttribute === "password") {
                 element.setAttribute("type", "password");
             }
+        },
+        isMobile() {
+            return screen.width <= 992;
         }
     }
 }

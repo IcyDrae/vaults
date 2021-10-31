@@ -4,7 +4,8 @@
       <CreateCategory v-if="creating === true"
                       @closeOverlay="creating = false">
       </CreateCategory>
-      <a class="burger-icon"
+      <a v-if="this.isMobile()"
+         class="burger-icon"
          @click="this.triggerBurgerMenu">
         <i class="fa fa-bars"></i>
       </a>

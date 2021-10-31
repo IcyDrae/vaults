@@ -1,28 +1,39 @@
 .dashboard {
   width: 100%;
-  height: calc(100% - 50px);
+  height: 100%;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
 
-  > div {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
   .categories {
-    flex-grow: 3;
-    flex-basis: 0;
-    border-right: 1px solid $borderColor;
-
-    align-items: center;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+    background-color: $black;
+    z-index: 1000;
+    overflow-y: scroll;
+    max-height: 100%;
 
     .navigation {
-      width: 100%;
+      .burger-icon {
+        display: block;
+        color: white;
+        background-color: $black;
+        border: 1px solid $borderColor;
+        border-top: 0;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+
+      .burger-icon:hover {
+        background-color: $white;
+        color: black;
+      }
 
       ul {
+        display: none;
         list-style-type: none;
         margin-top: 15px;
         padding: 0;
@@ -67,22 +78,24 @@
   }
 
   .logins {
-    @include hide-scrollbar;
+    display: block;
 
+    &.active {
+      display: none;
+    }
+
+    margin-top: 116px;
     flex-grow: 4;
     flex-basis: 0;
-    border-right: 1.5px solid $borderColor;
 
     .logins-container {
       position: relative;
-      top: 55px;
 
       .login {
         cursor: pointer;
         display: flex;
         align-items: center;
 
-        height: 80px;
         border-bottom: 1px solid $borderColor;
 
         > div {
@@ -105,20 +118,28 @@
   }
 
   .account {
-    @include hide-scrollbar;
-
     flex-grow: 10;
     flex-basis: 0;
     display: block;
     text-align: center;
     padding-top: 50px;
+    margin-top: 75px;
 
     form {
+      .back {
+        cursor: pointer;
+        margin: 10px 0;
+      }
+
+      .categories-select {
+        width: auto;
+      }
+
       display: inline-block;
       margin-left: auto;
       margin-right: auto;
       text-align: left;
-      width: 75%;
+      width: 85%;
 
       .detail-head {
         display: flex;
@@ -184,25 +205,18 @@
         }
 
         input, textarea, select {
-          font-size: 18px;
+          font-size: 16px;
           font-family: $fontFamily;
         }
       }
 
       .input-cta-container {
-        opacity: 0;
-
         position: relative;
         float: right;
         margin-top: -90px;
 
-        &:hover {
-          opacity: 1;
-        }
-
         .input-cta {
           display: inline-block;
-          width: 5em;
           text-align: center;
           margin: 0 2px;
           cursor: pointer;
@@ -257,6 +271,90 @@
         margin-top: 50px;
         color: green;
       }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .dashboard {
+    flex-direction: row;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    .categories {
+      border-right: 1px solid $borderColor;
+    }
+
+    .logins {
+      @include hide-scrollbar;
+
+      &.active {
+        display: block;
+      }
+
+      border-right: 1.5px solid $borderColor;
+
+      .logins-container {
+        .login {
+          height: 80px;
+        }
+      }
+    }
+
+    .account {
+      @include hide-scrollbar;
+
+      form {
+        width: 75%;
+
+        label {
+          input, textarea, select {
+            font-size: 18px;
+          }
+        }
+
+        .input-cta-container {
+          opacity: 0;
+
+          &:hover {
+            opacity: 1;
+          }
+
+          &.input-cta-container-form {
+            opacity: 1;
+            margin-top: -125px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .dashboard {
+    .categories {
+      position: relative;
+      flex-grow: 3;
+      flex-basis: 0;
+      border-right: 1px solid $borderColor;
+
+      align-items: center;
+
+      .navigation {
+        width: 100%;
+
+        ul {
+          display: block;
+        }
+      }
+    }
+
+    .logins {
+      margin-top: 65px;
     }
   }
 }

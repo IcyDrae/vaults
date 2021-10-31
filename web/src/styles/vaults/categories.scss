@@ -1,18 +1,9 @@
 .categories {
   .navigation {
 
-    .create-category-cta {
-      text-align: center;
-
-      .btn {
-        margin: 20px 0;
-      }
-    }
-
     .create-category-overlay {
-      width: 50%;
-      height: 50%;
-      border: 1px solid white;
+      width: 100%;
+      height: 100%;
 
       form {
         width: 60% !important;
@@ -31,6 +22,19 @@
           padding: 10px;
           text-transform: uppercase;
         }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .categories {
+    .navigation {
+      .create-category-overlay {
+        margin: auto;
+        width: 50%;
+        height: 50%;
+        border: 1px solid white;
       }
     }
   }

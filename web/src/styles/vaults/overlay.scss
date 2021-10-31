@@ -1,12 +1,12 @@
 .overlay {
   position: fixed;
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  margin: auto;
+  margin: 65px auto auto;
   background-color: $overlayBackgroundColor;
   z-index: 200;
 
@@ -17,5 +17,13 @@
     font-size: 22px;
     margin: 20px;
     cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .overlay {
+    width: 90%;
+    height: 90%;
+    margin: 75px auto auto;
   }
 }

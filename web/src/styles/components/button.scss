@@ -4,7 +4,6 @@
   border: 1px solid $borderColor;
   padding: 15px 20px;
   margin-right: 20px;
-  font-size: 16px;
   font-family: $fontFamily;
   transition: background-color 0.3s, color 0.3s;
 
@@ -22,5 +21,11 @@
     &:hover {
       background-color: $warningDeleteColorHover;
     }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .btn {
+    font-size: 16px;
   }
 }
