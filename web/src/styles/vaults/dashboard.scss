@@ -286,6 +286,7 @@
     }
 
     .categories {
+      @include hide-scrollbar;
       border-right: 1px solid $borderColor;
     }
 
