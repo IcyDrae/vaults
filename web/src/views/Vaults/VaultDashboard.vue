@@ -16,7 +16,7 @@
              }
              })">
           <div>
-            <img src="@/assets/instagram.png" alt="Instagram">
+            <img src="@/assets/item_placeholder.png" alt="Placeholder image for a securely stored item.">
           </div>
           <p>{{ item.name.value }}</p>
         </div>
