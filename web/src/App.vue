@@ -1,6 +1,6 @@
 <template>
   <div class="head">
-    <img src="@/assets/logo.png" alt="Logo">
+    <img src="@/assets/logo.png" alt="Logo" @click="$router.push({ name: 'Home'})">
     <HeadLinks></HeadLinks>
   </div>
   <router-view/>
