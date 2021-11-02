@@ -7,6 +7,7 @@
 ![Homepage desktop](docs/assets/homepage.PNG)
 ![Dashboard desktop](docs/assets/dashboard_desktop.PNG)
 ![Item mobile](docs/assets/item_mobile.PNG)
+<img src="https://github.com/MatrixEternal/vaults/blob/main/docs/assets/item_mobile.PNG" width="250px">
 
 ---
 
