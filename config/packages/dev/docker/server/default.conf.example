@@ -43,7 +43,7 @@ server {
 
     location ~ ^/index\.php(/|$) {
             # The value of fastcgi_pass is the name of the service as defined in docker compose.
-            fastcgi_pass php:9000;
+            fastcgi_pass api:9000;
             fastcgi_split_path_info ^(.+\.php)(/.*)$;
             fastcgi_index index.php;
             include fastcgi_params;

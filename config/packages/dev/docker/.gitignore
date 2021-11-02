@@ -1,6 +1,6 @@
 # Used for development files in which the user should first enter some custom values(hostname etc).
 
-php/conf.d/docker-php-ext-debug.ini
-api/default.conf
-api/password-manager.crt
-api/password-manager.key
+api/conf.d/docker-php-ext-debug.ini
+server/default.conf
+server/password-manager.crt
+server/password-manager.key

@@ -1,8 +1,12 @@
 Getting started with Docker.
 
-This project runs completely on Docker, there are four services being orchestrated with Docker Compose: db(MySQL), php(PHP 8.0 FPM), api(NGINX 1.20 Alpine) & spa(Vue.js frontend).
+This project runs completely on Docker, there are four services being orchestrated with Docker Compose:
+- db(MySQL),
+- api(PHP 8.0 FPM),
+- server(NGINX 1.20 Alpine)
+- spa(Vue.js frontend).
 
-1. Copy .env.example and set the allowed origin. This is important so the API can respond to its frontend.
+1. Copy .env.example and set the allowed origin. This is important, so the API can respond to its frontend.
 
 ```shell
 cp .env.example .env.dev.local
@@ -17,16 +21,23 @@ cp docker-compose.env.example docker-compose.env
 3. Copy the NGINX & Xdebug config files and set your local hostname; also don't forget to add the hostname to your host's ```/etc/hosts``` and the Xdebug port.
 
 ```shell
-cp config/packages/dev/docker/api/default.conf.example config/packages/dev/docker/api/default.conf
-cp config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini.example config/packages/dev/docker/php/conf.d/docker-php-ext-debug.ini
+cp config/packages/dev/docker/server/default.conf.example config/packages/dev/docker/server/default.conf
+cp config/packages/dev/docker/api/conf.d/docker-php-ext-debug.ini.example config/packages/dev/docker/api/conf.d/docker-php-ext-debug.ini
 ```
 
-4. Copy the frontend config file and set the variables:
+4.1. Copy the frontend config file and set the variables:
 
 The frontend files reside under ``` web```, completely separated and independent of Symfony and Twig etc.
 
 ```shell
 cp web/.env.development.local.example web/.env.development.local
+```
+
+4.2. Install npm dependencies
+
+```shell
+cd web
+npm install
 ```
 
 5. Create the SSL certificate and its corresponding key for your hostname.
@@ -44,8 +55,8 @@ sudo openssl req -x509 \
 and then import them in your preferred browser.
 
 ```shell
-cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/api/password-manager.key
-cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/api/password-manager.crt
+cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/server/password-manager.key
+cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/server/password-manager.crt
 ```
 
 7. Build the images & create the containers with docker-compose.
@@ -54,10 +65,10 @@ cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/api/password-
 docker-compose --env-file docker-compose.env up --build --detach
 ```
 
-8. In other terminal windows you can monitor the api container as well as the frontend container with the following commands:
+8. In other terminal windows you can monitor the server container as well as the frontend container with the following commands:
 
 ```shell
-docker logs --follow password-manager_api
+docker logs --follow password-manager_server
 ```
 
 ```shell
