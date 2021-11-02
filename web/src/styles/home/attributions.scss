@@ -1,0 +1,13 @@
+.attributions-overlay {
+  .attributions {
+    padding: 50px;
+
+    > * {
+      margin: 10px;
+    }
+
+    a {
+      color: $white;
+    }
+  }
+}

@@ -88,13 +88,20 @@
     }
   }
   footer {
+    a {
+      text-decoration: none;
+      color: $white;
+    }
+
     img {
       width: 50px;
       cursor: pointer;
     }
 
     .footer-items {
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       > * {
         margin: 10px;

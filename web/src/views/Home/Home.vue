@@ -75,8 +75,10 @@
         <p>Terms and conditions</p>
         <p>Privacy policy</p>
         <p>Imprint</p>
+        <router-link to="/attributions">Attributions</router-link>
       </div>
     </footer>
+    <router-view/>
   </div>
 </template>
 

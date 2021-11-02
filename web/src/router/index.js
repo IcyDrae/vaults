@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router"
-import Home from "../views/Home.vue"
+import { createRouter, createWebHistory } from "vue-router";
+import Home from "../views/Home/Home.vue";
+import Attributions from "../views/Home/Attributions.vue";
 import Registration from "../views/Registration";
 import Login from "../views/Login";
 import Vaults from "../views/Vaults/Vaults";
@@ -15,7 +16,14 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: "/attributions",
+        name: "Attributions",
+        component: Attributions
+      },
+    ]
   },
   {
     path: "/register",
