@@ -1,4 +1,17 @@
-Getting started with Docker.
+- When contributing to this repository, please open an issue first and explain the change- feature, bug, optimization?
+    - what part of the application is the issue about, API or Frontend?
+    - platform details(Windows, macOS, Linux and more about the development you are on)
+
+### Pull requests
+
+1. Please follow this [commit naming convention](https://www.conventionalcommits.org/en/v1.0.0/)
+   and keep a level of verbosity(comments in the code etc.)
+2. Update the README.md with details of changes, this includes any major changes that
+   result to changes in the usage of the API.
+
+---
+
+### Getting started locally
 
 This project runs completely on Docker, there are four services being orchestrated with Docker Compose:
 - db(MySQL),
