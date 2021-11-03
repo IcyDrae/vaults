@@ -10,7 +10,8 @@
 
 ---
 
-1. [Technical overview](#technical-overview)
+1. [Features](#features)
+2. [Technical overview](#technical-overview)
     1. [Vaults](#vaults)
     2. [Entities](#entities)
     3. [Categories](#categories)
@@ -20,8 +21,19 @@
         1. [Back end technologies](#back-end-technologies)
     6. [Other technical details](#other-technical-details)
     7. [Security schema](#security-schema)
-2. [Contributing & Getting started](#contributing--getting-started)
-3. [License](#license)
+3. [Contributing & Getting started](#contributing--getting-started)
+4. [License](#license)
+
+## Features
+
+- Client side encryption for maximum security
+- Vaults
+- Multiple types of items
+    - Logins
+    - Notes
+- Folders(categories)
+- Cryptographically secure password generator
+- Responsive front end
 
 ## Technical overview
 
