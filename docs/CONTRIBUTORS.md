@@ -69,7 +69,7 @@ and then import them in your preferred browser.
 
 ```shell
 cp /etc/ssl/private/selfsigned/site.key config/packages/dev/docker/server/password-manager.key
-cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/server/password-manager.crt
+cp /etc/ssl/certs/selfsigned/site.crt config/packages/dev/docker/server/password-manager.crt
 ```
 
 7. Build the images & create the containers with docker-compose.
@@ -78,7 +78,13 @@ cp /etc/ssl/private/selfsigned/site.crt config/packages/dev/docker/server/passwo
 docker-compose --env-file docker-compose.env up --build --detach
 ```
 
-8. In other terminal windows you can monitor the server container as well as the frontend container with the following commands:
+8. Create the database.
+
+````shell
+docker exec -it password-manager_api ./bin/console doctrine:migrations:migrate --env=dev
+````
+
+9. In other terminal windows you can monitor the server container as well as the frontend container with the following commands:
 
 ```shell
 docker logs --follow password-manager_server
