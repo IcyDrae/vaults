@@ -32,7 +32,7 @@ server {
 
     root /var/www/password-manager/public/;
 
-    server_name password-manager.hostname www.password-manager.hostname;
+    server_name api.password-manager.dev.local www.api.password-manager.dev.local;
 
     ### Symfony projects config START ###
 
@@ -85,6 +85,6 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name password-manager.hostname www.password-manager.hostname;
+    server_name api.password-manager.dev.local www.api.password-manager.dev.local;
     return 302 https://$server_name$request_uri;
 }

@@ -13,6 +13,6 @@ xdebug.idekey=PHPSTORM_DOCKER
 ; Docker hostname in the host system.
 xdebug.client_host=host.docker.internal
 
-xdebug.client_port=port_number
+xdebug.client_port=9001
 xdebug.log=/tmp/xdebug.log
 xdebug.show_error_trace=1
