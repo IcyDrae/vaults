@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-WORKDIR /var/www/password-manager/web
+WORKDIR /var/www/vaults_frontend/
 
 EXPOSE 1024
 

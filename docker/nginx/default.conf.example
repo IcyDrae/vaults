@@ -30,9 +30,9 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
 
-    root /var/www/password-manager/public/;
+    root /var/www/vaults_api/public/;
 
-    server_name api.password-manager.dev.local www.api.password-manager.dev.local;
+    server_name api.vaults.dev.local www.api.vaults.dev.local;
 
     ### Symfony projects config START ###
 
@@ -85,6 +85,6 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name api.password-manager.dev.local www.api.password-manager.dev.local;
+    server_name api.vaults.dev.local www.api.vaults.dev.local;
     return 302 https://$server_name$request_uri;
 }

@@ -9,7 +9,7 @@ RUN apt update \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip
 
-WORKDIR /var/www/password-manager
+WORKDIR /var/www/vaults_api
 
 # Catch environment variables from the docker-compose.yml file.
 ARG GITHUB_USERNAME

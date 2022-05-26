@@ -1,0 +1,9 @@
+###> docker-compose.env
+docker-compose.env
+###< docker-compose.env
+
+# Used for development files in which the user should first enter some custom values(hostname etc).
+api/conf.d/docker-php-ext-debug.ini
+server/default.conf
+server/password-manager.crt
+server/password-manager.key
