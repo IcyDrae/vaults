@@ -3,7 +3,7 @@
     <div class="hero-section section">
       <div class="hero-section-text">
         <h1>The cloud-based password manager for your personal needs</h1>
-        <p><i>my-vaults</i> is the easiest and safest way to store your passwords & generate new ones while having access to them from anywhere.</p>
+        <p><i>vaults</i> is the easiest and safest way to store your passwords & generate new ones while having access to them from anywhere.</p>
 
         <button class="btn" @click="$router.push('/register')">Try it out</button>
       </div>
