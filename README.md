@@ -11,7 +11,8 @@
 ---
 
 1. [Features](#features)
-2. [Technical overview](#technical-overview)
+2. [Installation](#installation)
+3. [Technical overview](#technical-overview)
     1. [Vaults](#vaults)
     2. [Entities](#entities)
     3. [Categories](#categories)
@@ -21,8 +22,8 @@
         1. [Back end technologies](#back-end-technologies)
     6. [Other technical details](#other-technical-details)
     7. [Security schema](#security-schema)
-3. [Contributing & Getting started](#contributing--getting-started)
-4. [License](#license)
+4. [Contributing & Getting started](#contributing--getting-started)
+5. [License](#license)
 
 ## Features
 
@@ -34,6 +35,10 @@
 - Folders(categories)
 - Cryptographically secure password generator
 - Responsive front end
+
+## Installation
+
+If you want to self-host, [download the latest release](https://github.com/MatrixEternal/vaults/releases/latest) and follow the installation steps [here](./docs/INSTALLATION.md).
 
 ## Technical overview
 
@@ -140,7 +145,7 @@ The vault and every other data inside gets encrypted with the mentioned encrypti
 
 ## Contributing & Getting started
 
-Do you want to get involved? Please refer to [the contributors documentation](docs/CONTRIBUTORS.md)
+If you want to get involved please refer to [the contributors' documentation](docs/CONTRIBUTORS.md).
 
 ## License
 
