@@ -7,3 +7,4 @@ api/conf.d/docker-php-ext-debug.ini
 server/default.conf
 server/password-manager.crt
 server/password-manager.key
+mysql/db/
