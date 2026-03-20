@@ -24,7 +24,7 @@ services:
         # Pass down environment variables as arguments for the Dockerfile.
         - GITHUB_USERNAME=${GITHUB_USERNAME}
         - GITHUB_EMAIL=${GITHUB_EMAIL}
-        - SYSTEM_UID=${SYSTEM_UID}
+        - SYSTEM_UID=1000
         - XDEBUG_HOST_PORT=${XDEBUG_HOST_PORT}
     ports:
       - '${PHP_FASTCGI_HOST_PORT}:9000'
@@ -42,7 +42,7 @@ services:
     image: nginx:1.20.0-alpine
     ports:
       - '${SERVER_HTTP_HOST_PORT}:80'
-      - '${SERVER_HTTPS_HOST_PORT}:443'
+      - '${SERVER_HTTPS_HOST_PORT}:444'
     volumes:
       - ../api/:/var/www/vaults_api
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -57,8 +57,8 @@ services:
   vue:
     container_name: vaults_vue
     build:
-      context: ./
-      dockerfile: ./frontend/Dockerfile
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
     ports:
       - '${SPA_HTTPS_HOST_PORT}:1024'
     volumes:

@@ -1,7 +1,10 @@
 FROM node:lts-alpine
 
-WORKDIR /var/www/vaults_frontend/
+WORKDIR /var/www/vaults_frontend
 
-EXPOSE 1024
+COPY frontend/package*.json ./
+RUN npm install
+
+COPY frontend/. .
 
 CMD ["npm", "run", "serve"]

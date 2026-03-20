@@ -1,0 +1,5 @@
+# Ignore everything except your frontend source
+*
+!../../frontend/package*.json
+!../../frontend/src/
+!../../frontend/public/

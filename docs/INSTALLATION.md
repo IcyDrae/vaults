@@ -21,7 +21,7 @@ cp ./docker/docker-compose.env.example ./docker/docker-compose.env
 3. Copy the NGINX & Xdebug config files and set your local hostname; also don't forget to add the hostname to your host's ```/etc/hosts``` and the Xdebug port.
 
 ```shell
-cp ./docker/nginx/default.conf.example ./docker/nginx/server/default.conf
+cp ./docker/nginx/default.conf.example ./docker/nginx/default.conf
 cp ./docker/php/conf.d/docker-php-ext-debug.ini.example ./docker/php/conf.d/docker-php-ext-debug.ini
 ```
 
@@ -53,15 +53,15 @@ sudo openssl req -x509 \
 6. Copy the certificate + key in the project files for docker compose, and then import them in your preferred browser.
 
 ```shell
-cp /etc/ssl/private/selfsigned/site.key ./docker/nginx/password-manager.key
-cp /etc/ssl/certs/selfsigned/site.crt ./docker/nginx/password-manager.crt
+sudo cp /etc/ssl/private/selfsigned/site.key ./docker/nginx/password-manager.key
+sudo cp /etc/ssl/certs/selfsigned/site.crt ./docker/nginx/password-manager.crt
 ```
 
 7. Build the images & create the containers with docker-compose.
 
 ```shell
 cd ./docker;
-docker-compose --env-file docker-compose.env up --build --detach
+docker compose --env-file docker-compose.env up --build --detach
 ```
 
 8. Create the database.
@@ -76,4 +76,4 @@ docker exec -it vaults_php ./bin/console doctrine:migrations:migrate --env=dev
 docker logs --follow vaults_nginx
 ```
 
-That's it! Now you have an instance of vaults running!
+That's it! Now you have an instance of vaults running at 

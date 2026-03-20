@@ -40,11 +40,10 @@ class CorsSubscriber implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        $method = $request->getRealMethod();
-
-        if ($method === Request::METHOD_OPTIONS) {
+        if ($request->getRealMethod() === Request::METHOD_OPTIONS) {
             $response = new Response();
             $event->setResponse($response);
+            $this->setCorsHeaders($event); // add CORS headers here too
         }
     }
 
