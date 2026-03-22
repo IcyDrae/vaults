@@ -23,7 +23,7 @@ jobs:
 
     - name: Run containers (test)
       run: |
-        docker compose -f ../docker-compose.prod.yml up -d
+        docker compose -f docker/docker-compose.prod.yml up -d
 
     - name: Stop containers
-      run: docker compose -f ../docker-compose.prod.yml down
+      run: docker compose -f docker/docker-compose.prod.yml down
