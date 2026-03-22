@@ -1,0 +1,32 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vaults
+    volumes:
+      - db_data:/var/lib/mysql
+
+  php:
+    build:
+      context: ./api
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/frontend/Dockerfile.prod
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - frontend
+
+volumes:
+  db_data:

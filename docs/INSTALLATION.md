@@ -25,18 +25,10 @@ cp ./docker/nginx/default.conf.example ./docker/nginx/default.conf
 cp ./docker/php/conf.d/docker-php-ext-debug.ini.example ./docker/php/conf.d/docker-php-ext-debug.ini
 ```
 
-4.1. Copy the frontend config file and set the variables:
+4. Copy the frontend config file and set the variables:
 
 ```shell
 cp ./frontend/.env.development.local.example ./frontend/.env.development.local
-```
-
-4.2. Install npm dependencies
-
-In the `vaults_vue` container:
-
-```shell
-npm install
 ```
 
 5. Create the SSL certificate and its corresponding key for your hostname.
@@ -76,4 +68,4 @@ docker exec -it vaults_php ./bin/console doctrine:migrations:migrate --env=dev
 docker logs --follow vaults_nginx
 ```
 
-That's it! Now you have an instance of vaults running at 
+That's it! Now you have an instance of vaults running.

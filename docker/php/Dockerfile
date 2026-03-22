@@ -26,6 +26,8 @@ ARG GITHUB_EMAIL
 ARG SYSTEM_UID
 ARG XDEBUG_HOST_PORT
 
+COPY . .
+
 # Expose Xdebug port
 EXPOSE ${XDEBUG_HOST_PORT}
 
@@ -35,3 +37,5 @@ RUN if [ -n "$SYSTEM_UID" ]; then usermod -u $SYSTEM_UID www-data; fi
 # Install Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && ln -s /root/.symfony*/bin/symfony /usr/local/bin/symfony
+
+CMD ["php-fpm"]
