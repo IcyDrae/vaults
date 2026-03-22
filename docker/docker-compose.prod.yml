@@ -10,7 +10,7 @@ services:
   php:
     build:
       context: ..
-      dockerfile: ../docker/php/Dockerfile
+      dockerfile: docker/php/Dockerfile
     depends_on:
       - mysql
 
