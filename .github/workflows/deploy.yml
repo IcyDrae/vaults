@@ -16,7 +16,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Build frontend image
-      run: docker build -t vaults-frontend -f frontend/Dockerfile.prod ./frontend
+      run: docker build -t vaults-frontend -f docker/frontend/Dockerfile.prod ./frontend
 
     - name: Build backend image
       run: docker build -t vaults-php -f docker/php/Dockerfile ./api
