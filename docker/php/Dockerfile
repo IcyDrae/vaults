@@ -26,7 +26,6 @@ ARG GITHUB_EMAIL
 ARG SYSTEM_UID
 ARG XDEBUG_HOST_PORT
 
-COPY composer.json composer.lock ./
 #RUN composer install --no-dev --optimize-autoloader
 COPY . ./
 
