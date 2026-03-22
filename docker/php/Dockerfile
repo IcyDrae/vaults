@@ -26,7 +26,9 @@ ARG GITHUB_EMAIL
 ARG SYSTEM_UID
 ARG XDEBUG_HOST_PORT
 
-COPY . .
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+COPY . ./
 
 # Expose Xdebug port
 EXPOSE ${XDEBUG_HOST_PORT}
